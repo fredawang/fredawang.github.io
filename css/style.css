@@ -193,7 +193,7 @@ body {
 .widget-title {
   text-decoration: none;
   letter-spacing: 1px;
-  color: #999;
+  color: #000;
   margin-bottom: 1em;
   margin-left: 5px;
   line-height: 1em;
@@ -339,6 +339,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
+  background: url("images/banner.jpg") center #000;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   background-size: cover;
@@ -355,7 +356,7 @@ body {
 #logo,
 #subtitle {
   text-decoration: none;
-  color: #999;
+  color: #fff;
   font-weight: 300;
   text-shadow: 0 1px 4px rgba(0,0,0,0.3);
 }
@@ -373,13 +374,13 @@ body {
   margin-top: 16px;
 }
 #main-nav {
-  float: left;
+  float: right;
   margin-left: -15px;
 }
 .nav-icon,
 .main-nav-link {
   float: left;
-  color: #999;
+  color: #fff;
   text-decoration: none;
   -webkit-transition: opacity 0.2s;
   -moz-transition: opacity 0.2s;
@@ -390,7 +391,7 @@ body {
 }
 .nav-icon:hover,
 .main-nav-link:hover {
-  color: #000;
+  color: #999;
 }
 .nav-icon {
   font-family: FontAwesome;
@@ -507,6 +508,9 @@ body {
 .article-meta:after {
   clear: both;
 }
+.article-meta a:hover {
+  color: #0085ff;
+}
 .article-date {
   float: left;
 }
@@ -520,6 +524,9 @@ body {
 .article-category:before {
   content: "\2022";
 }
+.article-category a:hover {
+  color: #0085ff;
+}
 .article-category-link {
   margin: 0 12px 1em;
 }
@@ -529,8 +536,7 @@ body {
 .article-title {
   text-decoration: none;
   font-size: 2em;
-  font-weight: bold;
-  color: #555;
+  color: #000;
   line-height: 1.1em;
   -webkit-transition: color 0.2s;
   -moz-transition: color 0.2s;
@@ -538,10 +544,10 @@ body {
   transition: color 0.2s;
 }
 a.article-title:hover {
-  color: #258fb8;
+  color: #0085ff;
 }
 .article-entry {
-  color: #555;
+  color: #000;
   padding: 0 40px;
 }
 .article-entry:before,
@@ -575,7 +581,7 @@ a.article-title:hover {
   margin: 1.1em 0;
 }
 .article-entry a {
-  color: #258fb8;
+  color: #0085ff;
   text-decoration: none;
 }
 .article-entry a:hover {
@@ -675,10 +681,10 @@ a.article-title:hover {
   text-decoration: none;
 }
 .article-more-link a:hover {
-  background: #258fb8;
+  background: #0085ff;
   color: #fff;
   text-decoration: none;
-  text-shadow: 0 1px #1e7293;
+  text-shadow: 0 1px #006acc;
 }
 .article-footer {
   font-size: 0.85em;
@@ -953,7 +959,7 @@ a.article-title:hover {
   margin: 50px 0;
 }
 #comments a {
-  color: #258fb8;
+  color: #0085ff;
 }
 .archives-wrap {
   margin: 50px 0;
@@ -1009,7 +1015,7 @@ a.article-title:hover {
   line-height: 1.6em;
 }
 .archive-article-title:hover {
-  color: #258fb8;
+  color: #0085ff;
 }
 .archive-article-footer {
   margin-top: 1em;
@@ -1083,7 +1089,7 @@ a.article-title:hover {
   color: #999;
 }
 #footer a {
-  color: #258fb8;
+  color: #0085ff;
   text-decoration: none;
 }
 #footer a:hover {
@@ -1204,7 +1210,7 @@ figure {
   margin-left: 40px;
 }
 .article-entry .gist .gist-file .gist-meta a {
-  color: #258fb8;
+  color: #0085ff;
   font-weight: normal;
 }
 .article-entry .gist .gist-file .gist-meta a:hover {
@@ -1309,11 +1315,12 @@ pre .javascript .function {
   border-radius: 3px;
 }
 .widget a {
-  color: #258fb8;
+  color: #0085ff;
   text-decoration: none;
 }
 .widget a:hover {
   text-decoration: underline;
+  color: #005580;
 }
 .widget ul ul,
 .widget ol ul,
