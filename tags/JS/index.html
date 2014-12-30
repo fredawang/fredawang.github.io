@@ -44,7 +44,7 @@
       
     </div>
     <div id="header-inner" class="inner">
-      <nav id="main-nav">
+      <nav id="main-nav" style="display:none;">
         <a id="main-nav-toggle" class="nav-icon"></a>
         
           <a class="main-nav-link" href="/">Home</a>
@@ -104,9 +104,61 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2014/05/07/深入理解JavaScript系列(1)/" data-id="i2ekpydqdxqe037k" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2014/05/07/深入理解JavaScript系列(1)/" data-id="sof6vlxmbfbkdey8" class="article-share-link" style="display:none">Share</a>
       
-        <a href="http://yoursite.com/2014/05/07/深入理解JavaScript系列(1)/#ds-thread" class="article-comment-link">Comments</a>
+        <a href="http://yoursite.com/2014/05/07/深入理解JavaScript系列(1)/#ds-thread" class="article-comment-link" style="display:none">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JS/">JS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UI/">UI</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-深入理解JavaScript系列(2)" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/05/07/深入理解JavaScript系列(2)/" class="article-date">
+  <time datetime="2014-05-07T10:44:12.000Z" itemprop="datePublished">5月 7 2014</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/JavaScript/">JavaScript</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/05/07/深入理解JavaScript系列(2)/">深入理解JavaScript系列（二）：揭秘命名函数表达式</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言">前言</h2>
+<p>网上还没用发现有人对命名函数表达式进去重复深入的讨论，正因为如此，网上出现了各种各样的误解，本文将从原理和实践两个方面来探讨JavaScript关于命名函数表达式的优缺点。</p>
+<p>简单的说，命名函数表达式只有一个用户，那就是在Debug或者Profiler分析的时候来描述函数的名称，也可以使用函数名实现递归，但很快你就会发现其实是不切实际的。当然，如果你不关注调试，那就没什么可担心的了，否则，如果你想了解兼容性方面的东西的话，你还是应该继续往下看看。</p>
+<p>我们先开始看看，什么叫函数表达式，然后再说一下现代调试器如何处理这些表达式，如果你已经对这方面很熟悉的话，请直接跳过此小节。<br>
+        
+          <p class="article-more-link">
+            <a href="/2014/05/07/深入理解JavaScript系列(2)/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2014/05/07/深入理解JavaScript系列(2)/" data-id="1s57libfdzxf35jv" class="article-share-link" style="display:none">Share</a>
+      
+        <a href="http://yoursite.com/2014/05/07/深入理解JavaScript系列(2)/#ds-thread" class="article-comment-link" style="display:none">Comments</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JS/">JS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UI/">UI</a></li></ul>
@@ -127,7 +179,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/">CSS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">1</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/">CSS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -136,7 +188,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/">CSS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/">JS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UI/">UI</a><span class="tag-list-count">2</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/">CSS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/">JS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UI/">UI</a><span class="tag-list-count">3</span></li></ul>
     </div>
   </div>
 
@@ -145,7 +197,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/CSS/" style="font-size: 10.00px;">CSS</a><a href="/tags/JS/" style="font-size: 10.00px;">JS</a><a href="/tags/UI/" style="font-size: 20.00px;">UI</a>
+      <a href="/tags/CSS/" style="font-size: 10.00px;">CSS</a><a href="/tags/JS/" style="font-size: 15.00px;">JS</a><a href="/tags/UI/" style="font-size: 20.00px;">UI</a>
     </div>
   </div>
 
@@ -154,7 +206,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">3</span></li></ul>
     </div>
   </div>
 
@@ -167,6 +219,10 @@
         
           <li>
             <a href="/2014/05/07/深入理解JavaScript系列(1)/">深入理解JavaScript系列（一）：编写高质量JavaScript代码的基本要点</a>
+          </li>
+        
+          <li>
+            <a href="/2014/05/07/深入理解JavaScript系列(2)/">深入理解JavaScript系列（二）：揭秘命名函数表达式</a>
           </li>
         
           <li>

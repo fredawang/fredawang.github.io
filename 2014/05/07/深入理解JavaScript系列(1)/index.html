@@ -47,7 +47,7 @@
       
     </div>
     <div id="header-inner" class="inner">
-      <nav id="main-nav">
+      <nav id="main-nav" style="display:none;">
         <a id="main-nav-toggle" class="nav-icon"></a>
         
           <a class="main-nav-link" href="/">Home</a>
@@ -97,7 +97,7 @@
         <p>才华横溢的Stoyan Stefanov，在他写的由O’Reilly初版的新书《JavaScript Patterns》(JavaScript模式)中，我想要是为我们的读者贡献其摘要，那会是件很美妙的事情。具体一点就是编写高质量JavaScript的一些要素，例如避免全局变量，使用单变量声明，在循环中预缓存length(长度)，遵循代码阅读，以及更多。</p>
 <p>此摘要也包括一些与代码不太相关的习惯，但对整体代码的创建息息相关，包括撰写API文档、执行同行评审以及运行JSLint。这些习惯和最佳做法可以帮助你写出更好的，更易于理解和维护的代码，这些代码在几个月或是几年之后再回过头看看也是会觉得很自豪的。</p>
 <p><a id="more"></a></p>
-<h1 id="书写可维护的代码(Writing_Maintainable_code)">书写可维护的代码(Writing Maintainable code)</h1>
+<h2 id="书写可维护的代码(Writing_Maintainable_code)">书写可维护的代码(Writing Maintainable code)</h2>
 <p>软件bug的修复是昂贵的，并且随着时间的推移，这些bug的成本也会增加，尤其当这些bug潜伏并慢慢出现在已经发布的软件中时。当你发现bug 的时候就立即修复它是最好的，此时你代码要解决的问题在你脑中还是很清晰的。否则，你转移到其他任务，忘了那个特定的代码，一段时间后再去查看这些代码就 需要：</p>
 <ul>
 <li>花时间学习和理解这个问题</li>
@@ -122,12 +122,12 @@
 <li>看上去就像是同一个人写的</li>
 <li>已记录</li>
 </ul>
-<h1 id="最小全局变量(Minimizing_Globals)">最小全局变量(Minimizing Globals)</h1>
+<h2 id="最小全局变量(Minimizing_Globals)">最小全局变量(Minimizing Globals)</h2>
 <p>JavaScript通过函数管理作用域。在函数内部声明的变量只在这个函数内部，函数外面不可用。另一方面，全局变量就是在任何函数外面声明的或是未声明直接简单使用的。</p>
 <p>每个JavaScript环境有一个全局对象，当你在任意的函数外面使用this的时候可以访问到。你创建的每一个全部变量都成了这个全局对象的属 性。在浏览器中，方便起见，该全局对象有个附加属性叫做window，此window(通常)指向该全局对象本身。下面的代码片段显示了如何在浏览器环境 中创建和访问的全局变量：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">myglobal = <span class="string">"hello"</span>; // 不推荐写法</div><div class="line">console.log(myglobal); // <span class="string">"hello"</span></div><div class="line">console.log(window.myglobal); // <span class="string">"hello"</span></div><div class="line">console.log(window[<span class="string">"myglobal"</span>]); // <span class="string">"hello"</span></div><div class="line">console.log(this.myglobal); // <span class="string">"hello"</span></div></pre></td></tr></table></figure>
 
-<h1 id="全局变量的问题">全局变量的问题</h1>
+<h2 id="全局变量的问题">全局变量的问题</h2>
 <p>全局变量的问题在于，你的JavaScript应用程序和web页面上的所有代码都共享了这些全局变量，他们住在同一个全局命名空间，所以当程序的两个不同部分定义同名但不同作用的全局变量的时候，命名冲突在所难免。</p>
 <p>web页面包含不是该页面开发者所写的代码也是比较常见的，例如：</p>
 <ul>
@@ -154,8 +154,8 @@
 <p>如果你已经准备好声明变量，使用链分配是比较好的做法，不会产生任何意料之外的全局变量，如：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">function <span class="function"><span class="title">foo</span></span>() {</div><div class="line">   var a, b;</div><div class="line">   // ... a = b = <span class="number">0</span>; // 两个均局部变量</div><div class="line">}</div></pre></td></tr></table></figure>
 
-<p><strong> <em>然而，另外一个避免全局变量的原因是可移植性。如果你想你的代码在不同的环境下（主机下）运行，使用全局变量如履薄冰，因为你会无意中覆盖你最初环境下不存在的主机对象（所以你原以为名称可以放心大胆地使用，实际上对于有些情况并不适用）。</em> </strong></p>
-<h1 id="忘记var的副作用(Side_Effects_When_Forgetting_var)">忘记var的副作用(Side Effects When Forgetting var)</h1>
+<p><em>然而，另外一个避免全局变量的原因是可移植性。如果你想你的代码在不同的环境下（主机下）运行，使用全局变量如履薄冰，因为你会无意中覆盖你最初环境下不存在的主机对象（所以你原以为名称可以放心大胆地使用，实际上对于有些情况并不适用）。</em></p>
+<h2 id="忘记var的副作用(Side_Effects_When_Forgetting_var)">忘记var的副作用(Side Effects When Forgetting var)</h2>
 <p>隐式全局变量和明确定义的全局变量间有些小的差异，就是通过delete操作符让变量未定义的能力。</p>
 <ul>
 <li>通过var创建的全局变量（任何函数之外的程序中创建）是不能被删除的。</li>
@@ -165,12 +165,12 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">// 定义三个全局变量</div><div class="line">var global_var = <span class="number">1</span>;</div><div class="line">global_novar = <span class="number">2</span>; // 反面教材</div><div class="line">(<span class="function"><span class="title">function</span></span> () {</div><div class="line">   global_fromfunc = <span class="number">3</span>; // 反面教材</div><div class="line">}());</div><div class="line"></div><div class="line">// 试图删除</div><div class="line">delete global_var; // <span class="literal">false</span></div><div class="line">delete global_novar; // <span class="literal">true</span></div><div class="line">delete global_fromfunc; // <span class="literal">true</span></div><div class="line"></div><div class="line">// 测试该删除</div><div class="line">typeof global_var; // <span class="string">"number"</span></div><div class="line">typeof global_novar; // <span class="string">"undefined"</span></div><div class="line">typeof global_fromfunc; // <span class="string">"undefined"</span></div></pre></td></tr></table></figure>
 
 <p>在ES5严格模式下，未声明的变量（如在前面的代码片段中的两个反面教材）工作时会抛出一个错误。</p>
-<h1 id="访问全局对象(Access_to_the_Global_Object)">访问全局对象(Access to the Global Object)</h1>
+<h2 id="访问全局对象(Access_to_the_Global_Object)">访问全局对象(Access to the Global Object)</h2>
 <p>在浏览器中，全局对象可以通过window属性在代码的任何位置访问（除非你做了些比较出格的事情，像是声明了一个名为window的局部变量）。但是在其他环境下，这个方便的属性可能被叫做其他什么东西（甚至在程序中不可用）。如果你需要在没有硬编码的window标识符下访问全局对象，你可以在任何层级的函数作用域中做如下操作：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">var global = (<span class="function"><span class="title">function</span></span> () {</div><div class="line">   <span class="keyword">return</span> this;</div><div class="line">}());</div></pre></td></tr></table></figure>
 
 <p>这种方法可以随时获得全局对象，因为其在函数中被当做函数调用了（不是通过new构造），this总 是指向全局对象。实际上这个病不适用于ECMAScript 5严格模式，所以，在严格模式下时，你必须采取不同的形式。例如，你正在开发一个JavaScript库，你可以将你的代码包裹在一个即时函数中，然后从 全局作用域中，传递一个引用指向this作为你即时函数的参数。</p>
-<h1 id="单var形式（Single_var_Pattern）">单var形式（Single var Pattern）</h1>
+<h2 id="单var形式（Single_var_Pattern）">单var形式（Single var Pattern）</h2>
 <p>在函数顶部使用单var语句是比较有用的一种形式，其好处在于：</p>
 <ul>
 <li>提供了一个单一的地方去寻找功能所需要的所有局部变量</li>
@@ -185,7 +185,7 @@
 <p>你也可以在声明的时候做一些实际的工作，例如前面代码中的sum = a + b这个情况，另外一个例子就是当你使用DOM（文档对象模型）引用时，你可以使用单一的var把DOM引用一起指定为局部变量，就如下面代码所示的：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">function <span class="function"><span class="title">updateElement</span></span>() {</div><div class="line">   var el = document.getElementById(<span class="string">"result"</span>),</div><div class="line">       style = el.style;</div><div class="line">   // 使用el和style干点其他什么事...</div><div class="line">}</div></pre></td></tr></table></figure>
 
-<h1 id="预解析：var散布的问题(Hoisting:_A_Problem_with_Scattered_vars)">预解析：var散布的问题(Hoisting: A Problem with Scattered vars)</h1>
+<h2 id="预解析：var散布的问题(Hoisting:_A_Problem_with_Scattered_vars)">预解析：var散布的问题(Hoisting: A Problem with Scattered vars)</h2>
 <p>JavaScript中，你可以在函数的任何位置声明多个var语句，并且它们就好像是在函数顶部声明一样发挥作用，这种行为称为 hoisting（悬置/置顶解析/预解析）。当你使用了一个变量，然后不久在函数中又重新声明的话，就可能产生逻辑错误。对于JavaScript，只 要你的变量是在同一个作用域中（同一函数），它都被当做是声明的，即使是它在var声明前使用的时候。看下面这个例子：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">// 反例</div><div class="line">myname = <span class="string">"global"</span>; // 全局变量</div><div class="line">function <span class="function"><span class="title">func</span></span>() {</div><div class="line">    alert(myname); // <span class="string">"undefined"</span></div><div class="line">    var myname = <span class="string">"local"</span>;</div><div class="line">    alert(myname); // <span class="string">"local"</span></div><div class="line">}</div><div class="line">func();</div></pre></td></tr></table></figure>
 
@@ -193,8 +193,8 @@
 <p>上面的代码片段执行的行为可能就像下面这样：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">myname = <span class="string">"global"</span>; // global variable</div><div class="line">function <span class="function"><span class="title">func</span></span>() {</div><div class="line">   var myname; // 等同于 -&gt; var myname = undefined;</div><div class="line">   alert(myname); // <span class="string">"undefined"</span></div><div class="line">   myname = <span class="string">"local"</span>;</div><div class="line">   alert(myname); // <span class="string">"local"</span>}</div><div class="line">func();</div></pre></td></tr></table></figure>
 
-<p><strong> <em>为了完整，我们再提一提执行层面的稍微复杂点的东西。代码处理分两个阶段，第一阶段是变量，函数声明，以及正常格式的参数创建，这是一个解析和进入上下文 的阶段。第二个阶段是代码执行，函数表达式和不合格的标识符（为声明的变量）被创建。但是，出于实用的目的，我们就采用了”hoisting”这个概念， 这种ECMAScript标准中并未定义，通常用来描述行为。</em> </strong></p>
-<h1 id="for循环(for_Loops)">for循环(for Loops)</h1>
+<p><em>为了完整，我们再提一提执行层面的稍微复杂点的东西。代码处理分两个阶段，第一阶段是变量，函数声明，以及正常格式的参数创建，这是一个解析和进入上下文 的阶段。第二个阶段是代码执行，函数表达式和不合格的标识符（为声明的变量）被创建。但是，出于实用的目的，我们就采用了”hoisting”这个概念， 这种ECMAScript标准中并未定义，通常用来描述行为。</em></p>
+<h2 id="for循环(for_Loops)">for循环(for Loops)</h2>
 <p>在for循环中，你可以循环取得数组或是数组类似对象的值，譬如arguments和HTMLCollection对象。通常的循环形式如下：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">// 次佳的循环</div><div class="line"><span class="keyword">for</span> (var i = <span class="number">0</span>; i &lt; myarray.length; i++) {</div><div class="line">   // 使用myarray[i]做点什么</div><div class="line">}</div></pre></td></tr></table></figure>
 
@@ -233,7 +233,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">//第一种变化的形式：</div><div class="line"></div><div class="line">var i, myarray = [];</div><div class="line"><span class="keyword">for</span> (i = myarray.length; i–-;) {</div><div class="line">   // 使用myarray[i]做点什么</div><div class="line">}</div><div class="line"></div><div class="line">//第二种使用<span class="keyword">while</span>循环：</div><div class="line"></div><div class="line">var myarray = [],</div><div class="line">    i = myarray.length;</div><div class="line"><span class="keyword">while</span> (i–-) {</div><div class="line">   // 使用myarray[i]做点什么</div><div class="line">}</div></pre></td></tr></table></figure>
 
 <p>这些小的改进只体现在性能上，此外JSLint会对使用i–-加以抱怨。</p>
-<h1 id="for-in循环(for-in_Loops)">for-in循环(for-in Loops)</h1>
+<h2 id="for-in循环(for-in_Loops)">for-in循环(for-in Loops)</h2>
 <p>for-in循环应该用在非数组对象的遍历上，使用for-in进行循环也被称为“枚举”。</p>
 <p>从技术上将，你可以使用for-in循环数组（因为JavaScript中数组也是对象），但这是不推荐的。因为如果数组对象已被自定义的功能增强，就可能发生逻辑错误。另外，在for-in中，属性列表的顺序（序列）是不能保证的。所以最好数组使用正常的for循环，对象使用for-in循环。</p>
 <p>有个很重要的hasOwnProperty()方法，当遍历对象属性的时候可以过滤掉从原型链上下来的属性。</p>
@@ -251,7 +251,7 @@
 <p>其好处在于在man对象重新定义hasOwnProperty情况下避免命名冲突。也避免了长属性查找对象的所有方法，你可以使用局部变量“缓存”它。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">var i, hasOwn = Object.prototype.hasOwnProperty;</div><div class="line"><span class="keyword">for</span> (i <span class="keyword">in</span> man) {</div><div class="line">    <span class="keyword">if</span> (hasOwn.call(man, i)) { // 过滤</div><div class="line">        console.log(i, <span class="string">":"</span>, man[i]);</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
 
-<p><strong> <em>严格来说，不使用hasOwnProperty()并不是一个错误。根据任务以及你对代码的自信程度，你可以跳过它以提高些许的循环速度。但是当你对当前对象内容（和其原型链）不确定的时候，添加hasOwnProperty()更加保险些。</em> </strong></p>
+<p><em>严格来说，不使用hasOwnProperty()并不是一个错误。根据任务以及你对代码的自信程度，你可以跳过它以提高些许的循环速度。但是当你对当前对象内容（和其原型链）不确定的时候，添加hasOwnProperty()更加保险些。</em></p>
 <p>格式化的变化（通不过JSLint）会直接忽略掉花括号，把if语句放到同一行上。其优点在于循环语句读起来就像一个完整的想法（每个元素都有一个自己的属性”X”，使用”X”干点什么）：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">// 警告： 通不过JSLint检测</div><div class="line">var i, hasOwn = Object.prototype.hasOwnProperty;</div><div class="line"><span class="keyword">for</span> (i <span class="keyword">in</span> man) <span class="keyword">if</span> (hasOwn.call(man, i)) { // 过滤</div><div class="line">    console.log(i, <span class="string">":"</span>, man[i]);</div><div class="line">}</div></pre></td></tr></table></figure>
 
@@ -262,7 +262,7 @@
 <p>在这里，只有 hasOwnProperty 能给出正确答案，这在遍历一个对象的属性时是非常必要的。Javascript 中没有其他方法能判断一个属性是定义在对象本身还是继承自原型链。<br>hasOwnProperty 作为属性<br>Javascript 并未将 hasOwnProperty 设为敏感词，这意味着你可以拥有一个命名为 hasOwnProperty 的属性。这个时候你无法再使用本身的 hasOwnProperty 方法来判断属性，所以你需要使用外部的 hasOwnProperty 方法来进行判断。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">var foo = {</div><div class="line"> hasOwnProperty: <span class="function"><span class="title">function</span></span>() {</div><div class="line"> <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line"> },</div><div class="line"> bar: <span class="string">'Here be dragons'</span></div><div class="line">};</div><div class="line"> </div><div class="line">foo.hasOwnProperty(<span class="string">'bar'</span>); // always returns <span class="literal">false</span></div><div class="line"> </div><div class="line">// Use another Object<span class="string">'s hasOwnProperty and call it with '</span>this<span class="string">' set to foo</span></div><div class="line">({}).hasOwnProperty.call(foo, 'bar<span class="string">'); // true</span></div><div class="line"> </div><div class="line">// It's also possible to use hasOwnProperty from the Object</div><div class="line">// prototype <span class="keyword">for</span> this purpose</div><div class="line">Object.prototype.hasOwnProperty.call(foo, <span class="string">'bar'</span>); // <span class="literal">true</span></div></pre></td></tr></table></figure>
 
-<h1 id="（不）扩展内置原型((Not)_Augmenting_Built-in_Prototypes)">（不）扩展内置原型((Not) Augmenting Built-in Prototypes)</h1>
+<h2 id="（不）扩展内置原型((Not)_Augmenting_Built-in_Prototypes)">（不）扩展内置原型((Not) Augmenting Built-in Prototypes)</h2>
 <p>扩增构造函数的prototype属性是个很强大的增加功能的方法，但有时候它太强大了。</p>
 <p>增加内置的构造函数原型（如Object(), Array(), 或Function()）挺诱人的，但是这严重降低了可维护性，因为它让你的代码变得难以预测。使用你代码的其他开发人员很可能更期望使用内置的 JavaScript方法来持续不断地工作，而不是你另加的方法。</p>
 <p>另外，属性添加到原型中，可能会导致不使用hasOwnProperty属性时在循环中显示出来，这会造成混乱。</p>
@@ -275,7 +275,7 @@
 <p>如果这三个条件得到满足，你可以给原型进行自定义的添加，形式如下：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (typeof Object.protoype.myMethod !== <span class="string">"function"</span>) {</div><div class="line">   Object.protoype.myMethod = <span class="function"><span class="title">function</span></span> () {</div><div class="line">      // 实现...</div><div class="line">   };</div><div class="line">}</div></pre></td></tr></table></figure>
 
-<h1 id="switch模式(switch_Pattern)">switch模式(switch Pattern)</h1>
+<h2 id="switch模式(switch_Pattern)">switch模式(switch Pattern)</h2>
 <p>你可以通过类似下面形式的switch语句增强可读性和健壮性：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">var inspect_me = <span class="number">0</span>,</div><div class="line">    result = <span class="string">''</span>;</div><div class="line">switch (inspect_me) {</div><div class="line"><span class="keyword">case</span> <span class="number">0</span>:</div><div class="line">   result = <span class="string">"zero"</span>;</div><div class="line">   <span class="keyword">break</span>;</div><div class="line"><span class="keyword">case</span> <span class="number">1</span>:</div><div class="line">   result = <span class="string">"one"</span>;</div><div class="line">   <span class="keyword">break</span>;</div><div class="line">default:</div><div class="line">   result = <span class="string">"unknown"</span>;</div><div class="line">}</div></pre></td></tr></table></figure>
 
@@ -288,13 +288,13 @@
 <li>避免贯穿（故意忽略break）。如果你非常确信贯穿是最好的方法，务必记录此情况，因为对于有些阅读人而言，它们可能看起来是错误的。</li>
 <li>以default结束switch：确保总有健全的结果，即使无情况匹配。</li>
 </ul>
-<h1 id="避免隐式类型转换(Avoiding_Implied_Typecasting_)">避免隐式类型转换(Avoiding Implied Typecasting )</h1>
+<h2 id="避免隐式类型转换(Avoiding_Implied_Typecasting_)">避免隐式类型转换(Avoiding Implied Typecasting )</h2>
 <p>JavaScript的变量在比较的时候会隐式类型转换。这就是为什么一些诸如：false == 0 或 “” == 0 返回的结果是true。为避免引起混乱的隐含类型转换，在你比较值和表达式类型的时候始终使用===和!==操作符。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">var zero = <span class="number">0</span>;</div><div class="line"><span class="keyword">if</span> (zero === <span class="literal">false</span>) {</div><div class="line">   // 不执行，因为zero为<span class="number">0</span>, 而不是<span class="literal">false</span></div><div class="line">}</div><div class="line"></div><div class="line">// 反面示例</div><div class="line"><span class="keyword">if</span> (zero == <span class="literal">false</span>) {</div><div class="line">   // 执行了...</div><div class="line">}</div></pre></td></tr></table></figure>
 
 
 <p>还有另外一种思想观点认为==就足够了===是多余的。例如，当你使用typeof你就知道它会返回一个字符串，所以没有使用严格相等的理由。然而，JSLint要求严格相等，它使代码看上去更有一致性，可以降低代码阅读时的精力消耗。（“==是故意的还是一个疏漏？”）</p>
-<h1 id="避免(Avoiding)_eval()">避免(Avoiding) eval()</h1>
+<h2 id="避免(Avoiding)_eval()">避免(Avoiding) eval()</h2>
 <p>如果你现在的代码中使用了eval()，记住该咒语“eval()是魔鬼”。此方法接受任意的字符串，并当作JavaScript代码来处理。当有 问题的代码是事先知道的（不是运行时确定的），没有理由使用eval()。如果代码是在运行时动态生成，有一个更好的方式不使用eval而达到同样的目 标。例如，用方括号表示法来访问动态属性会更好更简单：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">// 反面示例</div><div class="line">var property = <span class="string">"name"</span>;</div><div class="line">alert(<span class="built_in">eval</span>(<span class="string">"obj."</span> + property));</div><div class="line"></div><div class="line">// 更好的</div><div class="line">var property = <span class="string">"name"</span>;</div><div class="line">alert(obj[property]);</div></pre></td></tr></table></figure>
 
@@ -311,7 +311,7 @@
 <p>另一间eval()和Function构造不同的是eval()可以干扰作用域链，而Function()更安分守己些。不管你在哪里执行 Function()，它只看到全局作用域。所以其能很好的避免本地变量污染。在下面这个例子中，eval()可以访问和修改它外部作用域中的变量，这是 Function做不来的（注意到使用Function和new Function是相同的）。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">(<span class="function"><span class="title">function</span></span> () {</div><div class="line">   var local = <span class="number">1</span>;</div><div class="line">   <span class="built_in">eval</span>(<span class="string">"local = 3; console.log(local)"</span>); // logs <span class="string">"3"</span></div><div class="line">   console.log(local); // logs <span class="string">"3"</span></div><div class="line">}());</div><div class="line"></div><div class="line">(<span class="function"><span class="title">function</span></span> () {</div><div class="line">   var local = <span class="number">1</span>;</div><div class="line">   Function(<span class="string">"console.log(typeof local);"</span>)(); // logs undefined</div><div class="line">}());</div></pre></td></tr></table></figure>
 
-<h1 id="parseInt()下的数值转换(Number_Conversions_with_parseInt())">parseInt()下的数值转换(Number Conversions with parseInt())</h1>
+<h2 id="parseInt()下的数值转换(Number_Conversions_with_parseInt())">parseInt()下的数值转换(Number Conversions with parseInt())</h2>
 <p>使用parseInt()你可以从字符串中获取数值，该方法接受另一个基数参数，这经常省略，但不应该。当字符串以”0″开头的时候就有可能会出问 题，例如，部分时间进入表单域，在ECMAScript 3中，开头为”0″的字符串被当做8进制处理了，但这已在ECMAScript 5中改变了。为了避免矛盾和意外的结果，总是指定基数参数。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">var month = <span class="string">"06"</span>,</div><div class="line">    year = <span class="string">"09"</span>;</div><div class="line">month = parseInt(month, <span class="number">10</span>);</div><div class="line">year = parseInt(year, <span class="number">10</span>);</div></pre></td></tr></table></figure>
 
@@ -323,16 +323,16 @@
 
 
 <p>这些通常快于parseInt()，因为parseInt()方法，顾名思意，不是简单地解析与转换。但是，如果你想输入例如“08 hello”，parseInt()将返回数字，而其它以NaN告终。</p>
-<h1 id="编码规范(Coding_Conventions)">编码规范(Coding Conventions)</h1>
+<h2 id="编码规范(Coding_Conventions)">编码规范(Coding Conventions)</h2>
 <p>建立和遵循编码规范是很重要的，这让你的代码保持一致性，可预测，更易于阅读和理解。一个新的开发者加入这个团队可以通读规范，理解其它团队成员书写的代码，更快上手干活。</p>
 <p>许多激烈的争论发生会议上或是邮件列表上，问题往往针对某些代码规范的特定方面（例如代码缩进，是Tab制表符键还是space空格键）。如果你是 你组织中建议采用规范的，准备好面对各种反对的或是听起来不同但很强烈的观点。要记住，建立和坚定不移地遵循规范要比纠结于规范的细节重要的多。</p>
-<h1 id="缩进(Indentation)">缩进(Indentation)</h1>
+<h2 id="缩进(Indentation)">缩进(Indentation)</h2>
 <p>代码没有缩进基本上就不能读了。唯一糟糕的事情就是不一致的缩进，因为它看上去像是遵循了规范，但是可能一路上伴随着混乱和惊奇。重要的是规范地使用缩进。</p>
 <p>一些开发人员更喜欢用tab制表符缩进，因为任何人都可以调整他们的编辑器以自己喜欢的空格数来显示Tab。有些人喜欢空格——通常四个，这都无所谓，只要团队每个人都遵循同一个规范就好了。这本书，例如，使用四个空格缩进，这也是JSLint中默认的缩进。</p>
 <p>什么应该缩进呢？规则很简单——花括号里面的东西。这就意味着函数体，循环 (do, while, for, for-in)，if，switch，以及对象字面量中的对象属性。下面的代码就是使用缩进的示例：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">function outer(a, b) {</div><div class="line">    var c = <span class="number">1</span>,</div><div class="line">        d = <span class="number">2</span>,</div><div class="line">        inner;</div><div class="line">    <span class="keyword">if</span> (a &gt; b) {</div><div class="line">        inner = <span class="function"><span class="title">function</span></span> () {</div><div class="line">            <span class="keyword">return</span> {</div><div class="line">                r: c - d</div><div class="line">            };</div><div class="line">        };</div><div class="line">    } <span class="keyword">else</span> {</div><div class="line">        inner = <span class="function"><span class="title">function</span></span> () {</div><div class="line">            <span class="keyword">return</span> {</div><div class="line">                r: c + d</div><div class="line">            };</div><div class="line">        };</div><div class="line">    }</div><div class="line">    <span class="keyword">return</span> inner;</div><div class="line">}</div></pre></td></tr></table></figure>
 
-<h1 id="花括号{}(Curly_Braces)">花括号{}(Curly Braces)</h1>
+<h2 id="花括号{}(Curly_Braces)">花括号{}(Curly Braces)</h2>
 <p>花括号（亦称大括号，下同）应总被使用，即使在它们为可选的时候。技术上将，在in或是for中如果语句仅一条，花括号是不需要的，但是你还是应该总是使用它们，这会让代码更有持续性和易于更新。</p>
 <p>想象下你有一个只有一条语句的for循环，你可以忽略花括号，而没有解析的错误。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">// 糟糕的实例</div><div class="line"><span class="keyword">for</span> (var i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i += <span class="number">1</span>)</div><div class="line">   alert(i);</div></pre></td></tr></table></figure>
@@ -345,7 +345,7 @@
 <p>第二个alert已经在循环之外，缩进可能欺骗了你。为了长远打算，最好总是使用花括号，即时值一行代码：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">// 好的实例</div><div class="line"><span class="keyword">for</span> (var i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i += <span class="number">1</span>) {</div><div class="line">   alert(i);</div><div class="line">}</div><div class="line"></div><div class="line"><span class="keyword">if</span>条件类似：</div><div class="line"></div><div class="line">// 坏</div><div class="line"><span class="keyword">if</span> (<span class="literal">true</span>)</div><div class="line">   alert(<span class="number">1</span>);</div><div class="line"><span class="keyword">else</span></div><div class="line">   alert(<span class="number">2</span>);</div><div class="line"></div><div class="line">// 好</div><div class="line"><span class="keyword">if</span> (<span class="literal">true</span>) {</div><div class="line">   alert(<span class="number">1</span>);</div><div class="line">} <span class="keyword">else</span> {</div><div class="line">   alert(<span class="number">2</span>);</div><div class="line">}</div></pre></td></tr></table></figure>
 
-<h1 id="左花括号的位置(Opening_Brace_Location)">左花括号的位置(Opening Brace Location)</h1>
+<h2 id="左花括号的位置(Opening_Brace_Location)">左花括号的位置(Opening Brace Location)</h2>
 <p>开发人员对于左大括号的位置有着不同的偏好——在同一行或是下一行。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (<span class="literal">true</span>) {</div><div class="line">   alert(<span class="string">"It's TRUE!"</span>);</div><div class="line">}</div><div class="line"></div><div class="line">//或</div><div class="line"></div><div class="line"><span class="keyword">if</span> (<span class="literal">true</span>)</div><div class="line">{</div><div class="line">   alert(<span class="string">"It's TRUE!"</span>);</div><div class="line">}</div></pre></td></tr></table></figure>
 
@@ -362,8 +362,8 @@
 <p>总之，总是使用花括号，并始终把在与之前的语句放在同一行：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">function <span class="function"><span class="title">func</span></span>() {</div><div class="line">   <span class="keyword">return</span> {</div><div class="line">      name : <span class="string">"Batman"</span></div><div class="line">   };</div><div class="line">}</div></pre></td></tr></table></figure>
 
-<p><strong> <em>关于分号注：就像使用花括号，你应该总是使用分号，即使他们可由JavaScript解析器隐式创建。这不仅促进更科学和更严格的代码，而且有助于解决存有疑惑的地方，就如前面的例子显示。</em> </strong></p>
-<h1 id="空格(White_Space)">空格(White Space)</h1>
+<p><em>关于分号注：就像使用花括号，你应该总是使用分号，即使他们可由JavaScript解析器隐式创建。这不仅促进更科学和更严格的代码，而且有助于解决存有疑惑的地方，就如前面的例子显示。</em></p>
+<h2 id="空格(White_Space)">空格(White Space)</h2>
 <p>空格的使用同样有助于改善代码的可读性和一致性。在写英文句子的时候，在逗号和句号后面会使用间隔。在JavaScript中，你可以按照同样的逻辑在列表模样表达式（相当于逗号）和结束语句（相对于完成了“想法”）后面添加间隔。</p>
 <p>适合使用空格的地方包括：</p>
 <ul>
@@ -386,7 +386,7 @@
 <li>else或while之间的右花括号(})</li>
 </ul>
 <p>空格使用的一点不足就是增加了文件的大小，但是压缩无此问题。</p>
-<p><strong> <em>有一个经常被忽略的代码可读性方面是垂直空格的使用。你可以使用空行来分隔代码单元，就像是文学作品中使用段落分隔一样。</em> </strong></p>
+<p><em>有一个经常被忽略的代码可读性方面是垂直空格的使用。你可以使用空行来分隔代码单元，就像是文学作品中使用段落分隔一样。</em></p>
 <h3 id="命名规范(Naming_Conventions)">命名规范(Naming Conventions)</h3>
 <p>另一种方法让你的代码更具可预测性和可维护性是采用命名规范。这就意味着你需要用同一种形式给你的变量和函数命名。</p>
 <p>下面是建议的一些命名规范，你可以原样采用，也可以根据自己的喜好作调整。同样，遵循规范要比规范是什么更重要。<br>以大写字母写构造函数(Capitalizing Constructors)</p>
@@ -399,12 +399,12 @@
 <p>命名构造函数时首字母大写具有暗示作用，使用小写命名的函数和方法不应该使用new调用：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">function <span class="function"><span class="title">MyConstructor</span></span>() {...}</div><div class="line">function <span class="function"><span class="title">myFunction</span></span>() {...}</div></pre></td></tr></table></figure>
 
-<h1 id="分隔单词(Separating_Words)">分隔单词(Separating Words)</h1>
+<h2 id="分隔单词(Separating_Words)">分隔单词(Separating Words)</h2>
 <p>当你的变量或是函数名有多个单词的时候，最好单词的分离遵循统一的规范，有一个常见的做法被称作“驼峰(Camel)命名法”，就是单词小写，每个单词的首字母大写。</p>
 <p>对于构造函数，可以使用大驼峰式命名法(upper camel case)，如MyConstructor()。对于函数和方法名称，你可以使用小驼峰式命名法(lower camel case)，像是myFunction(), calculateArea()和getFirstName()。</p>
 <p>要是变量不是函数呢？开发者通常使用小驼峰式命名法，但还有另外一种做法就是所有单词小写以下划线连接：例如，first_name, favorite_bands, 和 old_company_name，这种标记法帮你直观地区分函数和其他标识——原型和对象。</p>
 <p>ECMAScript的属性和方法均使用Camel标记法，尽管多字的属性名称是罕见的（正则表达式对象的lastIndex和ignoreCase属性）。</p>
-<h1 id="其它命名形式(Other_Naming_Patterns)">其它命名形式(Other Naming Patterns)</h1>
+<h2 id="其它命名形式(Other_Naming_Patterns)">其它命名形式(Other Naming Patterns)</h2>
 <p>有时，开发人员使用命名规范来弥补或替代语言特性。</p>
 <p>例如，JavaScript中没有定义常量的方法（尽管有些内置的像Number, MAX_VALUE），所以开发者都采用全部单词大写的规范来命名这个程序生命周期中都不会改变的变量，如：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">// 珍贵常数，只可远观</div><div class="line">var PI = <span class="number">3.14</span>,</div><div class="line">    MAX_WIDTH = <span class="number">800</span>;</div></pre></td></tr></table></figure>
@@ -422,18 +422,18 @@
 <li>使用一个下划线前缀表_protected（保护）属性，两个下划线前缀表示__private （私有）属性</li>
 <li>Firefox中一些内置的变量属性不属于该语言的技术部分，使用两个前下划线和两个后下划线表示，如：<strong>proto</strong>和<strong>parent</strong>。</li>
 </ul>
-<h1 id="注释(Writing_Comments)">注释(Writing Comments)</h1>
+<h2 id="注释(Writing_Comments)">注释(Writing Comments)</h2>
 <p>你必须注释你的代码，即使不会有其他人向你一样接触它。通常，当你深入研究一个问题，你会很清楚的知道这个代码是干嘛用的，但是，当你一周之后再回来看的时候，想必也要耗掉不少脑细胞去搞明白到底怎么工作的。</p>
 <p>很显然，注释不能走极端：每个单独变量或是单独一行。但是，你通常应该记录所有的函数，它们的参数和返回值，或是任何不寻常的技术和方法。要想到注 释可以给你代码未来的阅读者以诸多提示；阅读者需要的是（不要读太多的东西）仅注释和函数属性名来理解你的代码。例如，当你有五六行程序执行特定的任务， 如果你提供了一行代码目的以及为什么在这里的描述的话，阅读者就可以直接跳过这段细节。没有硬性规定注释代码比，代码的某些部分（如正则表达式）可能注释 要比代码多。</p>
-<p><strong> <em>最重要的习惯，然而也是最难遵守的，就是保持注释的及时更新，因为过时的注释比没有注释更加的误导人。</em> </strong></p>
+<p><em>最重要的习惯，然而也是最难遵守的，就是保持注释的及时更新，因为过时的注释比没有注释更加的误导人。</em></p>
 <p>转载：<a href="http://tympanus.net/codrops/2011/11/02/original-hover-effects-with-css3/" target="_blank" rel="external">http://tympanus.net/codrops/2011/11/02/original-hover-effects-with-css3/</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2014/05/07/深入理解JavaScript系列(1)/" data-id="i2ekpydqdxqe037k" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2014/05/07/深入理解JavaScript系列(1)/" data-id="sof6vlxmbfbkdey8" class="article-share-link" style="display:none">Share</a>
       
-        <a href="http://yoursite.com/2014/05/07/深入理解JavaScript系列(1)/#ds-thread" class="article-comment-link">Comments</a>
+        <a href="http://yoursite.com/2014/05/07/深入理解JavaScript系列(1)/#ds-thread" class="article-comment-link" style="display:none">Comments</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JS/">JS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UI/">UI</a></li></ul>
@@ -445,12 +445,12 @@
 <nav id="article-nav-self">
   
   
-    <a href="/2014/05/07/CSS实例学习(一) —— 鼠标悬停效果/" id="article-nav-older-self" class="article-nav-link-wrap">
+    <a href="/2014/05/07/深入理解JavaScript系列(2)/" id="article-nav-older-self" class="article-nav-link-wrap">
       <!--<strong class="article-nav-caption">Older</strong>-->
 	  <div style="float:left; margin-right:10px;">
 		上一篇
 	  </div>
-      <div class="article-nav-title">CSS实例学习(一) —— 鼠标悬停效果</div>
+      <div class="article-nav-title">深入理解JavaScript系列（二）：揭秘命名函数表达式</div>
     </a>
   
   
@@ -489,7 +489,7 @@ var duoshuoQuery = {short_name:"freda"};
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/">CSS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">1</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/">CSS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -498,7 +498,7 @@ var duoshuoQuery = {short_name:"freda"};
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/">CSS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/">JS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UI/">UI</a><span class="tag-list-count">2</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/">CSS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/">JS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UI/">UI</a><span class="tag-list-count">3</span></li></ul>
     </div>
   </div>
 
@@ -507,7 +507,7 @@ var duoshuoQuery = {short_name:"freda"};
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/CSS/" style="font-size: 10.00px;">CSS</a><a href="/tags/JS/" style="font-size: 10.00px;">JS</a><a href="/tags/UI/" style="font-size: 20.00px;">UI</a>
+      <a href="/tags/CSS/" style="font-size: 10.00px;">CSS</a><a href="/tags/JS/" style="font-size: 15.00px;">JS</a><a href="/tags/UI/" style="font-size: 20.00px;">UI</a>
     </div>
   </div>
 
@@ -516,7 +516,7 @@ var duoshuoQuery = {short_name:"freda"};
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">3</span></li></ul>
     </div>
   </div>
 
@@ -529,6 +529,10 @@ var duoshuoQuery = {short_name:"freda"};
         
           <li>
             <a href="/2014/05/07/深入理解JavaScript系列(1)/">深入理解JavaScript系列（一）：编写高质量JavaScript代码的基本要点</a>
+          </li>
+        
+          <li>
+            <a href="/2014/05/07/深入理解JavaScript系列(2)/">深入理解JavaScript系列（二）：揭秘命名函数表达式</a>
           </li>
         
           <li>
