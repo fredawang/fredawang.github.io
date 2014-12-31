@@ -5,10 +5,12 @@
   
   <title>水滴石穿</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="keywords" content="水滴石穿">
+  <meta name="discription" content="这个一个前段工程师的博客">
   <meta name="description">
 <meta property="og:type" content="website">
 <meta property="og:title" content="水滴石穿">
-<meta property="og:url" content="http://yoursite.com/">
+<meta property="og:url" content="http://fredawang.github.io/">
 <meta property="og:site_name" content="水滴石穿">
 <meta property="og:description">
 <meta name="twitter:card" content="summary">
@@ -19,7 +21,7 @@
     <link rel="alternative" href="/atom.xml" title="水滴石穿" type="application/atom+xml">
   
   
-    <link rel="icon" href="/favicon.png">
+    <link rel="icon" href="css/images/favicon.png">
   
   <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="/css/style.css" type="text/css">
@@ -59,7 +61,7 @@
         <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>-->
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><input type="submit" value="&#xF002;" class="search-form-submit"><input type="hidden" name="q" value="site:http://yoursite.com"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><input type="submit" value="&#xF002;" class="search-form-submit"><input type="hidden" name="q" value="site:http://fredawang.github.io"></form>
       </div>
     </div>
   </div>
@@ -67,10 +69,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-深入理解JavaScript系列(1)" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-深入理解JavaScript系列(5)" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2014/05/07/深入理解JavaScript系列(1)/" class="article-date">
-  <time datetime="2014-05-07T10:44:12.000Z" itemprop="datePublished">5月 7 2014</time>
+    <a href="/2014/12/31/深入理解JavaScript系列(5)/" class="article-date">
+  <time datetime="2014-12-31T10:00:00.000Z" itemprop="datePublished">12月 31 2014</time>
 </a>
     
   <div class="article-category">
@@ -85,7 +87,219 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2014/05/07/深入理解JavaScript系列(1)/">深入理解JavaScript系列（一）：编写高质量JavaScript代码的基本要点</a>
+      <a class="article-title" href="/2014/12/31/深入理解JavaScript系列(5)/">深入理解JavaScript系列（五）：强大的原型和原型链</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>JavaScript 不包含传统的类继承模型，而是使用 prototypal 原型模型。</p>
+<p>虽然这经常被当作是 JavaScript 的缺点被提及，其实基于原型的继承模型比传统的类继承还要强大。实现传统的类继承模型是很简单，但是实现 JavaScript 中的原型继承则要困难的多。</p>
+<p>由于 JavaScript 是唯一一个被广泛使用的基于原型继承的语言，所以理解两种继承模式的差异是需要一定时间的，今天我们就来了解一下原型和原型链。</p>
+
+        
+          <p class="article-more-link">
+            <a href="/2014/12/31/深入理解JavaScript系列(5)/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://fredawang.github.io/2014/12/31/深入理解JavaScript系列(5)/" data-id="7xxx640jwuiurtin" class="article-share-link" style="display:none">Share</a>
+      
+        <a href="http://fredawang.github.io/2014/12/31/深入理解JavaScript系列(5)/#ds-thread" class="article-comment-link" style="display:none">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JS/">JS</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-深入理解JavaScript系列(4)" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/12/30/深入理解JavaScript系列(4)/" class="article-date">
+  <time datetime="2014-12-30T10:00:00.000Z" itemprop="datePublished">12月 30 2014</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/JavaScript/">JavaScript</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/12/30/深入理解JavaScript系列(4)/">深入理解JavaScript系列（四）：立即调用的函数表达式</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>大家学JavaScript的时候，经常遇到自执行匿名函数的代码，今天我们主要就来想想说一下自执行。</p>
+<p>在详细了解这个之前，我们来谈了解一下“自执行”这个叫法，本文对这个功能的叫法也不一定完全对，主要是看个人如何理解，因为有的人说立即调用，有的人说自动执行，所以你完全可以按照你自己的理解来取一个名字，不过我听很多人都叫它为“自执行”，但作者后面说了很多，来说服大家称呼为“立即调用的函数表达式”。</p>
+<p>本文英文原文地址：<a href="http://benalman.com/news/2010/11/immediately-invoked-function-expression/" target="_blank" rel="external">http://benalman.com/news/2010/11/immediately-invoked-function-expression/</a></p>
+
+        
+          <p class="article-more-link">
+            <a href="/2014/12/30/深入理解JavaScript系列(4)/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://fredawang.github.io/2014/12/30/深入理解JavaScript系列(4)/" data-id="00hxfmxmda6akxkj" class="article-share-link" style="display:none">Share</a>
+      
+        <a href="http://fredawang.github.io/2014/12/30/深入理解JavaScript系列(4)/#ds-thread" class="article-comment-link" style="display:none">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JS/">JS</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-深入理解JavaScript系列(3)" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/12/29/深入理解JavaScript系列(3)/" class="article-date">
+  <time datetime="2014-12-29T10:00:00.000Z" itemprop="datePublished">12月 29 2014</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/JavaScript/">JavaScript</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/12/29/深入理解JavaScript系列(3)/">深入理解JavaScript系列（三）：全面解析Module模式</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Module模式是JavaScript编程中一个非常通用的模式，一般情况下，大家都知道基本用法，本文尝试着给大家更多该模式的高级使用方式。</p>
+<p>首先我们来看看Module模式的基本特征：</p>
+<ol>
+<li>模块化，可重用</li>
+<li>封装了变量和function，和全局的namaspace不接触，松耦合</li>
+<li>只暴露可用public的方法，其它私有方法全部隐藏</li>
+</ol>
+<p>关于Module模式，最早是由YUI的成员Eric Miraglia在4年前提出了这个概念，我们将从一个简单的例子来解释一下基本的用法（如果你已经非常熟悉了，请忽略这一节）。</p>
+<p>
+        
+          <p class="article-more-link">
+            <a href="/2014/12/29/深入理解JavaScript系列(3)/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://fredawang.github.io/2014/12/29/深入理解JavaScript系列(3)/" data-id="30gd76hz6cgfwfb8" class="article-share-link" style="display:none">Share</a>
+      
+        <a href="http://fredawang.github.io/2014/12/29/深入理解JavaScript系列(3)/#ds-thread" class="article-comment-link" style="display:none">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JS/">JS</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-深入理解JavaScript系列(2)" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/12/28/深入理解JavaScript系列(2)/" class="article-date">
+  <time datetime="2014-12-28T10:00:00.000Z" itemprop="datePublished">12月 28 2014</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/JavaScript/">JavaScript</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/12/28/深入理解JavaScript系列(2)/">深入理解JavaScript系列（二）：揭秘命名函数表达式</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>网上还没用发现有人对命名函数表达式进去重复深入的讨论，正因为如此，网上出现了各种各样的误解，本文将从原理和实践两个方面来探讨JavaScript关于命名函数表达式的优缺点。</p>
+<p>简单的说，命名函数表达式只有一个用户，那就是在Debug或者Profiler分析的时候来描述函数的名称，也可以使用函数名实现递归，但很快你就会发现其实是不切实际的。当然，如果你不关注调试，那就没什么可担心的了，否则，如果你想了解兼容性方面的东西的话，你还是应该继续往下看看。</p>
+<p>我们先开始看看，什么叫函数表达式，然后再说一下现代调试器如何处理这些表达式，如果你已经对这方面很熟悉的话，请直接跳过此小节。<br>
+        
+          <p class="article-more-link">
+            <a href="/2014/12/28/深入理解JavaScript系列(2)/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://fredawang.github.io/2014/12/28/深入理解JavaScript系列(2)/" data-id="raofro4fjui1q50m" class="article-share-link" style="display:none">Share</a>
+      
+        <a href="http://fredawang.github.io/2014/12/28/深入理解JavaScript系列(2)/#ds-thread" class="article-comment-link" style="display:none">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JS/">JS</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-深入理解JavaScript系列(1)" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/12/27/深入理解JavaScript系列(1)/" class="article-date">
+  <time datetime="2014-12-27T10:00:00.000Z" itemprop="datePublished">12月 27 2014</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/JavaScript/">JavaScript</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/12/27/深入理解JavaScript系列(1)/">深入理解JavaScript系列（一）：编写高质量JavaScript代码的基本要点</a>
     </h1>
   
 
@@ -98,70 +312,18 @@
 <p>
         
           <p class="article-more-link">
-            <a href="/2014/05/07/深入理解JavaScript系列(1)/#more">Read More</a>
+            <a href="/2014/12/27/深入理解JavaScript系列(1)/#more">Read More</a>
           </p>
         
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2014/05/07/深入理解JavaScript系列(1)/" data-id="sof6vlxmbfbkdey8" class="article-share-link" style="display:none">Share</a>
+      <a data-url="http://fredawang.github.io/2014/12/27/深入理解JavaScript系列(1)/" data-id="on1iny9hz6enu8h7" class="article-share-link" style="display:none">Share</a>
       
-        <a href="http://yoursite.com/2014/05/07/深入理解JavaScript系列(1)/#ds-thread" class="article-comment-link" style="display:none">Comments</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JS/">JS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UI/">UI</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-深入理解JavaScript系列(2)" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2014/05/07/深入理解JavaScript系列(2)/" class="article-date">
-  <time datetime="2014-05-07T10:44:12.000Z" itemprop="datePublished">5月 7 2014</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/JavaScript/">JavaScript</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2014/05/07/深入理解JavaScript系列(2)/">深入理解JavaScript系列（二）：揭秘命名函数表达式</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="前言">前言</h2>
-<p>网上还没用发现有人对命名函数表达式进去重复深入的讨论，正因为如此，网上出现了各种各样的误解，本文将从原理和实践两个方面来探讨JavaScript关于命名函数表达式的优缺点。</p>
-<p>简单的说，命名函数表达式只有一个用户，那就是在Debug或者Profiler分析的时候来描述函数的名称，也可以使用函数名实现递归，但很快你就会发现其实是不切实际的。当然，如果你不关注调试，那就没什么可担心的了，否则，如果你想了解兼容性方面的东西的话，你还是应该继续往下看看。</p>
-<p>我们先开始看看，什么叫函数表达式，然后再说一下现代调试器如何处理这些表达式，如果你已经对这方面很熟悉的话，请直接跳过此小节。<br>
-        
-          <p class="article-more-link">
-            <a href="/2014/05/07/深入理解JavaScript系列(2)/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2014/05/07/深入理解JavaScript系列(2)/" data-id="1s57libfdzxf35jv" class="article-share-link" style="display:none">Share</a>
-      
-        <a href="http://yoursite.com/2014/05/07/深入理解JavaScript系列(2)/#ds-thread" class="article-comment-link" style="display:none">Comments</a>
+        <a href="http://fredawang.github.io/2014/12/27/深入理解JavaScript系列(1)/#ds-thread" class="article-comment-link" style="display:none">Comments</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JS/">JS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UI/">UI</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JS/">JS</a></li></ul>
 
     </footer>
   </div>
@@ -172,8 +334,8 @@
   
     <article id="post-CSS实例学习(一) —— 鼠标悬停效果" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2014/05/07/CSS实例学习(一) —— 鼠标悬停效果/" class="article-date">
-  <time datetime="2014-05-07T10:44:12.000Z" itemprop="datePublished">5月 7 2014</time>
+    <a href="/2014/12/26/CSS实例学习(一) —— 鼠标悬停效果/" class="article-date">
+  <time datetime="2014-12-26T10:00:00.000Z" itemprop="datePublished">12月 26 2014</time>
 </a>
     
   <div class="article-category">
@@ -188,7 +350,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2014/05/07/CSS实例学习(一) —— 鼠标悬停效果/">CSS实例学习(一) —— 鼠标悬停效果</a>
+      <a class="article-title" href="/2014/12/26/CSS实例学习(一) —— 鼠标悬停效果/">CSS实例学习(一) —— 鼠标悬停效果</a>
     </h1>
   
 
@@ -200,18 +362,18 @@
 <p>该文为10个鼠标悬停效果。<br>
         
           <p class="article-more-link">
-            <a href="/2014/05/07/CSS实例学习(一) —— 鼠标悬停效果/#more">Read More</a>
+            <a href="/2014/12/26/CSS实例学习(一) —— 鼠标悬停效果/#more">Read More</a>
           </p>
         
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2014/05/07/CSS实例学习(一) —— 鼠标悬停效果/" data-id="pkh1f5lj2wr4zfql" class="article-share-link" style="display:none">Share</a>
+      <a data-url="http://fredawang.github.io/2014/12/26/CSS实例学习(一) —— 鼠标悬停效果/" data-id="zir3m1gaw9ooad54" class="article-share-link" style="display:none">Share</a>
       
-        <a href="http://yoursite.com/2014/05/07/CSS实例学习(一) —— 鼠标悬停效果/#ds-thread" class="article-comment-link" style="display:none">Comments</a>
+        <a href="http://fredawang.github.io/2014/12/26/CSS实例学习(一) —— 鼠标悬停效果/#ds-thread" class="article-comment-link" style="display:none">Comments</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CSS/">CSS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UI/">UI</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CSS/">CSS</a></li></ul>
 
     </footer>
   </div>
@@ -229,7 +391,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/">CSS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">2</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/">CSS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">5</span></li></ul>
     </div>
   </div>
 
@@ -238,16 +400,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/">CSS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/">JS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UI/">UI</a><span class="tag-list-count">3</span></li></ul>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/CSS/" style="font-size: 10.00px;">CSS</a><a href="/tags/JS/" style="font-size: 15.00px;">JS</a><a href="/tags/UI/" style="font-size: 20.00px;">UI</a>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/">CSS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/">JS</a><span class="tag-list-count">5</span></li></ul>
     </div>
   </div>
 
@@ -256,7 +409,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">3</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a><span class="archive-list-count">6</span></li></ul>
     </div>
   </div>
 
@@ -268,15 +421,23 @@
       <ul>
         
           <li>
-            <a href="/2014/05/07/深入理解JavaScript系列(1)/">深入理解JavaScript系列（一）：编写高质量JavaScript代码的基本要点</a>
+            <a href="/2014/12/31/深入理解JavaScript系列(5)/">深入理解JavaScript系列（五）：强大的原型和原型链</a>
           </li>
         
           <li>
-            <a href="/2014/05/07/深入理解JavaScript系列(2)/">深入理解JavaScript系列（二）：揭秘命名函数表达式</a>
+            <a href="/2014/12/30/深入理解JavaScript系列(4)/">深入理解JavaScript系列（四）：立即调用的函数表达式</a>
           </li>
         
           <li>
-            <a href="/2014/05/07/CSS实例学习(一) —— 鼠标悬停效果/">CSS实例学习(一) —— 鼠标悬停效果</a>
+            <a href="/2014/12/29/深入理解JavaScript系列(3)/">深入理解JavaScript系列（三）：全面解析Module模式</a>
+          </li>
+        
+          <li>
+            <a href="/2014/12/28/深入理解JavaScript系列(2)/">深入理解JavaScript系列（二）：揭秘命名函数表达式</a>
+          </li>
+        
+          <li>
+            <a href="/2014/12/27/深入理解JavaScript系列(1)/">深入理解JavaScript系列（一）：编写高质量JavaScript代码的基本要点</a>
           </li>
         
       </ul>
