@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>深入理解JavaScript系列（二）：揭秘命名函数表达式 | 水滴石穿</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="keywords" content="水滴石穿">
+  <meta name="discription" content="这个一个前段工程师的博客">
+  <meta name="description" content="网上还没用发现有人对命名函数表达式进去重复深入的讨论，正因为如此，网上出现了各种各样的误解，本文将从原理和实践两个方面来探讨JavaScript关于命名函数表达式的优缺点。
+简单的说，命名函数表达式只有一个用户，那就是在Debug或者Profiler分析的时候来描述函数的名称，也可以使用函数名实现递归，但很快你就会发现其实是不切实际的。当然，如果你不关注调试，那就没什么可担心的了，否则，如果你想了">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入理解JavaScript系列（二）：揭秘命名函数表达式">
+<meta property="og:url" content="http://fredawang.github.io/2014/12/28/深入理解JavaScript系列(2)——揭秘命名函数表达式/">
+<meta property="og:site_name" content="水滴石穿">
+<meta property="og:description" content="网上还没用发现有人对命名函数表达式进去重复深入的讨论，正因为如此，网上出现了各种各样的误解，本文将从原理和实践两个方面来探讨JavaScript关于命名函数表达式的优缺点。
+简单的说，命名函数表达式只有一个用户，那就是在Debug或者Profiler分析的时候来描述函数的名称，也可以使用函数名实现递归，但很快你就会发现其实是不切实际的。当然，如果你不关注调试，那就没什么可担心的了，否则，如果你想了">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入理解JavaScript系列（二）：揭秘命名函数表达式">
+<meta name="twitter:description" content="网上还没用发现有人对命名函数表达式进去重复深入的讨论，正因为如此，网上出现了各种各样的误解，本文将从原理和实践两个方面来探讨JavaScript关于命名函数表达式的优缺点。
+简单的说，命名函数表达式只有一个用户，那就是在Debug或者Profiler分析的时候来描述函数的名称，也可以使用函数名实现递归，但很快你就会发现其实是不切实际的。当然，如果你不关注调试，那就没什么可担心的了，否则，如果你想了">
+
+  
+    <link rel="alternative" href="/atom.xml" title="水滴石穿" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="css/images/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+  
+
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">水滴石穿</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">水非石之钻，索非木之锯，渐靡使之然也</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav" style="display:none;">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <!--<nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>-->
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><input type="submit" value="&#xF002;" class="search-form-submit"><input type="hidden" name="q" value="site:http://fredawang.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-深入理解JavaScript系列(2)——揭秘命名函数表达式" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/12/28/深入理解JavaScript系列(2)——揭秘命名函数表达式/" class="article-date">
+  <time datetime="2014-12-28T10:00:00.000Z" itemprop="datePublished">12月 28 2014</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/JavaScript/">JavaScript</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      深入理解JavaScript系列（二）：揭秘命名函数表达式
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>网上还没用发现有人对命名函数表达式进去重复深入的讨论，正因为如此，网上出现了各种各样的误解，本文将从原理和实践两个方面来探讨JavaScript关于命名函数表达式的优缺点。</p>
+<p>简单的说，命名函数表达式只有一个用户，那就是在Debug或者Profiler分析的时候来描述函数的名称，也可以使用函数名实现递归，但很快你就会发现其实是不切实际的。当然，如果你不关注调试，那就没什么可担心的了，否则，如果你想了解兼容性方面的东西的话，你还是应该继续往下看看。</p>
+<p>我们先开始看看，什么叫函数表达式，然后再说一下现代调试器如何处理这些表达式，如果你已经对这方面很熟悉的话，请直接跳过此小节。<br><a id="more"></a></p>
+<h2 id="函数表达式和函数声明">函数表达式和函数声明</h2>
+<p>在ECMAScript中，创建函数的最常用的两个方法是函数表达式和函数声明，两者期间的区别是有点晕，因为ECMA规范只明确了一点：函数声明必须带有标示符（Identifier）（就是大家常说的函数名称），而函数表达式则可以省略这个标示符：</p>
+<p>　　函数声明:</p>
+<p>　　function 函数名称 (参数：可选){ 函数体 }</p>
+<p>　　函数表达式：</p>
+<p>　　function 函数名称（可选）(参数：可选){ 函数体 }</p>
+<p>所以，可以看出，如果不声明函数名称，它肯定是表达式，可如果声明了函数名称的话，如何判断是函数声明还是函数表达式呢？ECMAScript是通过上下文来区分的，如果function foo(){}是作为赋值表达式的一部分的话，那它就是一个函数表达式，如果function foo(){}被包含在一个函数体内，或者位于程序的最顶部的话，那它就是一个函数声明。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">function <span class="function"><span class="title">foo</span></span>(){} // 声明，因为它是程序的一部分</div><div class="line">  var bar = function <span class="function"><span class="title">foo</span></span>(){}; // 表达式，因为它是赋值表达式的一部分</div><div class="line"></div><div class="line">  new function <span class="function"><span class="title">bar</span></span>(){}; // 表达式，因为它是new表达式</div><div class="line"></div><div class="line">  (<span class="function"><span class="title">function</span></span>(){</div><div class="line">    function <span class="function"><span class="title">bar</span></span>(){} // 声明，因为它是函数体的一部分</div><div class="line">  })();</div></pre></td></tr></table></figure>
+
+
+
+<p>还有一种函数表达式不太常见，就是被括号括住的(function foo(){})，他是表达式的原因是因为括号 ()是一个分组操作符，它的内部只能包含表达式，我们来看几个例子：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">function <span class="function"><span class="title">foo</span></span>(){} // 函数声明</div><div class="line">  (function <span class="function"><span class="title">foo</span></span>(){}); // 函数表达式：包含在分组操作符内</div><div class="line">  </div><div class="line">  try {</div><div class="line">    (var x = <span class="number">5</span>); // 分组操作符，只能包含表达式而不能包含语句：这里的var就是语句</div><div class="line">  } catch(err) {</div><div class="line">    // SyntaxError</div><div class="line">  }</div></pre></td></tr></table></figure>
+
+
+
+<p>你可以会想到，在使用eval对JSON进行执行的时候，JSON字符串通常被包含在一个圆括号里：eval(‘(‘ + json + ‘)’)，这样做的原因就是因为分组操作符，也就是这对括号，会让解析器强制将JSON的花括号解析成表达式而不是代码块。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">try {</div><div class="line">    { <span class="string">"x"</span>: <span class="number">5</span> }; // <span class="string">"{"</span> 和 <span class="string">"}"</span> 做解析成代码块</div><div class="line">  } catch(err) {</div><div class="line">    // SyntaxError</div><div class="line">  }</div><div class="line">  </div><div class="line">  ({ <span class="string">"x"</span>: <span class="number">5</span> }); // 分组操作符强制将<span class="string">"{"</span> 和 <span class="string">"}"</span>作为对象字面量来解析</div></pre></td></tr></table></figure>
+
+<p>表达式和声明存在着十分微妙的差别，首先，函数声明会在任何表达式被解析和求值之前先被解析和求值，即使你的声明在代码的最后一行，它也会在同作用域内第一个表达式之前被解析/求值，参考如下例子，函数fn是在alert之后声明的，但是在alert执行的时候，fn已经有定义了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">alert(fn());</div><div class="line"></div><div class="line">  function <span class="function"><span class="title">fn</span></span>() {</div><div class="line">    <span class="keyword">return</span> <span class="string">'Hello world!'</span>;</div><div class="line">  }</div></pre></td></tr></table></figure>
+
+<p>另外，还有一点需要提醒一下，函数声明在条件语句内虽然可以用，但是没有被标准化，也就是说不同的环境可能有不同的执行结果，所以这样情况下，最好使用函数表达式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">// 千万别这样做！</div><div class="line">  // 因为有的浏览器会返回first的这个function，而有的浏览器返回的却是第二个</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (<span class="literal">true</span>) {</div><div class="line">    function <span class="function"><span class="title">foo</span></span>() {</div><div class="line">      <span class="keyword">return</span> <span class="string">'first'</span>;</div><div class="line">    }</div><div class="line">  }</div><div class="line">  <span class="keyword">else</span> {</div><div class="line">    function <span class="function"><span class="title">foo</span></span>() {</div><div class="line">      <span class="keyword">return</span> <span class="string">'second'</span>;</div><div class="line">    }</div><div class="line">  }</div><div class="line">  foo();</div><div class="line"></div><div class="line">  // 相反，这样情况，我们要用函数表达式</div><div class="line">  var foo;</div><div class="line">  <span class="keyword">if</span> (<span class="literal">true</span>) {</div><div class="line">    foo = <span class="function"><span class="title">function</span></span>() {</div><div class="line">      <span class="keyword">return</span> <span class="string">'first'</span>;</div><div class="line">    };</div><div class="line">  }</div><div class="line">  <span class="keyword">else</span> {</div><div class="line">    foo = <span class="function"><span class="title">function</span></span>() {</div><div class="line">      <span class="keyword">return</span> <span class="string">'second'</span>;</div><div class="line">    };</div><div class="line">  }</div><div class="line">  foo();</div></pre></td></tr></table></figure>
+
+<p>函数声明的实际规则如下：</p>
+<p><em>函数声明只能出现在程序或函数体内。从句法上讲，它们 不能出现在Block（块）（{ … }）中，例如不能出现在 if、while 或 for 语句中。因为 Block（块） 中只能包含Statement语句， 而不能包含函数声明这样的源元素。另一方面，仔细看一看规则也会发现，唯一可能让表达式出现在Block（块）中情形，就是让它作为表达式语句的一部分。但是，规范明确规定了表达式语句不能以关键字function开头。而这实际上就是说，函数表达式同样也不能出现在Statement语句或Block（块）中（因为Block（块）就是由Statement语句构成的）。</em> </p>
+<h2 id="函数语句">函数语句</h2>
+<p>在ECMAScript的语法扩展中，有一个是函数语句，目前只有基于Gecko的浏览器实现了该扩展，所以对于下面的例子，我们仅是抱着学习的目的来看，一般来说不推荐使用（除非你针对Gecko浏览器进行开发）。</p>
+<p>1.一般语句能用的地方，函数语句也能用，当然也包括Block块中：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (<span class="literal">true</span>) {</div><div class="line">  function <span class="function"><span class="title">f</span></span>(){ }</div><div class="line">}</div><div class="line"><span class="keyword">else</span> {</div><div class="line">  function <span class="function"><span class="title">f</span></span>(){ }</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>2.函数语句可以像其他语句一样被解析，包含基于条件执行的情形</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (<span class="literal">true</span>) {</div><div class="line">  function <span class="function"><span class="title">foo</span></span>(){ <span class="keyword">return</span> <span class="number">1</span>; }</div><div class="line">}</div><div class="line"><span class="keyword">else</span> {</div><div class="line">  function <span class="function"><span class="title">foo</span></span>(){ <span class="keyword">return</span> <span class="number">2</span>; }</div><div class="line">}</div><div class="line">foo(); // <span class="number">1</span></div><div class="line">// 注：其它客户端会将foo解析成函数声明 </div><div class="line">// 因此，第二个foo会覆盖第一个，结果返回<span class="number">2</span>，而不是<span class="number">1</span></div></pre></td></tr></table></figure>
+
+<p>3.函数语句不是在变量初始化期间声明的，而是在运行时声明的——与函数表达式一样。不过，函数语句的标识符一旦声明能在函数的整个作用域生效了。标识符有效性正是导致函数语句与函数表达式不同的关键所在（下一小节我们将会展示命名函数表达式的具体行为）。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">// 此刻，foo还没用声明</div><div class="line">typeof foo; // <span class="string">"undefined"</span></div><div class="line"><span class="keyword">if</span> (<span class="literal">true</span>) {</div><div class="line">  // 进入这里以后，foo就被声明在整个作用域内了</div><div class="line">  function <span class="function"><span class="title">foo</span></span>(){ <span class="keyword">return</span> <span class="number">1</span>; }</div><div class="line">}</div><div class="line"><span class="keyword">else</span> {</div><div class="line">  // 从来不会走到这里，所以这里的foo也不会被声明</div><div class="line">  function <span class="function"><span class="title">foo</span></span>(){ <span class="keyword">return</span> <span class="number">2</span>; }</div><div class="line">}</div><div class="line">typeof foo; // <span class="string">"function"</span></div></pre></td></tr></table></figure>
+
+
+<p>不过，我们可以使用下面这样的符合标准的代码来模式上面例子中的函数语句：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">var foo;</div><div class="line"><span class="keyword">if</span> (<span class="literal">true</span>) {</div><div class="line">  foo = function <span class="function"><span class="title">foo</span></span>(){ <span class="keyword">return</span> <span class="number">1</span>; };</div><div class="line">}</div><div class="line"><span class="keyword">else</span> {</div><div class="line">  foo = function <span class="function"><span class="title">foo</span></span>() { <span class="keyword">return</span> <span class="number">2</span>; };</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>4.函数语句和函数声明（或命名函数表达式）的字符串表示类似，也包括标识符：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (<span class="literal">true</span>) {</div><div class="line">  function <span class="function"><span class="title">foo</span></span>(){ <span class="keyword">return</span> <span class="number">1</span>; }</div><div class="line">}</div><div class="line">String(foo); // function <span class="function"><span class="title">foo</span></span>() { <span class="keyword">return</span> <span class="number">1</span>; }</div></pre></td></tr></table></figure>
+
+<p>5.另外一个，早期基于Gecko的实现（Firefox 3及以前版本）中存在一个bug，即函数语句覆盖函数声明的方式不正确。在这些早期的实现中，函数语句不知何故不能覆盖函数声明：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">// 函数声明</div><div class="line">function <span class="function"><span class="title">foo</span></span>(){ <span class="keyword">return</span> <span class="number">1</span>; }</div><div class="line"><span class="keyword">if</span> (<span class="literal">true</span>) {</div><div class="line">  // 用函数语句重写</div><div class="line">  function <span class="function"><span class="title">foo</span></span>(){ <span class="keyword">return</span> <span class="number">2</span>; }</div><div class="line">}</div><div class="line">foo(); // FF3以下返回<span class="number">1</span>，FF3.<span class="number">5</span>以上返回<span class="number">2</span></div><div class="line"></div><div class="line">// 不过，如果前面是函数表达式，则没用问题</div><div class="line">var foo = <span class="function"><span class="title">function</span></span>(){ <span class="keyword">return</span> <span class="number">1</span>; };</div><div class="line"><span class="keyword">if</span> (<span class="literal">true</span>) {</div><div class="line">  function <span class="function"><span class="title">foo</span></span>(){ <span class="keyword">return</span> <span class="number">2</span>; }</div><div class="line">}</div><div class="line">foo(); // 所有版本都返回<span class="number">2</span></div></pre></td></tr></table></figure>
+
+<p>再次强调一点，上面这些例子只是在某些浏览器支持，所以推荐大家不要使用这些，除非你就在特性的浏览器上做开发。</p>
+<h2 id="命名函数表达式">命名函数表达式</h2>
+<p>函数表达式在实际应用中还是很常见的，在web开发中友个常用的模式是基于对某种特性的测试来伪装函数定义，从而达到性能优化的目的，但由于这种方式都是在同一作用域内，所以基本上一定要用函数表达式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">// 该代码来自Garrett Smith的APE Javascript library库(http://dhtmlkitchen.com/ape/) </div><div class="line">var contains = (<span class="function"><span class="title">function</span></span>() {</div><div class="line">  var docEl = document.documentElement;</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (typeof docEl.compareDocumentPosition != <span class="string">'undefined'</span>) {</div><div class="line">    <span class="keyword">return</span> function(el, b) {</div><div class="line">      <span class="keyword">return</span> (el.compareDocumentPosition(b) & <span class="number">16</span>) !== <span class="number">0</span>;</div><div class="line">    };</div><div class="line">  }</div><div class="line">  <span class="keyword">else</span> <span class="keyword">if</span> (typeof docEl.contains != <span class="string">'undefined'</span>) {</div><div class="line">    <span class="keyword">return</span> function(el, b) {</div><div class="line">      <span class="keyword">return</span> el !== b && el.contains(b);</div><div class="line">    };</div><div class="line">  }</div><div class="line">  <span class="keyword">return</span> function(el, b) {</div><div class="line">    <span class="keyword">if</span> (el === b) <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">    <span class="keyword">while</span> (el != b && (b = b.parentNode) != null);</div><div class="line">    <span class="keyword">return</span> el === b;</div><div class="line">  };</div><div class="line">})();</div></pre></td></tr></table></figure>
+
+<p>提到命名函数表达式，理所当然，就是它得有名字，前面的例子var bar = function foo(){};就是一个有效的命名函数表达式，但有一点需要记住：这个名字只在新定义的函数作用域内有效，因为规范规定了标示符不能在外围的作用域内有效：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">var f = function <span class="function"><span class="title">foo</span></span>(){</div><div class="line">  <span class="keyword">return</span> typeof foo; // foo是在内部作用域内有效</div><div class="line">};</div><div class="line">// foo在外部用于是不可见的</div><div class="line">typeof foo; // <span class="string">"undefined"</span></div><div class="line">f(); // <span class="string">"function"</span></div></pre></td></tr></table></figure>
+
+<p>既然，这么要求，那命名函数表达式到底有啥用啊？为啥要取名？</p>
+<p>正如我们开头所说：给它一个名字就是可以让调试过程更方便，因为在调试的时候，如果在调用栈中的每个项都有自己的名字来描述，那么调试过程就太爽了，感受不一样嘛。</p>
+<h2 id="调试器中的函数名">调试器中的函数名</h2>
+<p>如果一个函数有名字，那调试器在调试的时候会将它的名字显示在调用的栈上。有些调试器（Firebug）有时候还会为你们函数取名并显示，让他们和那些应用该函数的便利具有相同的角色，可是通常情况下，这些调试器只安装简单的规则来取名，所以说没有太大价格，我们来看一个例子：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">function <span class="function"><span class="title">foo</span></span>(){</div><div class="line">  <span class="keyword">return</span> bar();</div><div class="line">}</div><div class="line">function <span class="function"><span class="title">bar</span></span>(){</div><div class="line">  <span class="keyword">return</span> baz();</div><div class="line">}</div><div class="line">function <span class="function"><span class="title">baz</span></span>(){</div><div class="line">  debugger;</div><div class="line">}</div><div class="line">foo();</div><div class="line"></div><div class="line">// 这里我们使用了<span class="number">3</span>个带名字的函数声明</div><div class="line">// 所以当调试器走到debugger语句的时候，Firebug的调用栈上看起来非常清晰明了 </div><div class="line">// 因为很明白地显示了名称</div><div class="line">baz</div><div class="line">bar</div><div class="line">foo</div><div class="line">expr_test.html()</div></pre></td></tr></table></figure>
+
+<p>通过查看调用栈的信息，我们可以很明了地知道foo调用了bar, bar又调用了baz（而foo本身有在expr_test.html文档的全局作用域内被调用），不过，还有一个比较爽地方，就是刚才说的Firebug为匿名表达式取名的功能：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">function <span class="function"><span class="title">foo</span></span>(){</div><div class="line">  <span class="keyword">return</span> bar();</div><div class="line">}</div><div class="line">var bar = <span class="function"><span class="title">function</span></span>(){</div><div class="line">  <span class="keyword">return</span> baz();</div><div class="line">}</div><div class="line">function <span class="function"><span class="title">baz</span></span>(){</div><div class="line">  debugger;</div><div class="line">}</div><div class="line">foo();</div><div class="line"></div><div class="line">// Call stack</div><div class="line">baz</div><div class="line">bar() //看到了么？ </div><div class="line">foo</div><div class="line">expr_test.html()</div></pre></td></tr></table></figure>
+
+<p>然后，当函数表达式稍微复杂一些的时候，调试器就不那么聪明了，我们只能在调用栈中看到问号：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">function <span class="function"><span class="title">foo</span></span>(){</div><div class="line">  <span class="keyword">return</span> bar();</div><div class="line">}</div><div class="line">var bar = (<span class="function"><span class="title">function</span></span>(){</div><div class="line">  <span class="keyword">if</span> (window.addEventListener) {</div><div class="line">    <span class="keyword">return</span> <span class="function"><span class="title">function</span></span>(){</div><div class="line">      <span class="keyword">return</span> baz();</div><div class="line">    };</div><div class="line">  }</div><div class="line">  <span class="keyword">else</span> <span class="keyword">if</span> (window.attachEvent) {</div><div class="line">    <span class="keyword">return</span> <span class="function"><span class="title">function</span></span>() {</div><div class="line">      <span class="keyword">return</span> baz();</div><div class="line">    };</div><div class="line">  }</div><div class="line">})();</div><div class="line">function <span class="function"><span class="title">baz</span></span>(){</div><div class="line">  debugger;</div><div class="line">}</div><div class="line">foo();</div><div class="line"></div><div class="line">// Call stack</div><div class="line">baz</div><div class="line">(?)() // 这里可是问号哦</div><div class="line">foo</div><div class="line">expr_test.html()</div></pre></td></tr></table></figure>
+
+<p>另外，当把函数赋值给多个变量的时候，也会出现令人郁闷的问题：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">function <span class="function"><span class="title">foo</span></span>(){</div><div class="line">  <span class="keyword">return</span> baz();</div><div class="line">}</div><div class="line">var bar = <span class="function"><span class="title">function</span></span>(){</div><div class="line">  debugger;</div><div class="line">};</div><div class="line">var baz = bar;</div><div class="line">bar = <span class="function"><span class="title">function</span></span>() { </div><div class="line">  alert(<span class="string">'spoofed'</span>);</div><div class="line">};</div><div class="line">foo();</div><div class="line"></div><div class="line">// Call stack:</div><div class="line">bar()</div><div class="line">foo</div><div class="line">expr_test.html()</div></pre></td></tr></table></figure>
+
+<p>这时候，调用栈显示的是foo调用了bar，但实际上并非如此，之所以有这种问题，是因为baz和另外一个包含alert(‘spoofed’)的函数做了引用交换所导致的。</p>
+<p>归根结底，只有给函数表达式取个名字，才是最委托的办法，也就是使用命名函数表达式。我们来使用带名字的表达式来重写上面的例子（注意立即调用的表达式块里返回的2个函数的名字都是bar）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">function <span class="function"><span class="title">foo</span></span>(){</div><div class="line">  <span class="keyword">return</span> bar();</div><div class="line">}</div><div class="line">var bar = (<span class="function"><span class="title">function</span></span>(){</div><div class="line">  <span class="keyword">if</span> (window.addEventListener) {</div><div class="line">    <span class="keyword">return</span> function <span class="function"><span class="title">bar</span></span>(){</div><div class="line">      <span class="keyword">return</span> baz();</div><div class="line">    };</div><div class="line">  }</div><div class="line">  <span class="keyword">else</span> <span class="keyword">if</span> (window.attachEvent) {</div><div class="line">    <span class="keyword">return</span> function <span class="function"><span class="title">bar</span></span>() {</div><div class="line">      <span class="keyword">return</span> baz();</div><div class="line">    };</div><div class="line">  }</div><div class="line">})();</div><div class="line">function <span class="function"><span class="title">baz</span></span>(){</div><div class="line">  debugger;</div><div class="line">}</div><div class="line">foo();</div><div class="line"></div><div class="line">// 又再次看到了清晰的调用栈信息了耶!</div><div class="line">baz</div><div class="line">bar</div><div class="line">foo</div><div class="line">expr_test.html()</div></pre></td></tr></table></figure>
+
+<p>OK，又学了一招吧？不过在高兴之前，我们再看看不同寻常的JScript吧。</p>
+<h2 id="JScript的Bug">JScript的Bug</h2>
+<p>比较恶的是，IE的ECMAScript实现JScript严重混淆了命名函数表达式，搞得现很多人都出来反对命名函数表达式，而且即便是最新的一版（IE8中使用的5.8版）仍然存在下列问题。</p>
+<p>下面我们就来看看IE在实现中究竟犯了那些错误，俗话说知已知彼，才能百战不殆。我们来看看如下几个例子：</p>
+<p><strong>例1：函数表达式的标示符泄露到外部作用域</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">var f = function <span class="function"><span class="title">g</span></span>(){};</div><div class="line">typeof g; // <span class="string">"function"</span></div></pre></td></tr></table></figure>
+
+
+<p>上面我们说过，命名函数表达式的标示符在外部作用域是无效的，但JScript明显是违反了这一规范，上面例子中的标示符g被解析成函数对象，这就乱了套了，很多难以发现的bug都是因为这个原因导致的。</p>
+<p><em>注：IE9貌似已经修复了这个问题</em></p>
+<p><strong>例2：将命名函数表达式同时当作函数声明和函数表达式</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">typeof g; // <span class="string">"function"</span></div><div class="line">var f = function <span class="function"><span class="title">g</span></span>(){};</div></pre></td></tr></table></figure>
+
+
+<p>特性环境下，函数声明会优先于任何表达式被解析，上面的例子展示的是JScript实际上是把命名函数表达式当成函数声明了，因为它在实际声明之前就解析了g。</p>
+<p>这个例子引出了下一个例子。<br><strong>例3：命名函数表达式会创建两个截然不同的函数对象！</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">var f = function <span class="function"><span class="title">g</span></span>(){};</div><div class="line">f === g; // <span class="literal">false</span></div><div class="line"></div><div class="line">f.expando = <span class="string">'foo'</span>;</div><div class="line">g.expando; // undefined</div></pre></td></tr></table></figure>
+
+<p>看到这里，大家会觉得问题严重了，因为修改任何一个对象，另外一个没有什么改变，这太恶了。通过这个例子可以发现，创建2个不同的对象，也就是说如果你想修改f的属性中保存某个信息，然后想当然地通过引用相同对象的g的同名属性来使用，那问题就大了，因为根本就不可能。</p>
+<p>再来看一个稍微复杂的例子：</p>
+<p><strong>例4：仅仅顺序解析函数声明而忽略条件语句块</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">var f = function <span class="function"><span class="title">g</span></span>() {</div><div class="line">  <span class="keyword">return</span> <span class="number">1</span>;</div><div class="line">};</div><div class="line"><span class="keyword">if</span> (<span class="literal">false</span>) {</div><div class="line">  f = function <span class="function"><span class="title">g</span></span>(){</div><div class="line">    <span class="keyword">return</span> <span class="number">2</span>;</div><div class="line">  };</div><div class="line">}</div><div class="line">g(); // <span class="number">2</span></div></pre></td></tr></table></figure>
+
+
+<p>这个bug查找就难多了，但导致bug的原因却非常简单。首先，g被当作函数声明解析，由于JScript中的函数声明不受条件代码块约束，所以在这个很恶的if分支中，g被当作另一个函数function g(){ return 2 }，也就是又被声明了一次。然后，所有“常规的”表达式被求值，而此时f被赋予了另一个新创建的对象的引用。由于在对表达式求值的时候，永远不会进入“这个可恶if分支，因此f就会继续引用第一个函数function g(){ return 1 }。分析到这里，问题就很清楚了：假如你不够细心，在f中调用了g，那么将会调用一个毫不相干的g函数对象。</p>
+<p>你可能会文，将不同的对象和arguments.callee相比较时，有什么样的区别呢？我们来看看：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">var f = function <span class="function"><span class="title">g</span></span>(){</div><div class="line">   <span class="keyword">return</span> [</div><div class="line">     arguments.callee == f,</div><div class="line">     arguments.callee == g</div><div class="line">   ];</div><div class="line"> };</div><div class="line"> f(); // [<span class="literal">true</span>, <span class="literal">false</span>]</div><div class="line"> g(); // [<span class="literal">false</span>, <span class="literal">true</span>]</div></pre></td></tr></table></figure>
+
+<p>可以看到，arguments.callee的引用一直是被调用的函数，实际上这也是好事，稍后会解释。</p>
+<p>还有一个有趣的例子，那就是在不包含声明的赋值语句中使用命名函数表达式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">(<span class="function"><span class="title">function</span></span>(){</div><div class="line">  f = function <span class="function"><span class="title">f</span></span>(){};</div><div class="line">})();</div></pre></td></tr></table></figure>
+
+
+<p>按照代码的分析，我们原本是想创建一个全局属性f（注意不要和一般的匿名函数混淆了，里面用的是带名字的生命），JScript在这里捣乱了一把，首先他把表达式当成函数声明解析了，所以左边的f被声明为局部变量了（和一般的匿名函数里的声明一样），然后在函数执行的时候，f已经是定义过的了，右边的function f(){}则直接就赋值给局部变量f了，所以f根本就不是全局属性。</p>
+<p>了解了JScript这么变态以后，我们就要及时预防这些问题了，首先<strong>防范标识符泄漏带外部作用域</strong>，其次，应该永远<strong>不引用被用作函数名称的标识符</strong>；还记得前面例子中那个讨人厌的标识符g吗？——如果我们能够当g不存在，可以避免多少不必要的麻烦哪。因此，关键就在于始终要通过f或者arguments.callee来引用函数。如果你使用了命名函数表达式，那么应该只在调试的时候利用那个名字。最后，还要记住一点，一定要把<strong>命名函数表达式声明期间错误创建的函数清理干净</strong>。</p>
+<p>对于，上面最后一点，我们还得再解释一下。</p>
+<h2 id="JScript的内存管理">JScript的内存管理</h2>
+<p>知道了这些不符合规范的代码解析bug以后，我们如果用它的话，就会发现内存方面其实是有问题的，来看一个例子：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">var f = (<span class="function"><span class="title">function</span></span>(){</div><div class="line">  <span class="keyword">if</span> (<span class="literal">true</span>) {</div><div class="line">    <span class="keyword">return</span> function <span class="function"><span class="title">g</span></span>(){};</div><div class="line">  }</div><div class="line">  <span class="keyword">return</span> function <span class="function"><span class="title">g</span></span>(){};</div><div class="line">})();</div></pre></td></tr></table></figure>
+
+<p>我们知道，这个匿名函数调用返回的函数（带有标识符g的函数），然后赋值给了外部的f。我们也知道，命名函数表达式会导致产生多余的函数对象，而该对象与返回的函数对象不是一回事。所以这个多余的g函数就死在了返回函数的闭包中了，因此内存问题就出现了。这是因为if语句内部的函数与g是在同一个作用域中被声明的。这种情况下 ，除非我们显式断开对g函数的引用，否则它一直占着内存不放。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">var f = (<span class="function"><span class="title">function</span></span>(){</div><div class="line">  var f, g;</div><div class="line">  <span class="keyword">if</span> (<span class="literal">true</span>) {</div><div class="line">    f = function <span class="function"><span class="title">g</span></span>(){};</div><div class="line">  }</div><div class="line">  <span class="keyword">else</span> {</div><div class="line">    f = function <span class="function"><span class="title">g</span></span>(){};</div><div class="line">  }</div><div class="line">  // 设置g为null以后它就不会再占内存了</div><div class="line">  g = null;</div><div class="line">  <span class="keyword">return</span> f;</div><div class="line">})();</div></pre></td></tr></table></figure>
+
+<p>通过设置g为null，垃圾回收器就把g引用的那个隐式函数给回收掉了，为了验证我们的代码，我们来做一些测试，以确保我们的内存被回收了。</p>
+<p>测试</p>
+<p>测试很简单，就是命名函数表达式创建10000个函数，然后把它们保存在一个数组中。等一会儿以后再看这些函数到底占用了多少内存。然后，再断开这些引用并重复这一过程。下面是测试代码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">function <span class="function"><span class="title">createFn</span></span>(){</div><div class="line">  <span class="keyword">return</span> (<span class="function"><span class="title">function</span></span>(){</div><div class="line">    var f;</div><div class="line">    <span class="keyword">if</span> (<span class="literal">true</span>) {</div><div class="line">      f = function <span class="function"><span class="title">F</span></span>(){</div><div class="line">        <span class="keyword">return</span> <span class="string">'standard'</span>;</div><div class="line">      };</div><div class="line">    }</div><div class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (<span class="literal">false</span>) {</div><div class="line">      f = function <span class="function"><span class="title">F</span></span>(){</div><div class="line">        <span class="keyword">return</span> <span class="string">'alternative'</span>;</div><div class="line">      };</div><div class="line">    }</div><div class="line">    <span class="keyword">else</span> {</div><div class="line">      f = function <span class="function"><span class="title">F</span></span>(){</div><div class="line">        <span class="keyword">return</span> <span class="string">'fallback'</span>;</div><div class="line">      };</div><div class="line">    }</div><div class="line">    // var F = null;</div><div class="line">    <span class="keyword">return</span> f;</div><div class="line">  })();</div><div class="line">}</div><div class="line"></div><div class="line">var arr = [ ];</div><div class="line"><span class="keyword">for</span> (var i=<span class="number">0</span>; i&lt;<span class="number">10000</span>; i++) {</div><div class="line">  arr[i] = createFn();</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>通过运行在Windows XP SP2中的任务管理器可以看到如下结果：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">IE6:</div><div class="line"></div><div class="line">  without `null`:   <span class="number">7.6</span>K -&gt; <span class="number">20.3</span>K</div><div class="line">  with `null`:      <span class="number">7.6</span>K -&gt; <span class="number">18</span>K</div><div class="line"></div><div class="line">IE7:</div><div class="line"></div><div class="line">  without `null`:   <span class="number">14</span>K -&gt; <span class="number">29.7</span>K</div><div class="line">  with `null`:      <span class="number">14</span>K -&gt; <span class="number">27</span>K</div></pre></td></tr></table></figure>
+
+<p>如我们所料，显示断开引用可以释放内存，但是释放的内存不是很多，10000个函数对象才释放大约3M的内存，这对一些小型脚本不算什么，但对于大型程序，或者长时间运行在低内存的设备里的时候，这是非常有必要的。</p>
+<p>关于在Safari 2.x中JS的解析也有一些bug，但介于版本比较低，所以我们在这里就不介绍了，大家如果想看的话，请仔细查看英文资料。</p>
+<h2 id="SpiderMonkey的怪癖">SpiderMonkey的怪癖</h2>
+<p>大家都知道，命名函数表达式的标识符只在函数的局部作用域中有效。但包含这个标识符的局部作用域又是什么样子的吗？其实非常简单。在命名函数表达式被求值时，会<strong>创建一个特殊的对象</strong>，该对象的唯一目的就是保存一个属性，而这个属性的名字对应着函数标识符，属性的值对应着那个函数。这个对象会被注入到当前作用域链的前端。然后，被“扩展”的作用域链又被用于初始化函数。</p>
+<p>在这里，有一点十分有意思，那就是ECMA-262定义这个（保存函数标识符的）“特殊”对象的方式。标准说“<strong>像调用new Object()表达式那样</strong>”创建这个对象。如果从字面上来理解这句话，那么这个对象就应该是全局Object的一个实例。然而，只有一个实现是按照标准字面上的要求这么做的，这个实现就是SpiderMonkey。因此，在SpiderMonkey中，扩展Object.prototype有可能会干扰函数的局部作用域：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">Object.prototype.x = <span class="string">'outer'</span>;</div><div class="line"></div><div class="line">(<span class="function"><span class="title">function</span></span>(){</div><div class="line">  </div><div class="line">  var x = <span class="string">'inner'</span>;</div><div class="line">  </div><div class="line">  /*</div><div class="line">    函数foo的作用域链中有一个特殊的对象——用于保存函数的标识符。这个特殊的对象实际上就是{ foo: &lt;function object&gt; }。</div><div class="line">    当通过作用域链解析x时，首先解析的是foo的局部环境。如果没有找到x，则继续搜索作用域链中的下一个对象。下一个对象</div><div class="line">    就是保存函数标识符的那个对象——{ foo: &lt;function object&gt; }，由于该对象继承自Object.prototype，所以在此可以找到x。</div><div class="line">    而这个x的值也就是Object.prototype.x的值（outer）。结果，外部函数的作用域（包含x = <span class="string">'inner'</span>的作用域）就不会被解析了。</div><div class="line">  */</div><div class="line">  </div><div class="line">  (function <span class="function"><span class="title">foo</span></span>(){</div><div class="line">    </div><div class="line">    alert(x); // 提示框中显示：outer</div><div class="line">  </div><div class="line">  })();</div><div class="line">})();</div></pre></td></tr></table></figure>
+
+<p>不过，更高版本的SpiderMonkey改变了上述行为，原因可能是认为那是一个安全漏洞。也就是说，“特殊”对象不再继承Object.prototype了。不过，如果你使用Firefox 3或者更低版本，还可以“重温”这种行为。</p>
+<p>另一个把内部对象实现为全局Object对象的是黑莓（Blackberry）浏览器。目前，它的活动对象（Activation Object）仍然继承Object.prototype。可是，ECMA-262并没有说活动对象也要“像调用new Object()表达式那样”来创建（或者说像创建保存NFE标识符的对象一样创建）。 人家规范只说了活动对象是规范中的一种机制。 </p>
+<p>那我们就来看看黑莓里都发生了什么：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">Object.prototype.x = <span class="string">'outer'</span>;</div><div class="line"></div><div class="line">(<span class="function"><span class="title">function</span></span>(){</div><div class="line">  </div><div class="line">  var x = <span class="string">'inner'</span>;</div><div class="line">  </div><div class="line">  (<span class="function"><span class="title">function</span></span>(){</div><div class="line">    </div><div class="line">    /*</div><div class="line">    在沿着作用域链解析x的过程中，首先会搜索局部函数的活动对象。当然，在该对象中找不到x。</div><div class="line">    可是，由于活动对象继承自Object.prototype，因此搜索x的下一个目标就是Object.prototype；而</div><div class="line">    Object.prototype中又确实有x的定义。结果，x的值就被解析为——outer。跟前面的例子差不多，</div><div class="line">    包含x = <span class="string">'inner'</span>的外部函数的作用域（活动对象）就不会被解析了。</div><div class="line">    */</div><div class="line">    </div><div class="line">    alert(x); // 显示：outer</div><div class="line">    </div><div class="line">  })();</div><div class="line">})();</div></pre></td></tr></table></figure>
+
+
+
+<p>不过神奇的还是，函数中的变量甚至会与已有的Object.prototype的成员发生冲突，来看看下面的代码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">(<span class="function"><span class="title">function</span></span>(){</div><div class="line">  </div><div class="line">  var constructor = <span class="function"><span class="title">function</span></span>(){ <span class="keyword">return</span> <span class="number">1</span>; };</div><div class="line">  </div><div class="line">  (<span class="function"><span class="title">function</span></span>(){</div><div class="line">    </div><div class="line">    constructor(); // 求值结果是{}（即相当于调用了Object.prototype.constructor()）而不是<span class="number">1</span></div><div class="line">    </div><div class="line">    constructor === Object.prototype.constructor; // <span class="literal">true</span></div><div class="line">    toString === Object.prototype.toString; // <span class="literal">true</span></div><div class="line">    </div><div class="line">    // ……</div><div class="line">    </div><div class="line">  })();</div><div class="line">})();</div></pre></td></tr></table></figure>
+
+
+<p>要避免这个问题，要避免使用Object.prototype里的属性名称，如toString, valueOf, hasOwnProperty等等。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">JScript解决方案</div><div class="line"></div><div class="line">  var fn = (<span class="function"><span class="title">function</span></span>(){</div><div class="line"></div><div class="line">    // 声明要引用函数的变量</div><div class="line">    var f;</div><div class="line"></div><div class="line">    // 有条件地创建命名函数</div><div class="line">    // 并将其引用赋值给f</div><div class="line">    <span class="keyword">if</span> (<span class="literal">true</span>) {</div><div class="line">      f = function <span class="function"><span class="title">F</span></span>(){ }</div><div class="line">    }</div><div class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (<span class="literal">false</span>) {</div><div class="line">      f = function <span class="function"><span class="title">F</span></span>(){ }</div><div class="line">    }</div><div class="line">    <span class="keyword">else</span> {</div><div class="line">      f = function <span class="function"><span class="title">F</span></span>(){ }</div><div class="line">    }</div><div class="line"></div><div class="line">    // 声明一个与函数名（标识符）对应的变量，并赋值为null</div><div class="line">    // 这实际上是给相应标识符引用的函数对象作了一个标记，</div><div class="line">    // 以便垃圾回收器知道可以回收它了</div><div class="line">    var F = null;</div><div class="line"></div><div class="line">    // 返回根据条件定义的函数</div><div class="line">    <span class="keyword">return</span> f;</div><div class="line">  })();</div></pre></td></tr></table></figure>
+
+
+
+<p>最后我们给出一个应用上述技术的应用实例，这是一个跨浏览器的addEvent函数代码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">// <span class="number">1</span>) 使用独立的作用域包含声明</div><div class="line">var addEvent = (<span class="function"><span class="title">function</span></span>(){</div><div class="line"></div><div class="line">  var docEl = document.documentElement;</div><div class="line"></div><div class="line">  // <span class="number">2</span>) 声明要引用函数的变量</div><div class="line">  var fn;</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (docEl.addEventListener) {</div><div class="line"></div><div class="line">    // <span class="number">3</span>) 有意给函数一个描述性的标识符</div><div class="line">    fn = function addEvent(element, eventName, callback) {</div><div class="line">      element.addEventListener(eventName, callback, <span class="literal">false</span>);</div><div class="line">    }</div><div class="line">  }</div><div class="line">  <span class="keyword">else</span> <span class="keyword">if</span> (docEl.attachEvent) {</div><div class="line">    fn = function addEvent(element, eventName, callback) {</div><div class="line">      element.attachEvent(<span class="string">'on'</span> + eventName, callback);</div><div class="line">    }</div><div class="line">  }</div><div class="line">  <span class="keyword">else</span> {</div><div class="line">    fn = function addEvent(element, eventName, callback) {</div><div class="line">      element[<span class="string">'on'</span> + eventName] = callback;</div><div class="line">    }</div><div class="line">  }</div><div class="line"></div><div class="line">  // <span class="number">4</span>) 清除由JScript创建的addEvent函数</div><div class="line">  //    一定要保证在赋值前使用var关键字</div><div class="line">  //    除非函数顶部已经声明了addEvent</div><div class="line">  var addEvent = null;</div><div class="line"></div><div class="line">  // <span class="number">5</span>) 最后返回由fn引用的函数</div><div class="line">  <span class="keyword">return</span> fn;</div><div class="line">})();</div></pre></td></tr></table></figure>
+
+
+
+<h2 id="替代方案">替代方案</h2>
+<p>其实，如果我们不想要这个描述性名字的话，我们就可以用最简单的形式来做，也就是在函数内部声明一个函数（而不是函数表达式），然后返回该函数：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">var hasClassName = (<span class="function"><span class="title">function</span></span>(){</div><div class="line"></div><div class="line">  // 定义私有变量</div><div class="line">  var cache = { };</div><div class="line"></div><div class="line">  // 使用函数声明</div><div class="line">  function hasClassName(element, className) {</div><div class="line">    var _className = <span class="string">'(?:^|\\s+)'</span> + className + <span class="string">'(?:\\s+|$)'</span>;</div><div class="line">    var re = cache[_className] || (cache[_className] = new RegExp(_className));</div><div class="line">    <span class="keyword">return</span> re.test(element.className);</div><div class="line">  }</div><div class="line"></div><div class="line">  // 返回函数</div><div class="line">  <span class="keyword">return</span> hasClassName;</div><div class="line">})();</div></pre></td></tr></table></figure>
+
+
+
+<p>显然，当存在多个分支函数定义时，这个方案就不行了。不过有种模式貌似可以实现：那就是提前使用函数声明来定义所有函数，并分别为这些函数指定不同的标识符：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">var addEvent = (<span class="function"><span class="title">function</span></span>(){</div><div class="line"></div><div class="line">  var docEl = document.documentElement;</div><div class="line"></div><div class="line">  function <span class="function"><span class="title">addEventListener</span></span>(){</div><div class="line">    /* ... */</div><div class="line">  }</div><div class="line">  function <span class="function"><span class="title">attachEvent</span></span>(){</div><div class="line">    /* ... */</div><div class="line">  }</div><div class="line">  function <span class="function"><span class="title">addEventAsProperty</span></span>(){</div><div class="line">    /* ... */</div><div class="line">  }</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (typeof docEl.addEventListener != <span class="string">'undefined'</span>) {</div><div class="line">    <span class="keyword">return</span> addEventListener;</div><div class="line">  }</div><div class="line">  elseif (typeof docEl.attachEvent != <span class="string">'undefined'</span>) {</div><div class="line">    <span class="keyword">return</span> attachEvent;</div><div class="line">  }</div><div class="line">  <span class="keyword">return</span> addEventAsProperty;</div><div class="line">})();</div></pre></td></tr></table></figure>
+
+
+
+<p>虽然这个方案很优雅，但也不是没有缺点。第一，由于使用不同的标识符，导致丧失了命名的一致性。且不说这样好还是坏，最起码它不够清晰。有人喜欢使用相同的名字，但也有人根本不在乎字眼上的差别。可毕竟，不同的名字会让人联想到所用的不同实现。例如，在调试器中看到attachEvent，我们就知 道addEvent是基于attachEvent的实现。当 然，基于实现来命名的方式也不一定都行得通。假如我们要提供一个API，并按照这种方式把函数命名为inner。那么API用户的很容易就会被相应实现的 细节搞得晕头转向。</p>
+<p>要解决这个问题，当然就得想一套更合理的命名方案了。但关键是不要再额外制造麻烦。我现在能想起来的方案大概有如下几个：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="string">'addEvent'</span>, <span class="string">'altAddEvent'</span>, <span class="string">'fallbackAddEvent'</span></div><div class="line">// 或者</div><div class="line"><span class="string">'addEvent'</span>, <span class="string">'addEvent2'</span>, <span class="string">'addEvent3'</span></div><div class="line">// 或者</div><div class="line"><span class="string">'addEvent_addEventListener'</span>, <span class="string">'addEvent_attachEvent'</span>, <span class="string">'addEvent_asProperty'</span></div></pre></td></tr></table></figure>
+
+
+<p>另外，这种模式还存在一个小问题，即增加内存占用。提前创建N个不同名字的函数，等于有N-1的函数是用不到的。具体来讲，如果<em>document.documentElement</em> 中包含<em>attachEvent</em>，那么<em>addEventListener</em> 和<em>addEventAsProperty</em>则根本就用不着了。可是，他们都占着内存哪；而且，这些内存将永远都得不到释放，原因跟JScript臭哄哄的命名表达式相同——这两个函数都被“截留”在返回的那个函数的闭包中了。</p>
+<p>不过，增加内存占用这个问题确实没什么大不了的。如果某个库——例如Prototype.js——采用了这种模式，无非也就是多创建一两百个函数而已。只要不是（在运行时）重复地创建这些函数，而是只（在加载时）创建一次，那么就没有什么好担心的。</p>
+<h2 id="WebKit的displayName">WebKit的displayName</h2>
+<p>WebKit团队在这个问题采取了有点儿另类的策略。介于匿名和命名函数如此之差的表现力，WebKit引入了一个“特殊的”displayName属性（本质上是一个字符串），如果开发人员为函数的这个属性赋值，则该属性的值将在调试器或性能分析器中被显示在函数“名称”的位置上。<a href="http://www.alertdebugging.com/2009/04/29/building-a-better-javascript-profiler-with-webkit/" target="_blank" rel="external">Francisco Tolmasky详细地解释了这个策略的原理和实现</a>。</p>
+<h2 id="未来考虑">未来考虑</h2>
+<p>将来的ECMAScript-262第5版（目前还是草案）会引入所谓的严格模式（strict mode）。开启严格模式的实现会禁用语言中的那些不稳定、不可靠和不安全的特性。据说出于安全方面的考虑，<em>arguments.callee</em>属性将在严格模式下被“封杀”。因此，在处于严格模式时，访问<em>arguments.callee</em>会导致TypeError（参见ECMA-262第5版的10.6节）。而我之所以在此提到严格模式，是因为如果在基于第5版标准的实现中无法使用<em>arguments.callee</em>来执行递归操作，那么使用命名函数表达式的可能性就会大大增加。从这个意义上来说，理解命名函数表达式的语义及其bug也就显得更加重要了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">// 此前，你可能会使用arguments.callee</div><div class="line">(function(x) {</div><div class="line">  <span class="keyword">if</span> (x &lt;= <span class="number">1</span>) <span class="keyword">return</span> <span class="number">1</span>;</div><div class="line">  <span class="keyword">return</span> x * arguments.callee(x - <span class="number">1</span>);</div><div class="line">})(<span class="number">10</span>);</div><div class="line"></div><div class="line">// 但在严格模式下，有可能就要使用命名函数表达式</div><div class="line">(function factorial(x) {</div><div class="line">  <span class="keyword">if</span> (x &lt;= <span class="number">1</span>) <span class="keyword">return</span> <span class="number">1</span>;</div><div class="line">  <span class="keyword">return</span> x * factorial(x - <span class="number">1</span>);</div><div class="line">})(<span class="number">10</span>);</div><div class="line"></div><div class="line">// 要么就退一步，使用没有那么灵活的函数声明</div><div class="line">function factorial(x) {</div><div class="line">  <span class="keyword">if</span> (x &lt;= <span class="number">1</span>) <span class="keyword">return</span> <span class="number">1</span>;</div><div class="line">  <span class="keyword">return</span> x * factorial(x - <span class="number">1</span>);</div><div class="line">}</div><div class="line">factorial(<span class="number">10</span>);</div></pre></td></tr></table></figure>
+
+
+
+<h2 id="致谢">致谢</h2>
+<p>理查德· 康福德（Richard Cornford），是他率先解释了JScript中命名函数表达式所存在的bug。理查德解释了我在这篇文章中提及的大多数bug，所以我强烈建议大家去看看他的解释。我还要感谢Yann-Erwan Perio和道格拉斯·克劳克佛德（Douglas Crockford），他们早在2003年就在comp.lang.javascript论坛中提及并讨论NFE问题了。</p>
+<p>约翰-戴维·道尔顿（John-David Dalton）对“最终解决方案”提出了很好的建议。</p>
+<p>托比·兰吉的点子被我用在了“替代方案”中。</p>
+<p>盖瑞特·史密斯（Garrett Smith）和德米特里·苏斯尼科（Dmitry Soshnikov）对本文的多方面作出了补充和修正。</p>
+<p>英文原文：<a href="http://kangax.github.com/nfe/" target="_blank" rel="external">http://kangax.github.com/nfe/</a></p>
+<h2 id="说明">说明</h2>
+<p>本系列转载自汤姆大叔的博客。</p>
+<p>转载：<a href="http://www.cnblogs.com/TomXu/archive/2011/12/29/2290308.html" target="_blank" rel="external">http://www.cnblogs.com/TomXu/archive/2011/12/29/2290308.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://fredawang.github.io/2014/12/28/深入理解JavaScript系列(2)——揭秘命名函数表达式/" data-id="d4spfek6tpq83njn" class="article-share-link" style="display:none">Share</a>
+      
+        <a href="http://fredawang.github.io/2014/12/28/深入理解JavaScript系列(2)——揭秘命名函数表达式/#ds-thread" class="article-comment-link" style="display:none">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JS/">JS</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav-self">
+  
+  
+    <a href="/2014/12/27/深入理解JavaScript系列(1)——编写高质量JavaScript代码的基本要点/" id="article-nav-older-self" class="article-nav-link-wrap">
+      <!--<strong class="article-nav-caption">Older</strong>-->
+	  <div style="float:left; margin-right:10px;">
+		上一篇
+	  </div>
+      <div class="article-nav-title">深入理解JavaScript系列（一）：编写高质量JavaScript代码的基本要点</div>
+    </a>
+  
+  
+    <a href="/2014/12/29/深入理解JavaScript系列(3)——全面解析Module模式/" id="article-nav-newer-self" class="article-nav-link-wrap">
+      <!--<strong class="article-nav-caption">Newer</strong>-->
+	  <div style="float:left; margin-right:10px">
+		下一篇
+	  </div>
+      <div class="article-nav-title">
+        
+          深入理解JavaScript系列（三）：全面解析Module模式
+        
+      </div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <!--<div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>-->
+  <!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="2014/12/28/深入理解JavaScript系列(2)——揭秘命名函数表达式/" data-title="深入理解JavaScript系列（二）：揭秘命名函数表达式" data-url="http://fredawang.github.io/2014/12/28/深入理解JavaScript系列(2)——揭秘命名函数表达式/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"freda"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Exemplar-Learning/">Exemplar Learning</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">11</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/">CSS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML5/">HTML5</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/">JS</a><span class="tag-list-count">11</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/01/07/CSS_HTML5实例学习(2)——便签贴效果/">CSS HTML5 实例学习(2) —— 便签贴效果</a>
+          </li>
+        
+          <li>
+            <a href="/2015/01/06/深入理解JavaScript系列(11)——根本没有“JSON对象”这回事！/">深入理解JavaScript系列（十一）：根本没有“JSON对象”这回事！</a>
+          </li>
+        
+          <li>
+            <a href="/2015/01/05/深入理解JavaScript系列(10)——S.O.L.I.D五大原则之依赖倒置原则DIP/">深入理解JavaScript系列（十）：S.O.L.I.D五大原则之依赖倒置原则DIP</a>
+          </li>
+        
+          <li>
+            <a href="/2015/01/04/深入理解JavaScript系列(9)——S.O.L.I.D五大原则之接口隔离原则ISP/">深入理解JavaScript系列（九）：S.O.L.I.D五大原则之接口隔离原则ISP</a>
+          </li>
+        
+          <li>
+            <a href="/2015/01/03/深入理解JavaScript系列(8)——S.O.L.I.D五大原则之里氏替换原则LSP/">深入理解JavaScript系列（八）：S.O.L.I.D五大原则之里氏替换原则LSP</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 水滴石穿<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'fredawang';
+  
+  var disqus_url = 'http://fredawang.github.io/2014/12/28/深入理解JavaScript系列(2)——揭秘命名函数表达式/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+
+  </div>
+</body>
+</html>

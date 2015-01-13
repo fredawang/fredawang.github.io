@@ -1,0 +1,113 @@
+<style type="text/css" media="screen">
+.view {
+    width: 200px;
+    height: 200px;
+    margin: 10px;
+    float: left;
+    border: 10px solid #fff;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    box-shadow: 1px 1px 2px #000;
+    cursor: default;
+}
+.view .mask, .view .content {
+    width: 200px;
+    height: 200px;
+    position: absolute;
+    overflow: hidden;
+    top: 0;
+    left: 0
+}
+.view img {
+    display: block;
+    position: relative
+}
+.view h2 {
+    text-transform: uppercase;
+    color: #fff;
+    text-align: center;
+    position: relative;
+    font-size: 17px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    margin: 20px 0 0 0
+}
+.view p {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 12px;
+    position: relative;
+    color: #fff;
+    padding: 10px 20px 20px;
+    text-align: center
+}
+.view a.info {
+    display: inline-block;
+    text-decoration: none;
+    padding: 7px 14px;
+    background: #000;
+    color: #fff;
+    text-transform: uppercase;
+    box-shadow: 0 0 1px #000
+}
+.view a.info:hover {
+    box-shadow: 0 0 5px #000
+}
+.view-sixth img { 
+    transition: all 0.4s ease-in-out 0.5s; 
+}
+.view-sixth .mask{ 
+    background-color: rgba(146,96,91,0.5);
+    opacity:0;
+    transition: all 0.3s ease-in 0.4s;
+}
+.view-sixth h2{
+    opacity:0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+    background: transparent;
+    transform: scale(10);
+    transition: all 0.3s ease-in-out 0.1s;
+}
+.view-sixth p { 
+    opacity:0;
+    transform: scale(10);
+    transition: all 0.3s ease-in-out 0.2s;
+}
+.view-sixth a.info { 
+    opacity:0;
+    transform: translateY(100px);
+    transition: all 0.3s ease-in-out 0.1s;
+}
+.view-sixth:hover .mask {  
+    opacity:1; 
+    transition-delay: 0s;
+}                                                                            
+.view-sixth:hover img { 
+    transition-delay: 0s; 
+}
+.view-sixth:hover h2 { 
+    opacity: 1;
+    transform: scale(1);
+    transition-delay: 0.1s;
+}
+.view-sixth:hover p { 
+    opacity:1; 
+    transform: scale(1);
+    transition-delay: 0.2s;
+}
+.view-sixth:hover a.info { 
+    opacity:1;
+    transform: translateY(0px);
+    transition-delay: 0.3s;
+}
+</style>
+<div class="view view-sixth"> 
+    <img src="../../images/bgimg.jpg" /> 
+    <div class="mask"> </div>
+	<div class="content">
+		<h2>hove style 6</h2> 
+		<p>this is paragraph string for test.</p> 
+        <a href="#" class="info">Read More</a> 
+    </div> 
+</div>  

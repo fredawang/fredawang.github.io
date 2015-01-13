@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>深入理解JavaScript系列（六）：S.O.L.I.D五大原则之单一职责SRP | 水滴石穿</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="keywords" content="水滴石穿">
+  <meta name="discription" content="这个一个前段工程师的博客">
+  <meta name="description" content="Bob大叔提出并发扬了S.O.L.I.D五大原则，用来更好地进行面向对象编程，五大原则分别是：
+
+The Single Responsibility Principle（单一职责SRP）
+The Open/Closed Principle（开闭原则OCP）
+The Liskov Substitution Principle（里氏替换原则LSP）
+The Interface Segregation">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入理解JavaScript系列（六）：S.O.L.I.D五大原则之单一职责SRP">
+<meta property="og:url" content="http://fredawang.github.io/2015/01/01/深入理解JavaScript系列(6)——S.O.L.I.D五大原则之单一职责SRP/">
+<meta property="og:site_name" content="水滴石穿">
+<meta property="og:description" content="Bob大叔提出并发扬了S.O.L.I.D五大原则，用来更好地进行面向对象编程，五大原则分别是：
+
+The Single Responsibility Principle（单一职责SRP）
+The Open/Closed Principle（开闭原则OCP）
+The Liskov Substitution Principle（里氏替换原则LSP）
+The Interface Segregation">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入理解JavaScript系列（六）：S.O.L.I.D五大原则之单一职责SRP">
+<meta name="twitter:description" content="Bob大叔提出并发扬了S.O.L.I.D五大原则，用来更好地进行面向对象编程，五大原则分别是：
+
+The Single Responsibility Principle（单一职责SRP）
+The Open/Closed Principle（开闭原则OCP）
+The Liskov Substitution Principle（里氏替换原则LSP）
+The Interface Segregation">
+
+  
+    <link rel="alternative" href="/atom.xml" title="水滴石穿" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="css/images/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+  
+
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">水滴石穿</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">水非石之钻，索非木之锯，渐靡使之然也</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav" style="display:none;">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <!--<nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>-->
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><input type="submit" value="&#xF002;" class="search-form-submit"><input type="hidden" name="q" value="site:http://fredawang.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-深入理解JavaScript系列(6)——S.O.L.I.D五大原则之单一职责SRP" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/01/01/深入理解JavaScript系列(6)——S.O.L.I.D五大原则之单一职责SRP/" class="article-date">
+  <time datetime="2015-01-01T10:00:00.000Z" itemprop="datePublished">1月 1 2015</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/JavaScript/">JavaScript</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      深入理解JavaScript系列（六）：S.O.L.I.D五大原则之单一职责SRP
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Bob大叔提出并发扬了S.O.L.I.D五大原则，用来更好地进行面向对象编程，五大原则分别是：</p>
+<ol>
+<li>The Single Responsibility Principle（单一职责SRP）</li>
+<li>The Open/Closed Principle（开闭原则OCP）</li>
+<li>The Liskov Substitution Principle（里氏替换原则LSP）</li>
+<li>The Interface Segregation Principle（接口分离原则ISP）</li>
+<li>The Dependency Inversion Principle（依赖反转原则DIP）</li>
+</ol>
+<p>五大原则，我相信在博客园已经被讨论烂了，尤其是C#的实现，但是相对于JavaScript这种以原型为base的动态类型语言来说还为数不多，该系列将分5篇文章以JavaScript编程语言为基础来展示五大原则的应用。 OK，开始我们的第一篇：单一职责。</p>
+<p>英文原文：<a href="http://freshbrewedcode.com/derekgreer/2011/12/08/solid-javascript-single-responsibility-principle/" target="_blank" rel="external">http://freshbrewedcode.com/derekgreer/2011/12/08/solid-javascript-single-responsibility-principle/</a></p>
+<a id="more"></a>
+
+<h2 id="单一职责">单一职责</h2>
+<p>单一职责的描述如下：</p>
+<pre><code>A class should have <span class="keyword">only</span> one reason <span class="keyword">to</span> <span class="keyword">change</span>
+类发生更改的原因应该只有一个
+</code></pre><p>一个类（JavaScript下应该是一个对象）应该有一组紧密相关的行为的意思是什么？遵守单一职责的好处是可以让我们很容易地来维护这个对象，当一个对象封装了很多职责的话，一旦一个职责需要修改，势必会影响该对象想的其它职责代码。通过解耦可以让每个职责工更加有弹性地变化。</p>
+<p>不过，我们如何知道一个对象的多个行为构造多个职责还是单个职责？我们可以通过参考<a href="http://www.amazon.com/Object-Design-Roles-Responsibilities-Collaborations/dp/0201379430" target="_blank" rel="external">Object Design: Roles, Responsibilies, and Collaborations</a>一书提出的Role Stereotypes概念来决定，该书提出了如下Role Stereotypes来区分职责：</p>
+<ol>
+<li>Information holder – 该对象设计为存储对象并提供对象信息给其它对象。</li>
+<li>Structurer – 该对象设计为维护对象和信息之间的关系</li>
+<li>Service provider – 该对象设计为处理工作并提供服务给其它对象</li>
+<li>Controller – 该对象设计为控制决策一系列负责的任务处理</li>
+<li>Coordinator – 该对象不做任何决策处理工作，只是delegate工作到其它对象上</li>
+<li>Interfacer – 该对象设计为在系统的各个部分转化信息（或请求）</li>
+</ol>
+<p>一旦你知道了这些概念，那就狠容易知道你的代码到底是多职责还是单一职责了。</p>
+<h2 id="实例代码">实例代码</h2>
+<p>该实例代码演示的是将商品添加到购物车，代码非常糟糕，代码如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line">function Product(id, description) {</div><div class="line">    this.getId = <span class="function"><span class="title">function</span></span> () {</div><div class="line">        <span class="keyword">return</span> id;</div><div class="line">    };</div><div class="line">    this.getDescription = <span class="function"><span class="title">function</span></span> () {</div><div class="line">        <span class="keyword">return</span> description;</div><div class="line">    };</div><div class="line">}</div><div class="line"></div><div class="line">function Cart(eventAggregator) {</div><div class="line">    var items = [];</div><div class="line"></div><div class="line">    this.addItem = function (item) {</div><div class="line">        items.push(item);</div><div class="line">    };</div><div class="line">}</div><div class="line"></div><div class="line">(<span class="function"><span class="title">function</span></span> () {</div><div class="line">    var products = [new Product(<span class="number">1</span>, <span class="string">"Star Wars Lego Ship"</span>),</div><div class="line">            new Product(<span class="number">2</span>, <span class="string">"Barbie Doll"</span>),</div><div class="line">            new Product(<span class="number">3</span>, <span class="string">"Remote Control Airplane"</span>)</div><div class="line">        ],</div><div class="line">    cart = new Cart();</div><div class="line"></div><div class="line">    function <span class="function"><span class="title">addToCart</span></span>() {</div><div class="line">        var productId = $(this).attr(<span class="string">'id'</span>);</div><div class="line">        var product = $.grep(products, function (x) {</div><div class="line">            <span class="keyword">return</span> x.getId() == productId;</div><div class="line">        })[<span class="number">0</span>];</div><div class="line">        cart.addItem(product);</div><div class="line"></div><div class="line">        var newItem = $(<span class="string">'&lt;li&gt;&lt;/li&gt;'</span>).html(product.getDescription())</div><div class="line">                                    .attr(<span class="string">'id-cart'</span>, product.getId())</div><div class="line">                                    .appendTo(<span class="string">"#cart"</span>);</div><div class="line">    }</div><div class="line"></div><div class="line">    products.forEach(function (product) {</div><div class="line">        var newItem = $(<span class="string">'&lt;li&gt;&lt;/li&gt;'</span>).html(product.getDescription())</div><div class="line">                                    .attr(<span class="string">'id'</span>, product.getId())</div><div class="line">                                    .dblclick(addToCart)</div><div class="line">                                    .appendTo(<span class="string">"#products"</span>);</div><div class="line">    });</div><div class="line">})();</div></pre></td></tr></table></figure>
+
+<p>该代码声明了2个function分别用来描述product和cart，而匿名函数的职责是更新屏幕和用户交互，这还不是一个很复杂的例子，但匿名函数里却包含了很多不相关的职责，让我们来看看到底有多少职责：</p>
+<ol>
+<li>首先，有product的集合的声明</li>
+<li>其次，有一个将product集合绑定到#product元素的代码，而且还附件了一个添加到购物车的事件处理</li>
+<li>第三，有Cart购物车的展示功能</li>
+<li>第四，有添加product item到购物车并显示的功能</li>
+</ol>
+<h2 id="重构代码">重构代码</h2>
+<p>让我们来分解一下，以便代码各自存放到各自的对象里，为此，我们参考了martinfowler的事件聚合（<a href="http://martinfowler.com/eaaDev/EventAggregator.html" target="_blank" rel="external">Event Aggregator</a>）理论在处理代码以便各对象之间进行通信。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div></pre></td><td class="code"><pre><div class="line">//首先我们先来实现事件聚合的功能，该功能分为<span class="number">2</span>部分，<span class="number">1</span>个是Event，</div><div class="line">//用于Handler回调的代码，<span class="number">1</span>个是EventAggregator用来订阅和发布Event</div><div class="line">function Event(name) {</div><div class="line">    var handlers = [];</div><div class="line"></div><div class="line">    this.getName = <span class="function"><span class="title">function</span></span> () {</div><div class="line">        <span class="keyword">return</span> name;</div><div class="line">    };</div><div class="line"></div><div class="line">    this.addHandler = function (handler) {</div><div class="line">        handlers.push(handler);</div><div class="line">    };</div><div class="line"></div><div class="line">    this.removeHandler = function (handler) {</div><div class="line">        <span class="keyword">for</span> (var i = <span class="number">0</span>; i &lt; handlers.length; i++) {</div><div class="line">            <span class="keyword">if</span> (handlers[i] == handler) {</div><div class="line">                handlers.splice(i, <span class="number">1</span>);</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            }</div><div class="line">        }</div><div class="line">    };</div><div class="line"></div><div class="line">    this.fire = function (eventArgs) {</div><div class="line">        handlers.forEach(function (h) {</div><div class="line">            h(eventArgs);</div><div class="line">        });</div><div class="line">    };</div><div class="line">}</div><div class="line"></div><div class="line">function <span class="function"><span class="title">EventAggregator</span></span>() {</div><div class="line">    var events = [];</div><div class="line"></div><div class="line">    function getEvent(eventName) {</div><div class="line">        <span class="keyword">return</span> $.grep(events, function (event) {</div><div class="line">            <span class="keyword">return</span> event.getName() === eventName;</div><div class="line">        })[<span class="number">0</span>];</div><div class="line">    }</div><div class="line"></div><div class="line">    this.publish = function (eventName, eventArgs) {</div><div class="line">        var event = getEvent(eventName);</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (!event) {</div><div class="line">            event = new Event(eventName);</div><div class="line">            events.push(event);</div><div class="line">        }</div><div class="line">        event.fire(eventArgs);</div><div class="line">    };</div><div class="line"></div><div class="line">    this.subscribe = function (eventName, handler) {</div><div class="line">        var event = getEvent(eventName);</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (!event) {</div><div class="line">            event = new Event(eventName);</div><div class="line">            events.push(event);</div><div class="line">        }</div><div class="line"></div><div class="line">        event.addHandler(handler);</div><div class="line">    };</div><div class="line">}</div><div class="line"></div><div class="line">//然后，我们来声明Product对象</div><div class="line"></div><div class="line">function Product(id, description) {</div><div class="line">    this.getId = <span class="function"><span class="title">function</span></span> () {</div><div class="line">        <span class="keyword">return</span> id;</div><div class="line">    };</div><div class="line">    this.getDescription = <span class="function"><span class="title">function</span></span> () {</div><div class="line">        <span class="keyword">return</span> description;</div><div class="line">    };</div><div class="line">}</div><div class="line"></div><div class="line">//接着来声明Cart对象，该对象的addItem的function里我们要触发发布一个事件itemAdded，</div><div class="line">//然后将item作为参数传进去。</div><div class="line"></div><div class="line">function Cart(eventAggregator) {</div><div class="line">    var items = [];</div><div class="line"></div><div class="line">    this.addItem = function (item) {</div><div class="line">        items.push(item);</div><div class="line">        eventAggregator.publish(<span class="string">"itemAdded"</span>, item);</div><div class="line">    };</div><div class="line">}</div><div class="line"></div><div class="line">//CartController主要是接受cart对象和事件聚合器，</div><div class="line">//通过订阅itemAdded来增加一个li元素节点，通过订阅productSelected事件来添加product。</div><div class="line"></div><div class="line">function CartController(cart, eventAggregator) {</div><div class="line">    eventAggregator.subscribe(<span class="string">"itemAdded"</span>, function (eventArgs) {</div><div class="line">        var newItem = $(<span class="string">'&lt;li&gt;&lt;/li&gt;'</span>).html(eventArgs.getDescription())</div><div class="line">                                    .attr(<span class="string">'id-cart'</span>, eventArgs.getId())</div><div class="line">                                    .appendTo(<span class="string">"#cart"</span>);</div><div class="line">    });</div><div class="line"></div><div class="line">    eventAggregator.subscribe(<span class="string">"productSelected"</span>, function (eventArgs) {</div><div class="line">        cart.addItem(eventArgs.product);</div><div class="line">    });</div><div class="line">}</div><div class="line"></div><div class="line">//Repository的目的是为了获取数据（可以从ajax里获取），然后暴露get数据的方法。</div><div class="line"></div><div class="line">function <span class="function"><span class="title">ProductRepository</span></span>() {</div><div class="line">    var products = [new Product(<span class="number">1</span>, <span class="string">"Star Wars Lego Ship"</span>),</div><div class="line">    new Product(<span class="number">2</span>, <span class="string">"Barbie Doll"</span>),</div><div class="line">    new Product(<span class="number">3</span>, <span class="string">"Remote Control Airplane"</span>)];</div><div class="line"></div><div class="line">    this.getProducts = <span class="function"><span class="title">function</span></span> () {</div><div class="line">        <span class="keyword">return</span> products;</div><div class="line">    }</div><div class="line">}</div><div class="line"></div><div class="line">//ProductController里定义了一个onProductSelect方法，</div><div class="line">//主要是发布触发productSelected事件，<span class="keyword">for</span>Each主要是用于绑定数据到产品列表上</div><div class="line"></div><div class="line">function ProductController(eventAggregator, productRepository) {</div><div class="line">    var products = productRepository.getProducts();</div><div class="line"></div><div class="line">    function <span class="function"><span class="title">onProductSelected</span></span>() {</div><div class="line">        var productId = $(this).attr(<span class="string">'id'</span>);</div><div class="line">        var product = $.grep(products, function (x) {</div><div class="line">            <span class="keyword">return</span> x.getId() == productId;</div><div class="line">        })[<span class="number">0</span>];</div><div class="line">        eventAggregator.publish(<span class="string">"productSelected"</span>, {</div><div class="line">            product: product</div><div class="line">        });</div><div class="line">    }</div><div class="line"></div><div class="line">    products.forEach(function (product) {</div><div class="line">        var newItem = $(<span class="string">'&lt;li&gt;&lt;/li&gt;'</span>).html(product.getDescription())</div><div class="line">                            .attr(<span class="string">'id'</span>, product.getId())</div><div class="line">                            .dblclick(onProductSelected)</div><div class="line">                            .appendTo(<span class="string">"#products"</span>);</div><div class="line">    });</div><div class="line">}</div><div class="line"></div><div class="line">//最后声明匿名函数</div><div class="line">//（需要确保HTML都加载完了才能执行这段代码，比如放在jQuery的ready方法里）：</div><div class="line"></div><div class="line">(<span class="function"><span class="title">function</span></span> () {</div><div class="line">    var eventAggregator = new EventAggregator(),</div><div class="line">        cart = new Cart(eventAggregator),</div><div class="line">        cartController = new CartController(cart, eventAggregator),</div><div class="line">        productRepository = new ProductRepository(),</div><div class="line">        productController = </div><div class="line">		    new ProductController(eventAggregator, productRepository);</div><div class="line">})();</div></pre></td></tr></table></figure>
+
+<p>可以看到匿名函数的代码减少了很多，主要是一个对象的实例化代码，代码里我们介绍了Controller的概念，他接受信息然后传递到action，我们也介绍了Repository的概念，主要是用来处理product的展示，重构的结果就是写了一大堆的对象声明，但是好处是每个对象有了自己明确的职责，该展示数据的展示数据，改处理集合的处理集合，这样耦合度就非常低了。</p>
+<h2 id="总结">总结</h2>
+<p>看到这个重构结果，有博友可能要问了，真的有必要做这么复杂么？我只能说：要不要这么做取决于你项目的情况。</p>
+<p>如果你的项目是个是个非常小的项目，代码也不是很多，那其实是没有必要重构得这么复杂，但如果你的项目是个很复杂的大型项目，或者你的小项目将来可能增长得很快的话，那就在前期就得考虑SRP原则进行职责分离了，这样才有利于以后的维护。</p>
+<h2 id="说明">说明</h2>
+<p>本系列转载自汤姆大叔的博客。</p>
+<p>转载：<a href="http://www.cnblogs.com/TomXu/archive/2012/01/06/2305513.html" target="_blank" rel="external">http://www.cnblogs.com/TomXu/archive/2012/01/06/2305513.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://fredawang.github.io/2015/01/01/深入理解JavaScript系列(6)——S.O.L.I.D五大原则之单一职责SRP/" data-id="o2a8ev5pgra9eheb" class="article-share-link" style="display:none">Share</a>
+      
+        <a href="http://fredawang.github.io/2015/01/01/深入理解JavaScript系列(6)——S.O.L.I.D五大原则之单一职责SRP/#ds-thread" class="article-comment-link" style="display:none">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JS/">JS</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav-self">
+  
+  
+    <a href="/2014/12/31/深入理解JavaScript系列(5)——强大的原型和原型链/" id="article-nav-older-self" class="article-nav-link-wrap">
+      <!--<strong class="article-nav-caption">Older</strong>-->
+	  <div style="float:left; margin-right:10px;">
+		上一篇
+	  </div>
+      <div class="article-nav-title">深入理解JavaScript系列（五）：强大的原型和原型链</div>
+    </a>
+  
+  
+    <a href="/2015/01/02/深入理解JavaScript系列(7)——S.O.L.I.D五大原则之开闭原则OCP/" id="article-nav-newer-self" class="article-nav-link-wrap">
+      <!--<strong class="article-nav-caption">Newer</strong>-->
+	  <div style="float:left; margin-right:10px">
+		下一篇
+	  </div>
+      <div class="article-nav-title">
+        
+          深入理解JavaScript系列（七）：S.O.L.I.D五大原则之开闭原则OCP
+        
+      </div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <!--<div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>-->
+  <!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="2015/01/01/深入理解JavaScript系列(6)——S.O.L.I.D五大原则之单一职责SRP/" data-title="深入理解JavaScript系列（六）：S.O.L.I.D五大原则之单一职责SRP" data-url="http://fredawang.github.io/2015/01/01/深入理解JavaScript系列(6)——S.O.L.I.D五大原则之单一职责SRP/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"freda"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Exemplar-Learning/">Exemplar Learning</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">11</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/">CSS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML5/">HTML5</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/">JS</a><span class="tag-list-count">11</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/01/07/CSS_HTML5实例学习(2)——便签贴效果/">CSS HTML5 实例学习(2) —— 便签贴效果</a>
+          </li>
+        
+          <li>
+            <a href="/2015/01/06/深入理解JavaScript系列(11)——根本没有“JSON对象”这回事！/">深入理解JavaScript系列（十一）：根本没有“JSON对象”这回事！</a>
+          </li>
+        
+          <li>
+            <a href="/2015/01/05/深入理解JavaScript系列(10)——S.O.L.I.D五大原则之依赖倒置原则DIP/">深入理解JavaScript系列（十）：S.O.L.I.D五大原则之依赖倒置原则DIP</a>
+          </li>
+        
+          <li>
+            <a href="/2015/01/04/深入理解JavaScript系列(9)——S.O.L.I.D五大原则之接口隔离原则ISP/">深入理解JavaScript系列（九）：S.O.L.I.D五大原则之接口隔离原则ISP</a>
+          </li>
+        
+          <li>
+            <a href="/2015/01/03/深入理解JavaScript系列(8)——S.O.L.I.D五大原则之里氏替换原则LSP/">深入理解JavaScript系列（八）：S.O.L.I.D五大原则之里氏替换原则LSP</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 水滴石穿<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'fredawang';
+  
+  var disqus_url = 'http://fredawang.github.io/2015/01/01/深入理解JavaScript系列(6)——S.O.L.I.D五大原则之单一职责SRP/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+
+  </div>
+</body>
+</html>

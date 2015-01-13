@@ -1,0 +1,123 @@
+<style type="text/css" media="screen">
+.view {
+    width: 200px;
+    height: 200px;
+    margin: 10px;
+    float: left;
+    border: 10px solid #fff;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    box-shadow: 1px 1px 2px #000;
+    cursor: default;
+}
+.view .mask, .view .content {
+    width: 200px;
+    height: 200px;
+    position: absolute;
+    overflow: hidden;
+    top: 0;
+    left: 0
+}
+.view img {
+    display: block;
+    position: relative
+}
+.view h2 {
+    text-transform: uppercase;
+    color: #fff;
+    text-align: center;
+    position: relative;
+    font-size: 17px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    margin: 20px 0 0 0
+}
+.view p {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 12px;
+    position: relative;
+    color: #fff;
+    padding: 10px 20px 20px;
+    text-align: center
+}
+.view a.info {
+    display: inline-block;
+    text-decoration: none;
+    padding: 7px 14px;
+    background: #000;
+    color: #fff;
+    text-transform: uppercase;
+    box-shadow: 0 0 1px #000
+}
+.view a.info:hover {
+    box-shadow: 0 0 5px #000
+}
+.view-ninth .mask-1,
+.view-ninth .mask-2{
+    background-color: rgba(0,0,0,0.5);
+    height: 361px;
+    width: 361px;
+    background: rgba(119,0,36,0.5);
+    opacity: 1;
+    transition: all 0.3s ease-in-out 0.6s;
+}
+.view-ninth .mask-1 { 
+    left: auto;
+    right: 0px;
+    transform: rotate(45.2deg) translateX(-180px);
+    transform-origin: 100% 0%;
+}
+.view-ninth .mask-2 { 
+    top: auto;
+    bottom: 0px;
+    transform: rotate(45.2deg) translateX(180px);
+    transform-origin: 0% 100%;
+}
+.view-ninth .content{
+    background: rgba(0,0,0,0.9);
+    height: 0px;
+    opacity: 0.5;
+    width: 281px;
+    overflow: hidden;
+    transform: rotate(-55deg) translate(-112px,166px);
+    transform-origin: 0% 100%;
+    transition: all 0.5s ease-in-out 0.3s;
+}
+.view-ninth h2{
+    background: transparent;
+    margin-top: 5px;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+.view-ninth a.info{
+    display: none;
+}
+.view-ninth:hover .content{
+    height: 120px;
+    width: 200px;
+    opacity: 0.9;
+    top: 40px;
+    transform: rotate(0deg) translate(0px,0px);
+}
+.view-ninth:hover .mask-1,
+.view-ninth:hover .mask-2{
+    transition-delay: 0s;
+}
+.view-ninth:hover .mask-1{
+    transform: rotate(45.2deg) translateX(1px);
+}
+.view-ninth:hover .mask-2 {  
+    transform: rotate(45.2deg) translateX(-1px);
+}
+</style>
+<div class="view view-ninth"> 
+    <img src="../../images/bgimg.jpg" /> 
+    <div class="mask mask-1"></div>
+    <div class="mask mask-2"></div>
+	<div class="content">
+		<h2>hove style 9</h2> 
+		<p>this is paragraph string for test.</p> 
+        <a href="#" class="info">Read More</a> 
+    </div> 
+</div>  

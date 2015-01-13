@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>深入理解JavaScript系列（八）：S.O.L.I.D五大原则之里氏替换原则LSP | 水滴石穿</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="keywords" content="水滴石穿">
+  <meta name="discription" content="这个一个前段工程师的博客">
+  <meta name="description" content="本章我们要讲解的是S.O.L.I.D五大原则JavaScript语言实现的第3篇，里氏替换原则LSP（The Liskov Substitution Principle ）。
+英文原文：http://freshbrewedcode.com/derekgreer/2011/12/31/solid-javascript-the-liskov-substitution-principle/
+里氏替换原则">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入理解JavaScript系列（八）：S.O.L.I.D五大原则之里氏替换原则LSP">
+<meta property="og:url" content="http://fredawang.github.io/2015/01/03/深入理解JavaScript系列(8)——S.O.L.I.D五大原则之里氏替换原则LSP/">
+<meta property="og:site_name" content="水滴石穿">
+<meta property="og:description" content="本章我们要讲解的是S.O.L.I.D五大原则JavaScript语言实现的第3篇，里氏替换原则LSP（The Liskov Substitution Principle ）。
+英文原文：http://freshbrewedcode.com/derekgreer/2011/12/31/solid-javascript-the-liskov-substitution-principle/
+里氏替换原则">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入理解JavaScript系列（八）：S.O.L.I.D五大原则之里氏替换原则LSP">
+<meta name="twitter:description" content="本章我们要讲解的是S.O.L.I.D五大原则JavaScript语言实现的第3篇，里氏替换原则LSP（The Liskov Substitution Principle ）。
+英文原文：http://freshbrewedcode.com/derekgreer/2011/12/31/solid-javascript-the-liskov-substitution-principle/
+里氏替换原则">
+
+  
+    <link rel="alternative" href="/atom.xml" title="水滴石穿" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="css/images/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+  
+
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">水滴石穿</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">水非石之钻，索非木之锯，渐靡使之然也</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav" style="display:none;">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <!--<nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>-->
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><input type="submit" value="&#xF002;" class="search-form-submit"><input type="hidden" name="q" value="site:http://fredawang.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-深入理解JavaScript系列(8)——S.O.L.I.D五大原则之里氏替换原则LSP" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/01/03/深入理解JavaScript系列(8)——S.O.L.I.D五大原则之里氏替换原则LSP/" class="article-date">
+  <time datetime="2015-01-03T10:00:00.000Z" itemprop="datePublished">1月 3 2015</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/JavaScript/">JavaScript</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      深入理解JavaScript系列（八）：S.O.L.I.D五大原则之里氏替换原则LSP
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本章我们要讲解的是S.O.L.I.D五大原则JavaScript语言实现的第3篇，里氏替换原则LSP（The Liskov Substitution Principle ）。</p>
+<p>英文原文：<a href="http://freshbrewedcode.com/derekgreer/2011/12/31/solid-javascript-the-liskov-substitution-principle/" target="_blank" rel="external">http://freshbrewedcode.com/derekgreer/2011/12/31/solid-javascript-the-liskov-substitution-principle/</a></p>
+<p>里氏替换原则的描述是：</p>
+<pre><code>Subtypes must be substitutable <span class="keyword">for</span> their <span class="keyword">base</span> types.
+派生类型必须可以替换它的基类型。 
+</code></pre><p>在面向对象编程里，继承提供了一个机制让子类和共享基类的代码，这是通过在基类型里封装通用的数据和行为来实现的，然后已经及类型来声明更详细的子类型，为了应用里氏替换原则，继承子类型需要在语义上等价于基类型里的期望行为。</p>
+<a id="more"></a>
+
+<p>为了来更好的理解，请参考如下代码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">function Vehicle(my) {</div><div class="line">    var my = my || {};</div><div class="line">    my.speed = <span class="number">0</span>;</div><div class="line">    my.running = <span class="literal">false</span>;</div><div class="line"></div><div class="line">    this.speed = <span class="function"><span class="title">function</span></span>() {</div><div class="line">        <span class="keyword">return</span> my.speed;</div><div class="line">    };</div><div class="line">    this.start = <span class="function"><span class="title">function</span></span>() {</div><div class="line">        my.running = <span class="literal">true</span>;</div><div class="line">    };</div><div class="line">    this.stop = <span class="function"><span class="title">function</span></span>() {</div><div class="line">        my.running = <span class="literal">false</span>;</div><div class="line">    };</div><div class="line">    this.accelerate = <span class="function"><span class="title">function</span></span>() {</div><div class="line">        my.speed++;</div><div class="line">    };</div><div class="line">    this.decelerate = <span class="function"><span class="title">function</span></span>() {</div><div class="line">        my.speed--;</div><div class="line">    }, this.state = <span class="function"><span class="title">function</span></span>() {</div><div class="line">        <span class="keyword">if</span> (!my.running) {</div><div class="line">            <span class="keyword">return</span> <span class="string">"parked"</span>;</div><div class="line">        }</div><div class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (my.running && my.speed) {</div><div class="line">            <span class="keyword">return</span> <span class="string">"moving"</span>;</div><div class="line">        }</div><div class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (my.running) {</div><div class="line">            <span class="keyword">return</span> <span class="string">"idle"</span>;</div><div class="line">        }</div><div class="line">    };</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>上述代码我们定义了一个Vehicle函数，其构造函数为vehicle对象提供了一些基本的操作，我们来想想如果当前函数当前正运行在服务客户的产品环境上，如果现在需要添加一个新的构造函数来实现加快移动的vehicle。思考以后，我们写出了如下代码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">function FastVehicle(my) {</div><div class="line">    var my = my || {};</div><div class="line"></div><div class="line">    var that = new Vehicle(my);</div><div class="line">    that.accelerate = <span class="function"><span class="title">function</span></span>() {</div><div class="line">        my.speed += <span class="number">3</span>;</div><div class="line">    };</div><div class="line">    <span class="keyword">return</span> that;</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>在浏览器的控制台我们都测试了，所有的功能都是我们的预期，没有问题，FastVehicle的速度增快了3倍，而且继承他的方法也是按照我们的预期工作。此后，我们开始部署这个新版本的类库到产品环境上，可是我们却接到了新的构造函数导致现有的代码不能支持执行了，下面的代码段揭示了这个问题：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">var maneuver = function(vehicle) {</div><div class="line">    write(vehicle.state());</div><div class="line">    vehicle.start();</div><div class="line">    write(vehicle.state());</div><div class="line">    vehicle.accelerate();</div><div class="line">    write(vehicle.state());</div><div class="line">    write(vehicle.speed());</div><div class="line">    vehicle.decelerate();</div><div class="line">    write(vehicle.speed());</div><div class="line">    <span class="keyword">if</span> (vehicle.state() != <span class="string">"idle"</span>) {</div><div class="line">        throw <span class="string">"The vehicle is still moving!"</span>;</div><div class="line">    }</div><div class="line">    vehicle.stop();</div><div class="line">    write(vehicle.state());</div><div class="line">};</div></pre></td></tr></table></figure>
+
+<p>根据上面的代码，我们看到抛出的异常是“The vehicle is still moving!”，这是因为写这段代码的作者一直认为加速（accelerate）和减速（decelerate）的数字是一样的。但FastVehicle的代码和Vehicle的代码并不是完全能够替换掉的。因此，FastVehicle违反了里氏替换原则。 </p>
+<p>在这点上，你可能会想：“但，客户端不能老假定vehicle都是按照这样的规则来做”，里氏替换原则(LSP)的妨碍（译者注：就是妨碍实现LSP的代码）不是基于我们所想的继承子类应该在行为里确保更新代码，而是这样的更新是否能在当前的期望中得到实现。</p>
+<p>上述代码这个case，解决这个不兼容的问题需要在vehicle类库或者客户端调用代码上进行一点重新设计，或者两者都要改。</p>
+<h2 id="减少LSP妨碍">减少LSP妨碍</h2>
+<p>那么，我们如何避免LSP妨碍？不幸的话，并不是一直都是可以做到的。我们这里有几个策略我们处理这个事情。</p>
+<h3 id="契约（Contracts）">契约（Contracts）</h3>
+<p>处理LSP过分妨碍的一个策略是使用契约，契约清单有2种形式：执行说明书（executable specifications）和错误处理，在执行说明书里，一个详细类库的契约也包括一组自动化测试，而错误处理是在代码里直接处理的，例如在前置条件，后置条件，常量检查等，可以从Bertrand Miller的大作《契约设计》中查看这个技术。虽然自动化测试和契约设计不在本篇文字的范围内，但当我们用的时候我还是推荐如下内容：</p>
+<ol>
+<li>检查使用测试驱动开发（Test-Driven Development）来指导你代码的设计</li>
+<li>设计可重用类库的时候可随意使用契约设计技术</li>
+</ol>
+<p>对于你自己要维护和实现的代码，使用契约设计趋向于添加很多不必要的代码，如果你要控制输入，添加测试是非常有必要的，如果你是类库作者，使用契约设计，你要注意不正确的使用方法以及让你的用户使之作为一个测试工具。</p>
+<h3 id="避免继承">避免继承</h3>
+<p>避免LSP妨碍的另外一个测试是：如果可能的话，尽量不用继承，在Gamma的大作《<a href="http://www.amazon.com/Design-Patterns-Elements-Reusable-Object-Oriented/dp/0201633612" target="_blank" rel="external">Design Patterns – Elements of Reusable Object-Orineted Software</a>》中，我们可以看到如下建议：</p>
+<pre><code><span class="constant">Favor</span> object composition over <span class="class"><span class="keyword">class</span> <span class="title">inheritance</span></span>
+尽量使用对象组合而不是类继承
+</code></pre><p>有些书里讨论了组合比继承好的唯一作用是静态类型，基于类的语言（例如，在运行时可以改变行为），与JavaScript相关的一个问题是耦合，当使用继承的时候，继承子类型和他们的基类型耦合在一起了，就是说及类型的改变会影响到继承子类型。组合倾向于对象更小化，更容易想静态和动态语言语言维护。</p>
+<h2 id="与行为有关，而不是继承">与行为有关，而不是继承</h2>
+<p>到现在，我们讨论了和继承上下文在内的里氏替换原则，指示出JavaScript的面向对象实。不过，里氏替换原则（LSP）的本质不是真的和继承有关，而是行为兼容性。JavaScript是一个动态语言，一个对象的契约行为不是对象的类型决定的，而是对象期望的功能决定的。里氏替换原则的初始构想是作为继承的一个原则指南，等价于对象设计中的隐式接口。</p>
+<p>举例来说，让我们来看一下Robert C. Martin的大作《<a href="http://www.amazon.com/Software-Development-Principles-Patterns-Practices/dp/0135974445" target="_blank" rel="external">敏捷软件开发 原则、模式与实践</a>》中的一个矩形类型：</p>
+<h3 id="矩形例子">矩形例子</h3>
+<p>考虑我们有一个程序用到下面这样的一个矩形对象:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">var rectangle = {</div><div class="line">    length: <span class="number">0</span>,</div><div class="line">    width: <span class="number">0</span></div><div class="line">};</div></pre></td></tr></table></figure>
+
+<p>过后，程序有需要一个正方形，由于正方形就是一个长(length)和宽(width)都一样的特殊矩形，所以我们觉得创建一个正方形代替矩形。我们添加了length和width属性来匹配矩形的声明，但我们觉得使用属性的getters/setters一般我们可以让length和width保存同步，确保声明的是一个正方形：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">var square = {};</div><div class="line">(<span class="function"><span class="title">function</span></span>() {</div><div class="line">    var length = <span class="number">0</span>, width = <span class="number">0</span>;</div><div class="line">    // 注意defineProperty方式是<span class="number">262</span>-<span class="number">5</span>版的新特性</div><div class="line">    Object.defineProperty(square, <span class="string">"length"</span>, {</div><div class="line">        get: <span class="function"><span class="title">function</span></span>() { <span class="keyword">return</span> length; },</div><div class="line">        <span class="keyword">set</span>: function(value) { length = width = value; }</div><div class="line">    });</div><div class="line">    Object.defineProperty(square, <span class="string">"width"</span>, {</div><div class="line">        get: <span class="function"><span class="title">function</span></span>() { <span class="keyword">return</span> width; },</div><div class="line">        <span class="keyword">set</span>: function(value) { length = width = value; }</div><div class="line">    });</div><div class="line">})();</div></pre></td></tr></table></figure>
+
+<p>不幸的是，当我们使用正方形代替矩形执行代码的时候发现了问题，其中一个计算矩形面积的方法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">var g = function(rectangle) {</div><div class="line">    rectangle.length = <span class="number">3</span>;</div><div class="line">    rectangle.width = <span class="number">4</span>;</div><div class="line">    write(rectangle.length);</div><div class="line">    write(rectangle.width);</div><div class="line">    write(rectangle.length * rectangle.width);</div><div class="line">};</div></pre></td></tr></table></figure>
+
+<p>该方法在调用的时候，结果是16，而不是期望的12，我们的正方形square对象违反了LSP原则，square的长度和宽度属性暗示着并不是和矩形100%兼容，但我们并不总是这样明确的暗示。解决这个问题，我们可以重新设计一个shape对象来实现程序，依据多边形的概念，我们声明rectangle和square，relevant。不管怎么说，我们的目的是要说里氏替换原则并不只是继承，而是任何方法（其中的行为可以另外的行为）。</p>
+<h2 id="总结">总结</h2>
+<p>里氏替换原则（LSP）表达的意思不是继承的关系，而是任何方法（只要该方法的行为能体会另外的行为就行）。</p>
+<h2 id="说明">说明</h2>
+<p>本系列转载自汤姆大叔的博客。</p>
+<p>转载：<a href="http://www.cnblogs.com/TomXu/archive/2012/01/10/2310244.html" target="_blank" rel="external">http://www.cnblogs.com/TomXu/archive/2012/01/10/2310244.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://fredawang.github.io/2015/01/03/深入理解JavaScript系列(8)——S.O.L.I.D五大原则之里氏替换原则LSP/" data-id="2audp26gurzza29t" class="article-share-link" style="display:none">Share</a>
+      
+        <a href="http://fredawang.github.io/2015/01/03/深入理解JavaScript系列(8)——S.O.L.I.D五大原则之里氏替换原则LSP/#ds-thread" class="article-comment-link" style="display:none">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JS/">JS</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav-self">
+  
+  
+    <a href="/2015/01/02/深入理解JavaScript系列(7)——S.O.L.I.D五大原则之开闭原则OCP/" id="article-nav-older-self" class="article-nav-link-wrap">
+      <!--<strong class="article-nav-caption">Older</strong>-->
+	  <div style="float:left; margin-right:10px;">
+		上一篇
+	  </div>
+      <div class="article-nav-title">深入理解JavaScript系列（七）：S.O.L.I.D五大原则之开闭原则OCP</div>
+    </a>
+  
+  
+    <a href="/2015/01/04/深入理解JavaScript系列(9)——S.O.L.I.D五大原则之接口隔离原则ISP/" id="article-nav-newer-self" class="article-nav-link-wrap">
+      <!--<strong class="article-nav-caption">Newer</strong>-->
+	  <div style="float:left; margin-right:10px">
+		下一篇
+	  </div>
+      <div class="article-nav-title">
+        
+          深入理解JavaScript系列（九）：S.O.L.I.D五大原则之接口隔离原则ISP
+        
+      </div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <!--<div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>-->
+  <!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="2015/01/03/深入理解JavaScript系列(8)——S.O.L.I.D五大原则之里氏替换原则LSP/" data-title="深入理解JavaScript系列（八）：S.O.L.I.D五大原则之里氏替换原则LSP" data-url="http://fredawang.github.io/2015/01/03/深入理解JavaScript系列(8)——S.O.L.I.D五大原则之里氏替换原则LSP/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"freda"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Exemplar-Learning/">Exemplar Learning</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">11</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/">CSS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML5/">HTML5</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/">JS</a><span class="tag-list-count">11</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/01/07/CSS_HTML5实例学习(2)——便签贴效果/">CSS HTML5 实例学习(2) —— 便签贴效果</a>
+          </li>
+        
+          <li>
+            <a href="/2015/01/06/深入理解JavaScript系列(11)——根本没有“JSON对象”这回事！/">深入理解JavaScript系列（十一）：根本没有“JSON对象”这回事！</a>
+          </li>
+        
+          <li>
+            <a href="/2015/01/05/深入理解JavaScript系列(10)——S.O.L.I.D五大原则之依赖倒置原则DIP/">深入理解JavaScript系列（十）：S.O.L.I.D五大原则之依赖倒置原则DIP</a>
+          </li>
+        
+          <li>
+            <a href="/2015/01/04/深入理解JavaScript系列(9)——S.O.L.I.D五大原则之接口隔离原则ISP/">深入理解JavaScript系列（九）：S.O.L.I.D五大原则之接口隔离原则ISP</a>
+          </li>
+        
+          <li>
+            <a href="/2015/01/03/深入理解JavaScript系列(8)——S.O.L.I.D五大原则之里氏替换原则LSP/">深入理解JavaScript系列（八）：S.O.L.I.D五大原则之里氏替换原则LSP</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 水滴石穿<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'fredawang';
+  
+  var disqus_url = 'http://fredawang.github.io/2015/01/03/深入理解JavaScript系列(8)——S.O.L.I.D五大原则之里氏替换原则LSP/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+
+  </div>
+</body>
+</html>
