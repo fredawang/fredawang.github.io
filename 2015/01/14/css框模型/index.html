@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>CSS 框模型 | 水滴石穿</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="keywords" content="水滴石穿">
+  <meta name="discription" content="这个一个前段工程师的博客">
+  <meta name="description" content="css框模型图：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSS 框模型">
+<meta property="og:url" content="http://fredawang.github.io/2015/01/14/css框模型/">
+<meta property="og:site_name" content="水滴石穿">
+<meta property="og:description" content="css框模型图：">
+<meta property="og:image" content="/images/css_model.png">
+<meta property="og:image" content="css_model_1.png">
+<meta property="og:image" content="/images/css_model_2.png">
+<meta property="og:image" content="/images/css_model_3.png">
+<meta property="og:image" content="/images/css_model_4.png">
+<meta property="og:image" content="/images/css_model_5.png">
+<meta property="og:image" content="/images/css_model_6.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CSS 框模型">
+<meta name="twitter:description" content="css框模型图：">
+
+  
+    <link rel="alternative" href="/atom.xml" title="水滴石穿" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="css/images/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+  
+
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">水滴石穿</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">水非石之钻，索非木之锯，渐靡使之然也</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav" style="display:none;">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <!--<nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>-->
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><input type="submit" value="&#xF002;" class="search-form-submit"><input type="hidden" name="q" value="site:http://fredawang.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-css框模型" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/01/14/css框模型/" class="article-date">
+  <time datetime="2015-01-14T10:00:00.000Z" itemprop="datePublished">1月 14 2015</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/WEB-Essay/">WEB Essay</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      CSS 框模型
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>css框模型图：</p>
+<p><a id="more"></a><br><img src="/images/css_model.png" alt=""></p>
+<h2 id="外边距叠加问题">外边距叠加问题</h2>
+<p>当两个或者更多垂直外边距相遇时，它们会形成一个外边距，这个外边距的高度等于发生叠加的外边距的高度中的最大值。</p>
+<p>当一个元素出现在另一个元素上面时，第一个元素的下外边距与第二个元素的上外边距会发生合并。<br><img src="css_model_1.png" alt=""></p>
+<p>当一个元素包含在另一个元素中时（假设没有内边距或边框把外边距分隔开），它们的上和/或下外边距也会发生合并。</p>
+<p><img src="/images/css_model_2.png" alt=""></p>
+<p>尽管看上去有些奇怪，但是外边距甚至可以与自身发生合并。<br>假设有一个空元素，它有外边距，但是没有边框或填充。在这种情况下，上外边距与下外边距就碰到了一起，它们会发生合并：</p>
+<p><img src="/images/css_model_3.png" alt=""></p>
+<p>如果这个外边距遇到另一个元素的外边距，它还会发生合并：</p>
+<p><img src="/images/css_model_4.png" alt=""></p>
+<p><strong>只有普通文档流中块框的垂直外边距才会发生外边距合并。行内框、浮动框或绝对定位之间的外边距不会合并</strong></p>
+<h2 id="关于定位">关于定位</h2>
+<p>p,h1,div等这些称为块级元素，即块框，而strong,span等这些称为行内元素，即行内框。</p>
+<p>css有三种基本定位机制：普通流、浮动和绝对位置。</p>
+<p>块级框从上到下一个接一个的垂直排列，框直接的垂直距离由框的垂直外边距计算出来。</p>
+<p>行内框在一行中水平排列，可以使用水平内边距、边框和外边距调整他们的水平距离，但是垂直内边距、边框和外边距不影响行内框的高度，同样在行内框上设置的width和height也不起作用。因此，<strong>修改行内框尺寸的唯一方法是修改行高或水平内边距、边框或外边距</strong>。</p>
+<p>css2.1允许将display设置成inline-block，这样，让元素像行内元素一样在同一行内显示，但能像块级元素一个设置样式，例如能够显示的设置宽度、高度、垂直内边距和外边距。</p>
+<p><strong>相对定位</strong>: relative是相对于自己来定位的，例如：#demo{position:relative;top:-50px;},这时#demo会在相对于它原来的位置上移50px。</p>
+<p><strong>绝对定位</strong>： absolute使元素的位置与文档流无关。</p>
+<p>例如，如果你想让#demo里的一个div#sub相对于#demo定位在右上角的某个地方，应该给#demo相对定位，#sub绝对定位。</p>
+<p>absolute是相对于自己最近的父元素来定位的，如果你不给#demo相对定位，那么#sub的绝对定位就是相对于body来定位的。</p>
+<p>这里重点介绍一下<strong>浮动</strong>。</p>
+<p>一般来说，浮动的框可以左右移动，直到它的外边缘碰到包含框或另一个浮动框的边缘。因为浮动框不在文档的普通流中，所以文档的普通流中的块框表现的就像浮动框不存在一样。</p>
+<p>但是，<strong>框内的文本内容会受到浮动框的影响</strong>，会移动以留出空间。用技术术语来说，浮动元素旁边的行框被缩短，从而给浮动元素留出空间，因此行框围绕浮动框。实际上，创建浮动框使文本围绕图像。</p>
+<p>要想阻止行框围绕在浮动框的外面，需要对包围这些行框的元素设置clear属性。clear属性的值可以设置为left,right,both,none。它表示框的那些框不能挨着浮动框。在清理元素时，浏览器在元素顶上添加足够的外边距，使元素的顶边缘垂直下降到浮动框下面。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">&lt;style <span class="built_in">type</span>=<span class="string">"text/css"</span> media=<span class="string">"screen"</span>&gt;</div><div class="line">.test{</div><div class="line">	background-color:<span class="comment">#eee;</span></div><div class="line">	width: <span class="number">600</span>px;</div><div class="line">	border: <span class="number">1</span>px solid ;</div><div class="line">}</div><div class="line">.test img {</div><div class="line">	float:left;</div><div class="line">	width:<span class="number">100</span>px;</div><div class="line">	height:<span class="number">100</span>px;</div><div class="line">}</div><div class="line">&lt;/style&gt;</div><div class="line">&lt;div class=<span class="string">"test"</span>&gt;</div><div class="line">	&lt;img src=<span class="string">"/images/bgimg.jpg"</span> /&gt; </div><div class="line">	&lt;p&gt;some string <span class="keyword">for</span> test,this is a long long long string.&lt;/p&gt;</div><div class="line">	&lt;p&gt;some string <span class="keyword">for</span> test,this is a long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long string.&lt;/p&gt;</div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure>
+
+<p><img src="/images/css_model_5.png" alt=""></p>
+<p>如果对第二个p设置clear:both，该p会显示在img下方。</p>
+<p><img src="/images/css_model_6.png" alt=""></p>
+<p>这也就是为什么可以下面代码中可以用clear:both 来撑开外层div的原因。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;div&gt;</div><div class="line">    &lt;div style=<span class="string">"float: left;"</span>&gt;Div <span class="number">1</span>&lt;/div&gt;</div><div class="line">    &lt;div style=<span class="string">"float: left;"</span>&gt;Div <span class="number">2</span>&lt;/div&gt;</div><div class="line">    &lt;div style=<span class="string">"clear: both;"</span>&gt;&lt;/div&gt;</div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://fredawang.github.io/2015/01/14/css框模型/" data-id="o0s79k6b3grljbma" class="article-share-link" style="display:none">Share</a>
+      
+        <a href="http://fredawang.github.io/2015/01/14/css框模型/#ds-thread" class="article-comment-link" style="display:none">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CSS/">CSS</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav-self">
+  
+  
+    <a href="/2015/01/07/CSS_HTML5实例学习(2)——便签贴效果/" id="article-nav-older-self" class="article-nav-link-wrap">
+      <!--<strong class="article-nav-caption">Older</strong>-->
+	  <div style="float:left; margin-right:10px;">
+		上一篇
+	  </div>
+      <div class="article-nav-title">CSS HTML5 实例学习(2) —— 便签贴效果</div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <!--<div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>-->
+  <!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="2015/01/14/css框模型/" data-title="CSS 框模型" data-url="http://fredawang.github.io/2015/01/14/css框模型/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"freda"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Exemplar-Learning/">Exemplar Learning</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/WEB-Essay/">WEB Essay</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/">CSS</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML5/">HTML5</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/">JS</a><span class="tag-list-count">11</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/01/14/css框模型/">CSS 框模型</a>
+          </li>
+        
+          <li>
+            <a href="/2015/01/07/CSS_HTML5实例学习(2)——便签贴效果/">CSS HTML5 实例学习(2) —— 便签贴效果</a>
+          </li>
+        
+          <li>
+            <a href="/2015/01/06/深入理解JavaScript系列(11)——根本没有“JSON对象”这回事！/">深入理解JavaScript系列（十一）：根本没有“JSON对象”这回事！</a>
+          </li>
+        
+          <li>
+            <a href="/2015/01/05/深入理解JavaScript系列(10)——S.O.L.I.D五大原则之依赖倒置原则DIP/">深入理解JavaScript系列（十）：S.O.L.I.D五大原则之依赖倒置原则DIP</a>
+          </li>
+        
+          <li>
+            <a href="/2015/01/04/深入理解JavaScript系列(9)——S.O.L.I.D五大原则之接口隔离原则ISP/">深入理解JavaScript系列（九）：S.O.L.I.D五大原则之接口隔离原则ISP</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 水滴石穿<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'fredawang';
+  
+  var disqus_url = 'http://fredawang.github.io/2015/01/14/css框模型/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+
+  </div>
+</body>
+</html>

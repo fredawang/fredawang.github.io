@@ -13,11 +13,11 @@
 <meta property="og:url" content="http://fredawang.github.io/2015/01/07/CSS_HTML5实例学习(2)——便签贴效果/">
 <meta property="og:site_name" content="水滴石穿">
 <meta property="og:description" content="本篇文字将展示给你的是，如何利用HTML5/CSS3，仅用5步就可以制作便签贴效果的HTML页面，效果图如下：">
-<meta property="og:image" content="html5_1.png">
-<meta property="og:image" content="html5_2.png">
-<meta property="og:image" content="html5_3.png">
-<meta property="og:image" content="html5_4.png">
-<meta property="og:image" content="html5_5.png">
+<meta property="og:image" content="/images/html5_1.png">
+<meta property="og:image" content="/images/html5_2.png">
+<meta property="og:image" content="/images/html5_3.png">
+<meta property="og:image" content="/images/html5_4.png">
+<meta property="og:image" content="/images/html5_5.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CSS HTML5 实例学习(2) —— 便签贴效果">
 <meta name="twitter:description" content="本篇文字将展示给你的是，如何利用HTML5/CSS3，仅用5步就可以制作便签贴效果的HTML页面，效果图如下：">
@@ -109,7 +109,7 @@
 <p>每个note都加一个href连接，主要是为了支持键盘访问，CSS代码如下：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">*{  </div><div class="line">  margin:<span class="number">0</span>;  </div><div class="line">  padding:<span class="number">0</span>;  </div><div class="line">}  </div><div class="line">body{  </div><div class="line">  font-family:arial,sans-serif;  </div><div class="line">  font-size:<span class="number">100</span>%;  </div><div class="line">  margin:<span class="number">3</span>em;  </div><div class="line">  background:<span class="comment">#666;  </span></div><div class="line">  color:<span class="comment">#fff;  </span></div><div class="line">}  </div><div class="line">h2,p{  </div><div class="line">  font-size:<span class="number">100</span>%;  </div><div class="line">  font-weight:normal;  </div><div class="line">}  </div><div class="line">ul,li{  </div><div class="line">  list-style:none;  </div><div class="line">}  </div><div class="line">ul{  </div><div class="line">  overflow:hidden;  </div><div class="line">  padding:<span class="number">3</span>em;  </div><div class="line">}  </div><div class="line">ul li a{  </div><div class="line">  text-decoration:none;  </div><div class="line">  color:<span class="comment">#000;  </span></div><div class="line">  background:<span class="comment">#ffc;  </span></div><div class="line">  display:block;  </div><div class="line">  height:<span class="number">10</span>em;  </div><div class="line">  width:<span class="number">10</span>em;  </div><div class="line">  padding:<span class="number">1</span>em;  </div><div class="line">}  </div><div class="line">ul li{  </div><div class="line">  margin:<span class="number">1</span>em;  </div><div class="line">  float:left;  </div><div class="line">}</div></pre></td></tr></table></figure>
 
-<p>效果如下：<br><img src="html5_1.png" alt=""></p>
+<p>效果如下：<br><img src="/images/html5_1.png" alt=""></p>
 <h2 id="第二步：阴影和手写草体字">第二步：阴影和手写草体字</h2>
 <p>这一步，是我们要实现正方形的阴影效果，并且将字体改为草体（仅限英文），由于google提供了Font API的支持，所以我们可以直接使用了，首先添加对Google API的调用：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">&lt;link href=<span class="string">"http://fonts.googleapis.com/css?family=Reenie+Beanie:regular"</span> rel=<span class="string">"stylesheet"</span> <span class="built_in">type</span>=<span class="string">"text/css"</span>&gt;</div><div class="line">然后设置引用这个字体：</div><div class="line"></div><div class="line">ul li h2</div><div class="line">{</div><div class="line">	font-size: <span class="number">140</span>%;</div><div class="line">	font-weight: bold;</div><div class="line">	padding-bottom: <span class="number">10</span>px;</div><div class="line">}</div><div class="line">ul li p</div><div class="line">{</div><div class="line">	font-family: <span class="string">"Reenie Beanie"</span> ,arial,sans-serif,微软雅黑;</div><div class="line">	font-size: <span class="number">110</span>%;</div><div class="line">}</div></pre></td></tr></table></figure>
@@ -118,7 +118,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">ul li a</div><div class="line">{</div><div class="line">	text-decoration: none;</div><div class="line">	color: <span class="comment">#000;</span></div><div class="line">	background: <span class="comment">#ffc;</span></div><div class="line">	display: block;</div><div class="line">	height: <span class="number">10</span>em;</div><div class="line">	width: <span class="number">10</span>em;</div><div class="line">	padding: <span class="number">1</span>em; /* Firefox */</div><div class="line">	-moz-box-shadow: <span class="number">5</span>px <span class="number">5</span>px <span class="number">7</span>px rgba(<span class="number">33</span>,<span class="number">33</span>,<span class="number">33</span>,<span class="number">1</span>); /* Safari+Chrome */</div><div class="line">	-webkit-box-shadow: <span class="number">5</span>px <span class="number">5</span>px <span class="number">7</span>px rgba(<span class="number">33</span>,<span class="number">33</span>,<span class="number">33</span>,.<span class="number">7</span>); /* Opera */</div><div class="line">	box-shadow: <span class="number">5</span>px <span class="number">5</span>px <span class="number">7</span>px rgba(<span class="number">33</span>,<span class="number">33</span>,<span class="number">33</span>,.<span class="number">7</span>);</div><div class="line">}</div></pre></td></tr></table></figure>
 
 <p>效果如下：</p>
-<p><img src="html5_2.png" alt=""></p>
+<p><img src="/images/html5_2.png" alt=""></p>
 <h2 id="第三步：倾斜正方形">第三步：倾斜正方形</h2>
 <p>为了让正方形倾斜，我们需要在li-&gt;a里添加如下代码：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">ul li a{  </div><div class="line">  -webkit-transform:rotate(-<span class="number">6</span>deg);  </div><div class="line">  -o-transform:rotate(-<span class="number">6</span>deg);  </div><div class="line">  -moz-transform:rotate(-<span class="number">6</span>deg);  </div><div class="line">}</div></pre></td></tr></table></figure>
@@ -127,13 +127,13 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">ul li:nth-child(even) a{  </div><div class="line">  -o-transform:rotate(<span class="number">4</span>deg);  </div><div class="line">  -webkit-transform:rotate(<span class="number">4</span>deg);  </div><div class="line">  -moz-transform:rotate(<span class="number">4</span>deg);  </div><div class="line">  position:relative;  </div><div class="line">  top:<span class="number">5</span>px;  </div><div class="line">}  </div><div class="line">ul li:nth-child(<span class="number">3</span>n) a{  </div><div class="line">  -o-transform:rotate(-<span class="number">3</span>deg);  </div><div class="line">  -webkit-transform:rotate(-<span class="number">3</span>deg);  </div><div class="line">  -moz-transform:rotate(-<span class="number">3</span>deg);  </div><div class="line">  position:relative;  </div><div class="line">  top:-<span class="number">5</span>px;  </div><div class="line">}  </div><div class="line">ul li:nth-child(<span class="number">5</span>n) a{  </div><div class="line">  -o-transform:rotate(<span class="number">5</span>deg);  </div><div class="line">  -webkit-transform:rotate(<span class="number">5</span>deg);  </div><div class="line">  -moz-transform:rotate(<span class="number">5</span>deg);  </div><div class="line">  position:relative;  </div><div class="line">  top:-<span class="number">10</span>px;  </div><div class="line">}</div></pre></td></tr></table></figure>
 
 <p>效果如下：</p>
-<p><img src="html5_3.png" alt=""></p>
+<p><img src="/images/html5_3.png" alt=""></p>
 <h2 id="第四步：Hover和Focus时放缩正方形">第四步：Hover和Focus时放缩正方形</h2>
 <p>想在hover和focus的时候达到缩放的效果，我们需要添加如下代码：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">ul li a:hover,ul li a:focus{  </div><div class="line">    -moz-box-shadow:<span class="number">10</span>px <span class="number">10</span>px <span class="number">7</span>px rgba(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,.<span class="number">7</span>);  </div><div class="line">    -webkit-box-shadow: <span class="number">10</span>px <span class="number">10</span>px <span class="number">7</span>px rgba(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,.<span class="number">7</span>);  </div><div class="line">    box-shadow:<span class="number">10</span>px <span class="number">10</span>px <span class="number">7</span>px rgba(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,.<span class="number">7</span>);  </div><div class="line">    -webkit-transform: scale(<span class="number">1.25</span>);  </div><div class="line">    -moz-transform: scale(<span class="number">1.25</span>);  </div><div class="line">    -o-transform: scale(<span class="number">1.25</span>);  </div><div class="line">    position:relative;  </div><div class="line">    z-index:<span class="number">5</span>;  </div><div class="line">}</div></pre></td></tr></table></figure>
 
 <p>设置z-index为5是为了让正方形在放大的时候盖住其它的正方形，同时因为也设置了focus，所以也支持Tab键切换访问，效果如下：</p>
-<p><img src="html5_4.png" alt=""></p>
+<p><img src="/images/html5_4.png" alt=""></p>
 <h2 id="第五步：平滑过渡和添加颜色">第五步：平滑过渡和添加颜色</h2>
 <p>第四步的特效，看起来有些生硬，我们可以添加Transition来达到平滑动画的效果，另外颜色比较单一，我们可以设置一下不同的颜色，首先在ul-&gt;li-&gt;a里添加Transition：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">-moz-transition:-moz-transform .<span class="number">15</span>s linear;  </div><div class="line">-o-transition:-o-transform .<span class="number">15</span>s linear;  </div><div class="line">-webkit-transition:-webkit-transform .<span class="number">15</span>s linear;</div></pre></td></tr></table></figure>
@@ -144,14 +144,14 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">ul li:nth-child(even) a{  </div><div class="line">  -o-transform:rotate(<span class="number">4</span>deg);  </div><div class="line">  -webkit-transform:rotate(<span class="number">4</span>deg);  </div><div class="line">  -moz-transform:rotate(<span class="number">4</span>deg);  </div><div class="line">  position:relative;  </div><div class="line">  top:<span class="number">5</span>px;  </div><div class="line">  background:<span class="comment">#cfc;  </span></div><div class="line">}  </div><div class="line">ul li:nth-child(<span class="number">3</span>n) a{  </div><div class="line">  -o-transform:rotate(-<span class="number">3</span>deg);  </div><div class="line">  -webkit-transform:rotate(-<span class="number">3</span>deg);  </div><div class="line">  -moz-transform:rotate(-<span class="number">3</span>deg);  </div><div class="line">  position:relative;  </div><div class="line">  top:-<span class="number">5</span>px;  </div><div class="line">  background:<span class="comment">#ccf;  </span></div><div class="line">}</div></pre></td></tr></table></figure>
 
 <p>这样，就完成了我们最终的效果：</p>
-<p><img src="html5_5.png" alt=""></p>
+<p><img src="/images/html5_5.png" alt=""></p>
 <h2 id="说明">说明</h2>
 <p>本文转载在汤姆大叔的博客：<a href="http://www.cnblogs.com/TomXu/archive/2011/12/13/2285755.html#3096572" target="_blank" rel="external">http://www.cnblogs.com/TomXu/archive/2011/12/13/2285755.html#3096572</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://fredawang.github.io/2015/01/07/CSS_HTML5实例学习(2)——便签贴效果/" data-id="q42it4vkrka0mzc5" class="article-share-link" style="display:none">Share</a>
+      <a data-url="http://fredawang.github.io/2015/01/07/CSS_HTML5实例学习(2)——便签贴效果/" data-id="j74nweu85ix1yp2h" class="article-share-link" style="display:none">Share</a>
       
         <a href="http://fredawang.github.io/2015/01/07/CSS_HTML5实例学习(2)——便签贴效果/#ds-thread" class="article-comment-link" style="display:none">Comments</a>
       
@@ -173,6 +173,18 @@
       <div class="article-nav-title">深入理解JavaScript系列（十一）：根本没有“JSON对象”这回事！</div>
     </a>
   
+  
+    <a href="/2015/01/14/css框模型/" id="article-nav-newer-self" class="article-nav-link-wrap">
+      <!--<strong class="article-nav-caption">Newer</strong>-->
+	  <div style="float:left; margin-right:10px">
+		下一篇
+	  </div>
+      <div class="article-nav-title">
+        
+          CSS 框模型
+        
+      </div>
+    </a>
   
 </nav>
 
@@ -209,7 +221,7 @@ var duoshuoQuery = {short_name:"freda"};
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Exemplar-Learning/">Exemplar Learning</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">11</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Exemplar-Learning/">Exemplar Learning</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/WEB-Essay/">WEB Essay</a><span class="category-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -218,7 +230,7 @@ var duoshuoQuery = {short_name:"freda"};
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/">CSS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML5/">HTML5</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/">JS</a><span class="tag-list-count">11</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/">CSS</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML5/">HTML5</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/">JS</a><span class="tag-list-count">11</span></li></ul>
     </div>
   </div>
 
@@ -227,7 +239,7 @@ var duoshuoQuery = {short_name:"freda"};
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a><span class="archive-list-count">6</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a><span class="archive-list-count">6</span></li></ul>
     </div>
   </div>
 
@@ -237,6 +249,10 @@ var duoshuoQuery = {short_name:"freda"};
     <h3 class="widget-title">Recents</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2015/01/14/css框模型/">CSS 框模型</a>
+          </li>
         
           <li>
             <a href="/2015/01/07/CSS_HTML5实例学习(2)——便签贴效果/">CSS HTML5 实例学习(2) —— 便签贴效果</a>
@@ -252,10 +268,6 @@ var duoshuoQuery = {short_name:"freda"};
         
           <li>
             <a href="/2015/01/04/深入理解JavaScript系列(9)——S.O.L.I.D五大原则之接口隔离原则ISP/">深入理解JavaScript系列（九）：S.O.L.I.D五大原则之接口隔离原则ISP</a>
-          </li>
-        
-          <li>
-            <a href="/2015/01/03/深入理解JavaScript系列(8)——S.O.L.I.D五大原则之里氏替换原则LSP/">深入理解JavaScript系列（八）：S.O.L.I.D五大原则之里氏替换原则LSP</a>
           </li>
         
       </ul>
