@@ -1,0 +1,185 @@
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<style type="text/css">
+#btn1{
+	position:absolute; 
+	top:365px; 
+	left:365px;
+	border-radius: 50%;
+	box-shadow: 0 0 10px #000;
+	width: 70px;
+	height: 70px;
+	background-color: red;
+	border: solid 0px #fff;
+}
+
+#btn1:active {
+  box-shadow: none;
+}
+</style>
+<script type="text/javascript">
+function sector(ctx, x, y, radius, sAngle, eAngle, color, counterclockwise) {
+	ctx.save();
+	ctx.fillStyle = color;
+	ctx.lineWidth = 1.0; // 设置线宽
+	ctx.strokeStyle = "#CC0000"; // 设置线的颜色
+	ctx.beginPath();
+	ctx.translate(x, y);
+	ctx.moveTo(0, 0);
+	ctx.arc(0, 0, radius, sAngle,eAngle, counterclockwise);
+	ctx.closePath();
+	ctx.fill();
+
+	ctx.strokeStyle = 'black';
+	ctx.lineWidth = 1;
+	ctx.stroke();
+	ctx.restore();
+}
+
+function drawText(ctx, x, y, axie, angle, text){
+	ctx.save();
+	ctx.translate(x, y);
+	ctx.moveTo(0, 0);
+	// 设置字体
+	ctx.font = "Bold 20px Arial"; 
+	// 设置对齐方式
+	ctx.textAlign = "left";
+	// 设置填充颜色
+	ctx.fillStyle = "#008600"; 
+	// 设置字体内容，以及在画布上的位置
+	ctx.rotate(angle);
+
+	ctx.fillText(text, axie, 5); 
+	// 绘制空心字
+	/*for(var i = 0; i < 9; ++i){
+		ctx.rotate(-Math.PI*0.2);
+		//ctx.strokeText("中奖了!", 80, 5);
+		ctx.fillText("中奖了!", 80, 5);
+	}*/
+	ctx.restore();
+};
+var ctx,
+	awards = [
+	"5个亿大奖！",
+	"4个亿大奖！", 
+	"3个亿大奖！", 
+	"2个亿大奖！", 
+	"1个亿大奖！", 
+	"500万大奖！", 
+	"别墅一套！", 
+	"豪车一辆！", 
+	"iphone6 Plus！",
+	"小米4！"
+];
+	
+var probablity = [
+	-1,
+	0.000001,
+	0.2,
+	0.3,
+	0.5,
+	0.8,
+	0.85,
+	0.9,
+	0.92,
+	0.98,
+	1.0
+];
+function onLoad(){
+	var canvas = document.getElementById('myCanvas');
+	if (canvas.getContext) {
+		ctx = canvas.getContext('2d');
+		var len = awards.length;
+		for(var i = 0; i < awards.length; ++i){
+			sector(ctx, xLocation, yLocation, radius, Math.PI*((2.0/len)*i), Math.PI*((2.0/len)*(i + 1)), defaultColor, false);
+			if((1.0/len) + i * (2.0/len) > 0.5 && (1.0/len) + i * (2.0/len) < 1.5){
+				drawText(ctx, xLocation, yLocation, -160, Math.PI*( 1.0 + 2.0/len - (1.0/len) + i * (2.0/len)), awards[i]);
+			} else {
+				drawText(ctx, xLocation, yLocation, 60, Math.PI*((1.0/len) + i * (2.0/len)), awards[i]);
+			}
+		}
+	}
+}
+
+var index=0,           //当前亮区位置
+	speed=300,           //初始速度
+	speedFastIndex,
+	endIndex,
+	Time,         //定义对象
+	cycleCount = 100,
+	xLocation = 400,
+	yLocation = 400,
+	radius = 200,
+	len = awards.length,
+	defaultColor = "yellow";
+	selectedColor = "red";
+function startGame(){
+	onLoad();
+	clearInterval(Time);
+	//随机一个3到8之间的数字，
+	//在经过这个步数之后，转盘的速度加快
+	speedFastIndex = Math.floor(Math.random()*5 + 3);
+	//根据预定义的每个奖项的概率，得到该次的奖项，
+	var r =  Math.random();
+	for(var i = 0; i < probablity.length - 1; ++i){
+		if( r > probablity[i] && r <= probablity[i + 1]){
+			endIndex = i;
+			break;
+		}
+ 	}
+	speed = 300;
+	index = 0;
+	Time = setInterval(Star,speed);
+}
+
+function Star(){
+	var i = index % 10;
+	var j = (i + 9) % 10;
+	//重绘上一个扇形为基本色
+	//绘制当前扇形为选择色
+	sector(ctx, xLocation, yLocation, radius, Math.PI*((2.0/len)*j), Math.PI*((2.0/len)*(j + 1)), defaultColor, false);
+	sector(ctx, xLocation, yLocation, radius, Math.PI*((2.0/len)*i), Math.PI*((2.0/len)*(i + 1)), selectedColor, false);
+	//重新绘制文字
+	if((1.0/len) + j * (2.0/len) > 0.5 && (1.0/len) + j * (2.0/len) < 1.5){
+		drawText(ctx, xLocation, yLocation, -160, Math.PI*( 1.0 + 2.0/len - (1.0/len) + j * (2.0/len)), awards[j]);
+	} else {
+		drawText(ctx, xLocation, yLocation, 60, Math.PI*((1.0/len) + j * (2.0/len)), awards[j]);
+	}
+	if((1.0/len) + i * (2.0/len) > 0.5 && (1.0/len) + i * (2.0/len) < 1.5){
+		drawText(ctx, xLocation, yLocation, -160, Math.PI*( 1.0 + 2.0/len - (1.0/len) + i * (2.0/len)), awards[i]);
+	} else {
+		drawText(ctx, xLocation, yLocation, 60, Math.PI*((1.0/len) + i * (2.0/len)), awards[i]);
+	}
+	//达到加速步数后，加速
+	if(index == speedFastIndex){
+		clearInterval(Time);
+		Speed=50;
+		Time=setInterval(Star,Speed);
+	}
+	
+	//跑完固定加速的步数后减速
+	if(index == cycleCount){
+		clearInterval(Time);
+		Speed=300;
+		Time=setInterval(Star,Speed);
+	}
+	
+	//停在预定义的奖项中
+	if(index == cycleCount + endIndex){
+		clearInterval(Time);
+		alert("亲，中奖了中奖了！\n" + awards[endIndex]);
+	}
+	
+	index += 1;
+}
+
+window.onload=function(){onLoad();}
+
+</script>
+<div style="position:relative">
+	<canvas id="myCanvas" width="800" height="800">
+		您的浏览器不支持canvas！
+	</canvas>
+	<input value="抽奖" id="btn1" type="button" onclick="startGame()" class="play_btn">
+</div>

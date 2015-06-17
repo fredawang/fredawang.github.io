@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Canvas 画的抽奖程序 | 水滴石穿</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="keywords" content="水滴石穿">
+  <meta name="discription" content="这个一个前段工程师的博客">
+  <meta name="description" content="最近无聊，想学习一下html5中的canvas，而且上次小米发布会的抽奖，抽了一下午都是“再接再厉”，所以决定用canvas自己写一个简陋的抽奖程序，想要哪个奖就能中哪个奖，哈哈！">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Canvas 画的抽奖程序">
+<meta property="og:url" content="http://fredawang.github.io/2015/01/21/Canvas 画的抽奖程序/">
+<meta property="og:site_name" content="水滴石穿">
+<meta property="og:description" content="最近无聊，想学习一下html5中的canvas，而且上次小米发布会的抽奖，抽了一下午都是“再接再厉”，所以决定用canvas自己写一个简陋的抽奖程序，想要哪个奖就能中哪个奖，哈哈！">
+<meta property="og:image" content="/images/抽奖_1.png">
+<meta property="og:image" content="/images/抽奖_2.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Canvas 画的抽奖程序">
+<meta name="twitter:description" content="最近无聊，想学习一下html5中的canvas，而且上次小米发布会的抽奖，抽了一下午都是“再接再厉”，所以决定用canvas自己写一个简陋的抽奖程序，想要哪个奖就能中哪个奖，哈哈！">
+
+  
+    <link rel="alternative" href="/atom.xml" title="水滴石穿" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="css/images/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+  
+
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">水滴石穿</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">水非石之钻，索非木之锯，渐靡使之然也</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav" style="display:none;">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <!--<nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>-->
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><input type="submit" value="&#xF002;" class="search-form-submit"><input type="hidden" name="q" value="site:http://fredawang.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Canvas 画的抽奖程序" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/01/21/Canvas 画的抽奖程序/" class="article-date">
+  <time datetime="2015-01-21T10:00:00.000Z" itemprop="datePublished">1月 21 2015</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Exemplar-Learning/">Exemplar Learning</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Canvas 画的抽奖程序
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>   最近无聊，想学习一下html5中的canvas，而且上次小米发布会的抽奖，抽了一下午都是“再接再厉”，所以决定用canvas自己写一个简陋的抽奖程序，想要哪个奖就能中哪个奖，哈哈！</p>
+<a id="more"></a>
+
+<h2 id="Demo">Demo</h2>
+<p><script src="/code/js/commonFuncs.js"></script></p>
+<div><br><iframe name="Stack" src="/code/iframe/lottery_system.html" frameborder="0" scrolling="no" id="iframe" onload="javascript:resizeIframe(this);"><br></iframe></div> 
+
+<h2 id="canvas画扇形和文字">canvas画扇形和文字</h2>
+<p>在HTML5 Canvas 中，我们可以通过 arc 方法来绘制圆形，在这里就利用arc来画扇形。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">function sector(ctx, x, y, radius, sAngle, eAngle, </div><div class="line">                color, counterclockwise) {</div><div class="line">    ctx.save();</div><div class="line">    ctx.fillStyle = color;</div><div class="line">    ctx.lineWidth = <span class="number">1.0</span>; // 设置线宽</div><div class="line">    ctx.strokeStyle = <span class="string">"#CC0000"</span>; // 设置线的颜色</div><div class="line">    ctx.beginPath();</div><div class="line">    ctx.translate(x, y);</div><div class="line">    ctx.moveTo(<span class="number">0</span>, <span class="number">0</span>);</div><div class="line">    ctx.arc(<span class="number">0</span>, <span class="number">0</span>, radius, sAngle,eAngle, counterclockwise);</div><div class="line">    ctx.closePath();</div><div class="line">    ctx.fill();</div><div class="line">    //下面的代码实现扇形的描边</div><div class="line">    ctx.strokeStyle = <span class="string">'black'</span>;</div><div class="line">    ctx.lineWidth = <span class="number">1</span>;</div><div class="line">    ctx.stroke();</div><div class="line">    ctx.restore();</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>画完了扇形还需要画旋转的文字，让文件显示在扇形中。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">function drawText(ctx, x, y, axie, angle, text){</div><div class="line">    ctx.save();</div><div class="line">    ctx.translate(x, y);</div><div class="line">    ctx.moveTo(<span class="number">0</span>, <span class="number">0</span>);</div><div class="line">    // 设置字体</div><div class="line">    ctx.font = <span class="string">"Bold 20px Arial"</span>; </div><div class="line">    // 设置对齐方式</div><div class="line">    ctx.textAlign = <span class="string">"left"</span>;</div><div class="line">    // 设置填充颜色</div><div class="line">    ctx.fillStyle = <span class="string">"#008600"</span>; </div><div class="line">    // 设置字体内容，以及旋转文字</div><div class="line">    ctx.rotate(angle);</div><div class="line">    ctx.fillText(text, axie, <span class="number">5</span>); </div><div class="line">    ctx.restore();</div><div class="line">};</div></pre></td></tr></table></figure>
+
+<h2 id="绘制抽奖的圆盘">绘制抽奖的圆盘</h2>
+<p>ok,绘制基本的图形有了，下面来绘制一个抽奖的圆盘。</p>
+<p>在html中设置一个canvas，然后在页面的onload的函数中绘制整个圆盘。</p>
+<p>将开始角度和结束角度设置为Math.PI<em>((2.0/len)</em>i), Math.PI<em>((2.0/len)</em>(i + 1))，这样可以平分整个圆周，让每个奖项占据相同的扇形大小。</p>
+<p>为了让文字在扇形的中间，旋转的角度和扇形都相差半个扇形的圆心角。而且为了让圆盘左半侧的文字看起来更方便，这里设置文字的初始位置在圆心的左侧，然后在旋转，如下图所示，为了让在b中文字从左到右显示，让文字的初始位置位于在0a上，然后按顺时针旋转到正确位置。</p>
+<p><img src="/images/抽奖_1.png" alt=""></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;div style=<span class="string">"position:relative"</span>&gt;</div><div class="line">    &lt;canvas id=<span class="string">"myCanvas"</span> width=<span class="string">"800"</span> height=<span class="string">"800"</span>&gt;</div><div class="line">        您的浏览器不支持canvas！</div><div class="line">    &lt;/canvas&gt;</div><div class="line">    &lt;input value=<span class="string">"抽奖"</span> id=<span class="string">"btn1"</span> <span class="built_in">type</span>=<span class="string">"button"</span> onclick=<span class="string">"startGame()"</span>&gt;</div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">var ctx,</div><div class="line">    //定义奖项</div><div class="line">    awards = [</div><div class="line">    <span class="string">"5个亿大奖！"</span>,</div><div class="line">    <span class="string">"4个亿大奖！"</span>, </div><div class="line">    <span class="string">"3个亿大奖！"</span>, </div><div class="line">    <span class="string">"2个亿大奖！"</span>, </div><div class="line">    <span class="string">"1个亿大奖！"</span>, </div><div class="line">    <span class="string">"500万大奖！"</span>, </div><div class="line">    <span class="string">"别墅一套！"</span>, </div><div class="line">    <span class="string">"豪车一辆！"</span>, </div><div class="line">    <span class="string">"iphone6 Plus！"</span>,</div><div class="line">    <span class="string">"小米4！"</span></div><div class="line">];</div><div class="line"></div><div class="line">function <span class="function"><span class="title">onLoad</span></span>(){</div><div class="line">    var canvas = document.getElementById(<span class="string">'myCanvas'</span>);</div><div class="line">    <span class="keyword">if</span> (canvas.getContext) {</div><div class="line">        ctx = canvas.getContext(<span class="string">'2d'</span>);</div><div class="line">        var len = awards.length;</div><div class="line">        <span class="keyword">for</span>(var i = <span class="number">0</span>; i &lt; awards.length; ++i){</div><div class="line">            sector(ctx, xLocation, yLocation, radius, </div><div class="line">            Math.PI*((<span class="number">2.0</span>/len)*i), Math.PI*((<span class="number">2.0</span>/len)*(i + <span class="number">1</span>)),</div><div class="line">            defaultColor, <span class="literal">false</span>);</div><div class="line">            <span class="keyword">if</span>((<span class="number">1.0</span>/len) + i * (<span class="number">2.0</span>/len) &gt; <span class="number">0.5</span> && </div><div class="line">               (<span class="number">1.0</span>/len) + i * (<span class="number">2.0</span>/len) &lt; <span class="number">1.5</span>){</div><div class="line">                drawText(ctx, xLocation, yLocation, -<span class="number">160</span>, </div><div class="line">                Math.PI*( <span class="number">1.0</span> + <span class="number">2.0</span>/len - (<span class="number">1.0</span>/len) + i * (<span class="number">2.0</span>/len)), awards[i]);</div><div class="line">            } <span class="keyword">else</span> {</div><div class="line">                drawText(ctx, xLocation, yLocation, <span class="number">60</span>, </div><div class="line">                Math.PI*((<span class="number">1.0</span>/len) + i * (<span class="number">2.0</span>/len)), awards[i]);</div><div class="line">            }</div><div class="line">        }</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>这样，整个圆盘就画出来了。</p>
+<p><img src="/images/抽奖_2.png" alt=""></p>
+<p>接着改变button的css,让其显示在圆盘的中心。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#btn1{</span></div><div class="line">    position:absolute; </div><div class="line">    top:<span class="number">365</span>px; </div><div class="line">    left:<span class="number">365</span>px;</div><div class="line">    border-radius: <span class="number">50</span>%;</div><div class="line">    box-shadow: <span class="number">0</span> <span class="number">0</span> <span class="number">10</span>px <span class="comment">#000;</span></div><div class="line">    width: <span class="number">70</span>px;</div><div class="line">    height: <span class="number">70</span>px;</div><div class="line">    background-color: red;</div><div class="line">    border: solid <span class="number">0</span>px <span class="comment">#fff;</span></div><div class="line">}</div><div class="line"></div><div class="line"><span class="comment">#btn1:active {</span></div><div class="line">  box-shadow: none;</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>接下来就是抽奖的过程了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div></pre></td><td class="code"><pre><div class="line">//预定义奖项的概率</div><div class="line">var probablity = [</div><div class="line">    -<span class="number">1</span>,</div><div class="line">    <span class="number">0.000001</span>,</div><div class="line">    <span class="number">0.2</span>,</div><div class="line">    <span class="number">0.3</span>,</div><div class="line">    <span class="number">0.5</span>,</div><div class="line">    <span class="number">0.8</span>,</div><div class="line">    <span class="number">0.85</span>,</div><div class="line">    <span class="number">0.9</span>,</div><div class="line">    <span class="number">0.92</span>,</div><div class="line">    <span class="number">0.98</span>,</div><div class="line">    <span class="number">1.0</span></div><div class="line">];</div><div class="line"></div><div class="line">var index=<span class="number">0</span>,           //当前亮区位置</div><div class="line">    speed=<span class="number">300</span>,           //初始速度</div><div class="line">    speedFastIndex,</div><div class="line">    endIndex,</div><div class="line">    Time,         //定义对象</div><div class="line">    cycleCount = <span class="number">100</span>,</div><div class="line">    xLocation = <span class="number">400</span>,</div><div class="line">    yLocation = <span class="number">400</span>,</div><div class="line">    radius = <span class="number">200</span>,</div><div class="line">    len = awards.length,</div><div class="line">    defaultColor = <span class="string">"yellow"</span>;</div><div class="line">    selectedColor = <span class="string">"red"</span>;</div><div class="line">function <span class="function"><span class="title">startGame</span></span>(){</div><div class="line">    onLoad();</div><div class="line">    clearInterval(Time);</div><div class="line">    //随机一个<span class="number">3</span>到<span class="number">8</span>之间的数字，</div><div class="line">    //在经过这个步数之后，转盘的速度加快</div><div class="line">    speedFastIndex = Math.floor(Math.random()*<span class="number">5</span> + <span class="number">3</span>);</div><div class="line">    //根据预定义的每个奖项的概率，得到该次的奖项，</div><div class="line">    var r =  Math.random();</div><div class="line">    <span class="keyword">for</span>(var i = <span class="number">0</span>; i &lt; probablity.length - <span class="number">1</span>; ++i){</div><div class="line">        <span class="keyword">if</span>( r &gt; probablity[i] && r &lt;= probablity[i + <span class="number">1</span>]){</div><div class="line">            endIndex = i;</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        }</div><div class="line">     }</div><div class="line">    speed = <span class="number">300</span>;</div><div class="line">    index = <span class="number">0</span>;</div><div class="line">    Time = <span class="keyword">set</span>Interval(Star,speed);</div><div class="line">}</div><div class="line"></div><div class="line">function <span class="function"><span class="title">Star</span></span>(){</div><div class="line">    var i = index % <span class="number">10</span>;</div><div class="line">    var j = (i + <span class="number">9</span>) % <span class="number">10</span>;</div><div class="line">    //重绘上一个扇形为基本色</div><div class="line">    //绘制当前扇形为选择色</div><div class="line">    sector(ctx, xLocation, yLocation, radius, Math.PI*((<span class="number">2.0</span>/len)*j), Math.PI*((<span class="number">2.0</span>/len)*(j + <span class="number">1</span>)), defaultColor, <span class="literal">false</span>);</div><div class="line">    sector(ctx, xLocation, yLocation, radius, Math.PI*((<span class="number">2.0</span>/len)*i), Math.PI*((<span class="number">2.0</span>/len)*(i + <span class="number">1</span>)), selectedColor, <span class="literal">false</span>);</div><div class="line">    //重新绘制文字</div><div class="line">    <span class="keyword">if</span>((<span class="number">1.0</span>/len) + j * (<span class="number">2.0</span>/len) &gt; <span class="number">0.5</span> && (<span class="number">1.0</span>/len) + j * (<span class="number">2.0</span>/len) &lt; <span class="number">1.5</span>){</div><div class="line">        drawText(ctx, xLocation, yLocation, -<span class="number">160</span>, Math.PI*( <span class="number">1.0</span> + <span class="number">2.0</span>/len - (<span class="number">1.0</span>/len) + j * (<span class="number">2.0</span>/len)), awards[j]);</div><div class="line">    } <span class="keyword">else</span> {</div><div class="line">        drawText(ctx, xLocation, yLocation, <span class="number">60</span>, Math.PI*((<span class="number">1.0</span>/len) + j * (<span class="number">2.0</span>/len)), awards[j]);</div><div class="line">    }</div><div class="line">    <span class="keyword">if</span>((<span class="number">1.0</span>/len) + i * (<span class="number">2.0</span>/len) &gt; <span class="number">0.5</span> && (<span class="number">1.0</span>/len) + i * (<span class="number">2.0</span>/len) &lt; <span class="number">1.5</span>){</div><div class="line">        drawText(ctx, xLocation, yLocation, -<span class="number">160</span>, Math.PI*( <span class="number">1.0</span> + <span class="number">2.0</span>/len - (<span class="number">1.0</span>/len) + i * (<span class="number">2.0</span>/len)), awards[i]);</div><div class="line">    } <span class="keyword">else</span> {</div><div class="line">        drawText(ctx, xLocation, yLocation, <span class="number">60</span>, Math.PI*((<span class="number">1.0</span>/len) + i * (<span class="number">2.0</span>/len)), awards[i]);</div><div class="line">    }</div><div class="line">    //达到加速步数后，加速</div><div class="line">    <span class="keyword">if</span>(index == speedFastIndex){</div><div class="line">        clearInterval(Time);</div><div class="line">        Speed=<span class="number">50</span>;</div><div class="line">        Time=<span class="keyword">set</span>Interval(Star,Speed);</div><div class="line">    }</div><div class="line">    </div><div class="line">    //跑完固定加速的步数后减速</div><div class="line">    <span class="keyword">if</span>(index == cycleCount){</div><div class="line">        clearInterval(Time);</div><div class="line">        Speed=<span class="number">300</span>;</div><div class="line">        Time=<span class="keyword">set</span>Interval(Star,Speed);</div><div class="line">    }</div><div class="line">    </div><div class="line">    //停在预定义的奖项中</div><div class="line">    <span class="keyword">if</span>(index == cycleCount + endIndex){</div><div class="line">        clearInterval(Time);</div><div class="line">        alert(<span class="string">"亲，中奖了中奖了！\n"</span> + awards[endIndex]);</div><div class="line">    }</div><div class="line">    </div><div class="line">    index += <span class="number">1</span>;</div><div class="line">}</div></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://fredawang.github.io/2015/01/21/Canvas 画的抽奖程序/" data-id="vcnt0q28zoc4uznz" class="article-share-link" style="display:none">Share</a>
+      
+        <a href="http://fredawang.github.io/2015/01/21/Canvas 画的抽奖程序/#ds-thread" class="article-comment-link" style="display:none">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTML5/">HTML5</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav-self">
+  
+  
+    <a href="/2015/01/14/css框模型/" id="article-nav-older-self" class="article-nav-link-wrap">
+      <!--<strong class="article-nav-caption">Older</strong>-->
+	  <div style="float:left; margin-right:10px;">
+		上一篇
+	  </div>
+      <div class="article-nav-title">CSS 框模型</div>
+    </a>
+  
+  
+    <a href="/2015/01/21/Chrome开发者工具之JavaScript内存分析/" id="article-nav-newer-self" class="article-nav-link-wrap">
+      <!--<strong class="article-nav-caption">Newer</strong>-->
+	  <div style="float:left; margin-right:10px">
+		下一篇
+	  </div>
+      <div class="article-nav-title">
+        
+          Chrome开发者工具之JavaScript内存分析
+        
+      </div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <!--<div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>-->
+  <!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="2015/01/21/Canvas 画的抽奖程序/" data-title="Canvas 画的抽奖程序" data-url="http://fredawang.github.io/2015/01/21/Canvas 画的抽奖程序/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"freda"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/">CSS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Exemplar-Learning/">Exemplar Learning</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">19</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/WEB-Essay/">WEB Essay</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/">CSS</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML5/">HTML5</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/">JS</a><span class="tag-list-count">19</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/04/26/深入理解javascript原型和闭包/">深入理解javascript原型和闭包</a>
+          </li>
+        
+          <li>
+            <a href="/2015/04/15/JavaScript作用域和作用域链/">JavaScript作用域和作用域链</a>
+          </li>
+        
+          <li>
+            <a href="/2015/04/14/SetTimeOut作用域/">SetTimeOut作用域分析</a>
+          </li>
+        
+          <li>
+            <a href="/2015/03/27/动态生成多级菜单/">动态生成多级菜单</a>
+          </li>
+        
+          <li>
+            <a href="/2015/03/23/JavaScript 事件捕获和冒泡/">JavaScript事件捕获和冒泡</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 水滴石穿<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'fredawang';
+  
+  var disqus_url = 'http://fredawang.github.io/2015/01/21/Canvas 画的抽奖程序/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+
+  </div>
+</body>
+</html>

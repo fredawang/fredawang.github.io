@@ -1,0 +1,27 @@
+<h1 id="jQuery-appear">jQuery.appear</h1>
+<p>This is a total revamp of original jquery.appear plugin hosted on <a href="http://code.google.com/p/jquery-appear/">http://code.google.com/p/jquery-appear/</a></p>
+<p>Check <a href="http://morr.github.com/appear.html">demo page</a>!</p>
+<p>This plugin can be used to prevent unnecessary processeing for content that is hidden or is outside of the browser viewport.</p>
+<p>It implements a custom <em>appear</em>/<em>disappear</em> events which are fired when an element became visible/invisible in the browser viewport.</p>
+<pre><code>    <span class="variable">$(</span><span class="string">'someselector'</span>).appear(); <span class="regexp">//</span> <span class="constant">It</span> supports optinal hash with <span class="string">"force_process"</span> <span class="keyword">and</span> <span class="string">"interval"</span> keys. <span class="constant">Check</span> source code <span class="keyword">for</span> details.
+
+    <span class="variable">$(</span><span class="string">'&lt;div&gt;test&lt;/div&gt;'</span>).appear(); <span class="regexp">//</span> <span class="constant">It</span> also supports raw <span class="constant">DOM</span> nodes wrapped <span class="keyword">in</span> jQuery.
+
+    <span class="variable">$(</span><span class="string">'someselector'</span>).on(<span class="string">'appear'</span>, function(event, <span class="variable">$all_appeared_elements</span>) {
+      <span class="regexp">//</span> this element is now inside browser viewport
+    });
+    <span class="variable">$(</span><span class="string">'someselector'</span>).on(<span class="string">'disappear'</span>, function(event, <span class="variable">$all_disappeared_elements</span>) {
+      <span class="regexp">//</span> this element is now outside browser viewport
+    });
+</code></pre><p>If you want to fire <em>appear</em> event for elements which are close to vieport but are not visible yet, you may add data attributes <em>appear-top-offset</em> and <em>appear-left-offset</em> to DOM nodes.</p>
+<pre><code>    &lt;div class=<span class="string">"postloader"</span> data-appear-top-offset=<span class="string">"600"</span>&gt;<span class="keyword">...</span>&lt;/div&gt; <span class="comment"># appear will be fired when an element is below browser viewport for 600 or less pixels</span>
+</code></pre><p>Appear check can be forced by calling <em>$.force_appear()</em>. This is suitable in cases when page is in initial state (not scrolled and not resized) and when you want manually trigger appearance check.</p>
+<p>Also this plugin provides custom jQuery filter for manual checking element appearance.</p>
+<pre><code>    $(<span class="string">'someselector'</span>).<span class="keyword">is</span>(<span class="string">':appeared'</span>)
+</code></pre><h1 id="License">License</h1>
+<blockquote>
+<p>Licensed under <a href="http://opensource.org/licenses/MIT">MIT license</a>.</p>
+<p>Permission is hereby granted, free of charge, to any person<br>obtaining a copy of this software and associated documentation<br>files (the “Software”), to deal in the Software without<br>restriction, including without limitation the rights to use,<br>copy, modify, merge, publish, distribute, sublicense, and/or sell<br>copies of the Software, and to permit persons to whom the<br>Software is furnished to do so, subject to the following<br>conditions:</p>
+<p>The above copyright notice and this permission notice shall be<br>included in all copies or substantial portions of the Software.</p>
+<p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND,<br>EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES<br>OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND<br>NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT<br>HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,<br>WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING<br>FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR<br>OTHER DEALINGS IN THE SOFTWARE.</p>
+</blockquote>

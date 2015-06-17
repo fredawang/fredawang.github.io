@@ -1,0 +1,6 @@
+jquery.dynatree-1.2.4 **modified by Glex Zhu**
+
+If you are planning to upgrade it to a higher version. Please ensure our modified code are also merged. 
+Merged code can be viewed via P4:
+  jquery.dynatree.js #2 ~ latest
+

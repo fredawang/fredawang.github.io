@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Javascript关于OOP浅析 | 水滴石穿</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="keywords" content="水滴石穿">
+  <meta name="discription" content="这个一个前段工程师的博客">
+  <meta name="description" content="在面向对象编程(OOP)中，类（class）是对象（object）的模板，定义了同一组对象（又称”实例”）共有的属性和方法。
+Javascript语言不支持”类”，但是可以用一些变通的方法，模拟出”类”。下面列出javascript中创建对象的几种方式。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Javascript关于OOP浅析">
+<meta property="og:url" content="http://fredawang.github.io/2015/03/08/JavaScript关于OOP浅析/">
+<meta property="og:site_name" content="水滴石穿">
+<meta property="og:description" content="在面向对象编程(OOP)中，类（class）是对象（object）的模板，定义了同一组对象（又称”实例”）共有的属性和方法。
+Javascript语言不支持”类”，但是可以用一些变通的方法，模拟出”类”。下面列出javascript中创建对象的几种方式。">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Javascript关于OOP浅析">
+<meta name="twitter:description" content="在面向对象编程(OOP)中，类（class）是对象（object）的模板，定义了同一组对象（又称”实例”）共有的属性和方法。
+Javascript语言不支持”类”，但是可以用一些变通的方法，模拟出”类”。下面列出javascript中创建对象的几种方式。">
+
+  
+    <link rel="alternative" href="/atom.xml" title="水滴石穿" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="css/images/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+  
+
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">水滴石穿</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">水非石之钻，索非木之锯，渐靡使之然也</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav" style="display:none;">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <!--<nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>-->
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><input type="submit" value="&#xF002;" class="search-form-submit"><input type="hidden" name="q" value="site:http://fredawang.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-JavaScript关于OOP浅析" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/03/08/JavaScript关于OOP浅析/" class="article-date">
+  <time datetime="2015-03-08T11:00:00.000Z" itemprop="datePublished">3月 8 2015</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/JavaScript/">JavaScript</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Javascript关于OOP浅析
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在面向对象编程(OOP)中，类（class）是对象（object）的模板，定义了同一组对象（又称”实例”）共有的属性和方法。</p>
+<p>Javascript语言不支持”类”，但是可以用一些变通的方法，模拟出”类”。下面列出javascript中创建对象的几种方式。</p>
+<a id="more"></a>
+
+<h2 id="一、工厂模式">一、工厂模式</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">function cat(name) {</div><div class="line">	var _obj = {};</div><div class="line">    _obj.name = name;  </div><div class="line">    _obj.talk = <span class="function"><span class="title">function</span></span>() {</div><div class="line">        <span class="keyword">return</span> this.name + <span class="string">" say meeow!"</span>;</div><div class="line">    }</div><div class="line">	<span class="keyword">return</span> _obj;</div><div class="line">} </div><div class="line">cat1 = cat(<span class="string">"felix"</span>)</div><div class="line">console.log(cat1.talk()) //felix says meeow!</div><div class="line">console.log(cat1.name) //felix</div><div class="line">cat2 = cat(<span class="string">"ginger"</span>)</div><div class="line">console.log(cat2.talk()) // ginger says meeow!</div><div class="line">console.log(cat2.name) //ginger</div></pre></td></tr></table></figure>
+
+<h2 id="二、构造函数法">二、构造函数法</h2>
+<p>这是经典方法，也是教科书必教的方法。它用构造函数模拟”类”，在其内部用this关键字指代实例对象。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">function cat(name) {</div><div class="line">    this.name = name;  </div><div class="line">    this.talk = <span class="function"><span class="title">function</span></span>() {</div><div class="line">        <span class="keyword">return</span> this.name + <span class="string">" say meeow!"</span>;</div><div class="line">    }</div><div class="line">} </div><div class="line">cat1 = new cat(<span class="string">"felix"</span>)</div><div class="line">console.log(cat1.talk()) //felix says meeow!</div><div class="line">console.log(cat1.name) //felix</div><div class="line">cat2 = new cat(<span class="string">"ginger"</span>)</div><div class="line">console.log(cat2.talk()) //ginger says meeow!</div><div class="line">console.log(cat2.name) //ginger</div></pre></td></tr></table></figure>
+
+<p>在这里,函数 cat() 是一个对象构造器,它的属性和方法在函数体里用this来定义,用对象构造器定义的对象用 new 来实例化。注意我们如何非常容易的定义多个cat 的实例。每一个都有自己的名字,这就是对象构造器带给我们的灵活性。<br>构造器建立了对象的蓝图，并不是对象本身。</p>
+<p>在上面我们看到的例子里,对象的方法是在构造器里定义好的了。<br>另外一种实现的途径是通过原型(prototype)。<br>原型是javascript继承的一种形式，我们可以为对象定义好后,再创造一个方法，原来所有对象的实例都将共享。<br>让我们来扩展最初的 cat 对象，增加一个改名的方法，用 prototype 的方式。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">cat.prototype.changeName = function(name) {</div><div class="line">    this.name = name;</div><div class="line">}</div><div class="line">firstCat = new cat(<span class="string">"pursur"</span>)</div><div class="line">firstCat.changeName(<span class="string">"Bill"</span>)</div><div class="line">console.log(firstCat.talk()) //Bill says meeow!</div></pre></td></tr></table></figure>
+
+<p>就象你所看到的，我们仅只用了 关键字 prototype 实现了在对象定义后马上增加了changeName方法，这个方法被所有的实例共享。</p>
+<p>用原型(prototype) 重载 javascript 对象原型 在自定义对象和有选择性的重载对象上都可以工作，比如 Date() 或 String 。</p>
+<h2 id="三、Object-create()法">三、Object.create()法</h2>
+<p>为了解决”构造函数法”的缺点，更方便地生成对象，Javascript的国际标准ECMAScript第五版（目前通行的是第三版），提出了一个新的方法Object.create()。</p>
+<p>用这个方法，”类”就是一个对象，不是函数。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">var Cat = {</div><div class="line">　　　name: <span class="string">"felix"</span>,</div><div class="line">　　　talk: <span class="function"><span class="title">function</span></span>(){ </div><div class="line">		<span class="keyword">return</span> this.name + <span class="string">" say meeow!"</span>;</div><div class="line">    }</div><div class="line">　};</div></pre></td></tr></table></figure>
+
+<p>然后，直接用Object.create()生成实例，不需要用到new。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">var cat1 = Object.create(Cat);</div><div class="line">console.log(cat1.name); // felix</div><div class="line">console.log(cat1.talk()); // felix says meeow!</div></pre></td></tr></table></figure>
+
+<p>目前，各大浏览器的最新版本（包括IE9）都部署了这个方法。如果遇到老式浏览器，可以用下面的代码自行部署。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (!Object.create) {</div><div class="line"> 　　　　Object.create = function (o) {</div><div class="line"> 　　　　　　 function <span class="function"><span class="title">F</span></span>() {}</div><div class="line"> 　　　　　　F.prototype = o;</div><div class="line"> 　　　　　　<span class="keyword">return</span> new F();</div><div class="line"> 　　　　};</div><div class="line"> 　　}</div></pre></td></tr></table></figure>
+
+<p>这种方法比”构造函数法”简单，但是不能实现私有属性和私有方法，实例对象之间也不能共享数据，对”类”的模拟不够全面。</p>
+<h2 id="四、闭包下的私有变量模式">四、闭包下的私有变量模式</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">(<span class="function"><span class="title">function</span></span>(){</div><div class="line">    var name =<span class="string">""</span>;</div><div class="line">    Cat = function(val){</div><div class="line">        name = val;</div><div class="line">   };</div><div class="line">    Cat.prototype ={</div><div class="line">       constructor:Cat,</div><div class="line">       talk:<span class="function"><span class="title">function</span></span>(){</div><div class="line">              <span class="keyword">return</span> this.name + <span class="string">" say meeow!"</span>;</div><div class="line">      }</div><div class="line">   };</div><div class="line">})();</div><div class="line"></div><div class="line">  </div><div class="line">  </div><div class="line">var cat1 = new Cat(<span class="string">"felix"</span>);</div><div class="line">console.log(cat1.name);           //undefined</div><div class="line">console.log(cat1.talk());      //felix says meeow!</div><div class="line">  </div><div class="line">var cat2= new People(<span class="string">"ginger"</span>);</div><div class="line">console.log(cat2.name);           //undefined</div><div class="line">console.log(cat2.talk());      //ginger says meeow!</div></pre></td></tr></table></figure>
+
+<h2 id="五、极简主义法">五、极简主义法</h2>
+<p>荷兰程序员Gabor de Mooij提出了一种比Object.create()更好的新方法，他称这种方法为”极简主义法”（minimalist approach）。这也是我推荐的方法。</p>
+<h4 id="5-1_封装">5.1 封装</h4>
+<p>这种方法不使用this和prototype，代码部署起来非常简单，这大概也是它被叫做”极简主义法”的原因。</p>
+<p>首先，它也是用一个对象模拟”类”。在这个类里面，定义一个构造函数createNew()，用来生成实例。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">var Cat = {</div><div class="line">    createNew: <span class="function"><span class="title">function</span></span>(){</div><div class="line">        // some code here</div><div class="line">    }</div><div class="line">};</div></pre></td></tr></table></figure>
+
+<p>然后，在createNew()里面，定义一个实例对象，把这个实例对象作为返回值。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">var Cat = {</div><div class="line">　　　createNew: <span class="function"><span class="title">function</span></span>(){</div><div class="line">　　　　　var cat = {};</div><div class="line">　　　　　cat.name = <span class="string">"大毛"</span>;</div><div class="line">　　　　　cat.talk = <span class="function"><span class="title">function</span></span>(){ console.log(<span class="string">"喵喵喵"</span>); };</div><div class="line">　　　　　<span class="keyword">return</span> cat;</div><div class="line">　　　}</div><div class="line">};</div><div class="line"></div><div class="line">var cat1 = Cat.createNew();</div><div class="line">cat1.talk(); // 喵喵喵</div></pre></td></tr></table></figure>
+
+<p>使用的时候，调用createNew()方法，就可以得到实例对象。</p>
+<p>这种方法的好处是，容易理解，结构清晰优雅，符合传统的”面向对象编程”的构造，因此可以方便地部署下面的特性。</p>
+<h4 id="5-2_继承">5.2 继承</h4>
+<p>让一个类继承另一个类，实现起来很方便。只要在前者的createNew()方法中，调用后者的createNew()方法即可。</p>
+<p>先定义一个Animal类。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">var Animal = {</div><div class="line">　　　　createNew: <span class="function"><span class="title">function</span></span>(){</div><div class="line">　　　　　　var animal = {};</div><div class="line">　　　　　　animal.sleep = <span class="function"><span class="title">function</span></span>(){ console.log(<span class="string">"睡懒觉"</span>); };</div><div class="line">　　　　　　<span class="keyword">return</span> animal;</div><div class="line">　　　　}</div><div class="line">};</div></pre></td></tr></table></figure>
+
+<p>然后，在Cat的createNew()方法中，调用Animal的createNew()方法。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">var Cat = {</div><div class="line"> 　　　　createNew: <span class="function"><span class="title">function</span></span>(){</div><div class="line"> 　　　　　　var cat = Animal.createNew();</div><div class="line"> 　　　　　　cat.name = <span class="string">"大毛"</span>;</div><div class="line"> 　　　　　　cat.talk = <span class="function"><span class="title">function</span></span>(){ console.log(<span class="string">"喵喵喵"</span>); };</div><div class="line"> 　　　　　　<span class="keyword">return</span> cat;</div><div class="line"> 　　　　}</div><div class="line"> 　　};</div></pre></td></tr></table></figure>
+
+<p>这样得到的Cat实例，就会同时继承Cat类和Animal类。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">var cat1 = Cat.createNew();</div><div class="line">cat1.sleep(); // 睡懒觉</div></pre></td></tr></table></figure>
+
+<h4 id="5-3_私有属性和私有方法">5.3 私有属性和私有方法</h4>
+<p>在createNew()方法中，只要不是定义在cat对象上的方法和属性，都是私有的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">var Cat = {</div><div class="line"> 　　　　createNew: <span class="function"><span class="title">function</span></span>(){</div><div class="line"> 　　　　　　var cat = {};</div><div class="line"> 　　　　　　var sound = <span class="string">"喵喵喵"</span>;</div><div class="line"> 　　　　　　cat.talk = <span class="function"><span class="title">function</span></span>(){ console.log(sound); };</div><div class="line"> 　　　　　　<span class="keyword">return</span> cat;</div><div class="line"> 　　　　}</div><div class="line"> 　　};</div></pre></td></tr></table></figure>
+
+<p>上例的内部变量sound，外部无法读取，只有通过cat的公有方法talk()来读取。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">var cat1 = Cat.createNew();</div><div class="line">console.log(cat1.sound); // undefined</div></pre></td></tr></table></figure>
+
+<h4 id="5-4_数据共享">5.4 数据共享</h4>
+<p>有时候，我们需要所有实例对象，能够读写同一项内部数据。这个时候，只要把这个内部数据，封装在类对象的里面、createNew()方法的外面即可。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">var Cat = {</div><div class="line">　　　　sound : <span class="string">"喵喵喵"</span>,</div><div class="line">　　　　createNew: <span class="function"><span class="title">function</span></span>(){</div><div class="line">　　　　　　var cat = {};</div><div class="line">　　　　　　cat.talk = <span class="function"><span class="title">function</span></span>(){ console.log(Cat.sound); };</div><div class="line">　　　　　　cat.changeSound = function(x){ Cat.sound = x; };</div><div class="line">　　　　　　<span class="keyword">return</span> cat;</div><div class="line">　　　　}</div><div class="line">};</div></pre></td></tr></table></figure>
+
+<p>然后，生成两个实例对象：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">var cat1 = Cat.createNew();</div><div class="line">var cat2 = Cat.createNew();</div><div class="line">cat1.talk(); // 喵喵喵</div></pre></td></tr></table></figure>
+
+<p>这时，如果有一个实例对象，修改了共享的数据，另一个实例对象也会受到影响。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cat2.changeSound(<span class="string">"啦啦啦"</span>);</div><div class="line">cat1.talk(); // 啦啦啦</div></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://fredawang.github.io/2015/03/08/JavaScript关于OOP浅析/" data-id="lhepmq3qj60br5am" class="article-share-link" style="display:none">Share</a>
+      
+        <a href="http://fredawang.github.io/2015/03/08/JavaScript关于OOP浅析/#ds-thread" class="article-comment-link" style="display:none">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JS/">JS</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav-self">
+  
+  
+    <a href="/2015/03/03/JavaScript绑定事件/" id="article-nav-older-self" class="article-nav-link-wrap">
+      <!--<strong class="article-nav-caption">Older</strong>-->
+	  <div style="float:left; margin-right:10px;">
+		上一篇
+	  </div>
+      <div class="article-nav-title">JavaScript绑定事件</div>
+    </a>
+  
+  
+    <a href="/2015/03/12/清除浮动/" id="article-nav-newer-self" class="article-nav-link-wrap">
+      <!--<strong class="article-nav-caption">Newer</strong>-->
+	  <div style="float:left; margin-right:10px">
+		下一篇
+	  </div>
+      <div class="article-nav-title">
+        
+          那些年我们一起清除过的浮动
+        
+      </div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <!--<div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>-->
+  <!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="2015/03/08/JavaScript关于OOP浅析/" data-title="Javascript关于OOP浅析" data-url="http://fredawang.github.io/2015/03/08/JavaScript关于OOP浅析/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"freda"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/">CSS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Exemplar-Learning/">Exemplar Learning</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">19</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/WEB-Essay/">WEB Essay</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/">CSS</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML5/">HTML5</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/">JS</a><span class="tag-list-count">19</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/04/26/深入理解javascript原型和闭包/">深入理解javascript原型和闭包</a>
+          </li>
+        
+          <li>
+            <a href="/2015/04/15/JavaScript作用域和作用域链/">JavaScript作用域和作用域链</a>
+          </li>
+        
+          <li>
+            <a href="/2015/04/14/SetTimeOut作用域/">SetTimeOut作用域分析</a>
+          </li>
+        
+          <li>
+            <a href="/2015/03/27/动态生成多级菜单/">动态生成多级菜单</a>
+          </li>
+        
+          <li>
+            <a href="/2015/03/23/JavaScript 事件捕获和冒泡/">JavaScript事件捕获和冒泡</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 水滴石穿<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'fredawang';
+  
+  var disqus_url = 'http://fredawang.github.io/2015/03/08/JavaScript关于OOP浅析/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+
+  </div>
+</body>
+</html>

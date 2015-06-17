@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link href="../js/lib/bootstrap3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../js/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <script src="../js/lib/jquery/jquery-1.11.2.min.js?"></script>
+    <script src="../js/lib/bootstrap3/js/bootstrap.js"></script>
+    </head>
+    <style type="text/css">
+    </style>
+    <body>
+        <div id="test" style="display:inline-table">
+            <ul class="nav navbar-nav">
+            </ul>
+        </div>
+        <div>
+            <div style="font-size: 16px">
+                <i>This is a demo about multi-level menu.</i>
+            </div>
+        </div>
+        <script type="text/javascript">
+                $('#test .nav').delegate("li.dropdown-submenu [data-toggle=dropdown]",'click', function(event) {
+                    // Avoid following the href location when clicking
+                    event.preventDefault(); 
+                    // Avoid having the menu to close when clicking
+                    event.stopPropagation(); 
+                    // If a menu is already open we close it
+                    //$('ul.dropdown-menu [data-toggle=dropdown]').parent().removeClass('open');
+                    $(this).parent().siblings().find(".open").removeClass('open');
+                    // opening the one you clicked on
+                    var parent_li = $(this).parent();
+                    if(parent_li.hasClass("open")){
+                        parent_li.removeClass("open");
+                    } else {
+                        parent_li.addClass('open');
+                        var menu = parent_li.find("ul");
+                        var parent_menu = parent_li.find(".dropdown-toggle");
+                        var menupos = $(menu).offset();
+                        var parent_menu_pos = $(parent_menu).offset();
+                        if($(this).parent().parent().css("left") != "auto"){
+                            menu.css({ left: "100%", top:"0"});
+                            return;
+                        }
+                        if(parent_li.parent().css("right") != "auto"){
+                            menu.css({ right: "100%", top:"0"});
+                            return;
+                        }
+                        if (parent_menu_pos.left + parent_menu.width() + menu.width() > $(window).width()) {
+                            menu.css({ right: "100%",top:"0"});
+                        } else {
+                            var newpos = parent_menu.width();
+                            menu.css({ left: "100%", top:"0"});
+                        }
+                    }
+                });
+                var data = [{
+                    "title":"HOME",
+                    "sub_menu": [{
+                        "title": "HOME_1",
+                        "url": "/index"
+                    },
+                    {
+                        "title": "HOME_2",
+                        "url": "/index"
+                    },
+                    {
+                        "title": "HOME_3",
+                        "url": "/index"
+                    }]
+                },{
+                    "title":"FEATURE",
+                    "sub_menu": [{
+                        "title": "HEADERS",
+                        "url": "/index"
+                    },
+                    {
+                        "title": "FOOTERS",
+                        "url": "/index"
+                    },
+                    {
+                        "title": "EMAIL_TEMPLATES",
+                        "sub_menu":[{
+                            "title": "EMAIL_TEMPLATES_1",
+                            "url": "/index"
+                        },{
+                            "title": "EMAIL_TEMPLATES_2",
+                            "sub_menu": [{
+                                "title": "EMAIL_TEMPLATES_2_1",
+                                "url":"/index"
+                            }]
+                        }]
+                    }]
+                }];
+                function addSubMenu(data,is_sub_menu){
+                    var result = "";
+                    $.each(data, function(index, object){
+                        var html = "";
+                        if("sub_menu" in object){
+                            html += [
+                                '<li class="dropdown ' + (is_sub_menu?"dropdown-submenu":"") + '">',
+                                    '<a href="#" class="dropdown-toggle dropdown-title" data-toggle="dropdown">',
+                                        '<span>' + object.title + '</span>',
+                                        '<i class="glyphicon glyphicon-asterisk"></i>',
+                                    '</a>',
+                                    '<ul class="dropdown-menu">',
+                                        addSubMenu(object["sub_menu"], true),
+                                    '</ul>',
+                                '</li>'].join("");
+                        } else {
+                            html += '<li><a class="dropdown-title" href="' + object.url + '"><span>' + object.title + '</span></a></li>';
+                        }
+                        result += html;
+                    });
+                    
+                    return result;
+                }
+
+                var elem = $("#test .nav");
+                elem.empty();
+                elem.append(addSubMenu(data));
+        </script>
+    </body>
+</html>
