@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="format-detection" content="telephone=no">
+    <title>项目汇总</title>
+    <meta name="robots" content="all">
+    <meta name="author" content="网易，NetEase Inc.,fan.wf@corp.netease.com">
+    <meta name="copyright" content="网易，NetEase Inc.">
+    <link rel="dns-prefetch" href="http://res.nie.netease.com">
+    <link rel="stylesheet" type="text/css" href="http://res.nie.netease.com/tianyu/gw/14v3/css/reset-utf.css" />
+    <style type="text/css">
+        .ellipsis{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}body{width:100%;font-size:14px;background-color:#fff}i{display:inline-block}.logo{position:absolute;z-index:10;left:43px;top:36px}.g-wrap{position:relative;min-width:1042px;max-width:1920px;background:#454e6d url(../images/bg.jpg) no-repeat center top;display:block;margin:0 auto}.g-content{position:relative;width:1042px;margin:0 auto}.g-title{font-size:20px;padding:20px 0;color:#fff}.g-list{overflow:hidden}.g-list:after{display:block;clear:both;visibility:hidden;height:0;overflow:hidden;content:""}.tab{margin-bottom:20px;overflow:hidden}.tab:after{display:block;clear:both;visibility:hidden;height:0;overflow:hidden;content:""}.tab .tab-btn{border:1px solid #2e373e;border-radius:5px;padding:10px 20px;cursor:pointer;margin-right:20px}.tab .tab-btn.active{background-color:#39506f;color:#fff}.item{position:relative;font-size:18px;color:#b29858;float:left;margin:0 45px 30px 0;background-color:rgba(57,80,111,0.8);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#C839506f,endColorstr=#C839506f);transition:all 0.5s}.item:hover{color:#fff}.item:hover .item__barcode{opacity:1;filter:alpha(opacity=100)}.item__img{width:300px}.item__barcode{transition:all 0.5s;opacity:0;filter:alpha(opacity=0);position:absolute;z-index:2;left:50%;margin-left:-75px;left:50%;top:50px}.item__barcode img{width:150px}.item__text{text-align:center;padding:20px 0}
+
+    </style>
+</head>
+<body>	
+	<div class="g-wrap">
+		<div class="g-content">
+            <div class="g-title">
+                网易盘古游戏工作室项目汇总：
+            </div>
+            <div class="tab">
+                <div class="tab-btn f-fl active" data-id="web">
+                    web页面
+                </div>
+                <div class="tab-btn f-fl" data-id="phone">
+                    移动页面
+                </div>
+            </div>
+            <div id="web" class="g-list g-list-web tab-content">
+            </div>
+            <div id="phone" class="g-list g-list-phone tab-content f-dn">
+            </div>
+        </div>
+    
+    </div>
+    <script id="web-item-template" type="text/x-handlebars-template">
+        {{#each web}}
+            <a class="item" href="{{href}}" target="_blank">
+                <img class="item__img" src="./images/{{img}}"/>
+                <p class="item__text">{{text}}</p>
+            </a>
+        {{/each}}
+    </script>
+    <script id="phone-item-template" type="text/x-handlebars-template">
+        {{#each phone}}
+            <div class="item">
+                <img class="item__img" src="./images/{{img}}"/>
+                <p class="item__text">{{text}}</p>
+                <div class="item__barcode">
+                    <img src="./images/{{barcode}}"/>
+                </div>
+            </div>
+        {{/each}}
+    </script>
+    <script type="text/javascript" src="http://res.nie.netease.com/comm/js/jquery(mixNIE).1.11.js" charset="gbk"></script>
+    <script type="text/javascript" src="http://res.tianyu.netease.com/qt/15/clothing/js/handlebars-v4.0.4.js"></script>
+    <script type="text/javascript">
+        
+
+        var data = {
+            "web":[
+                {
+                    "img":"cos.jpg",
+                    "text":"天谕职业cos专题",
+                    "href":"http://tianyu.163.com/zhiyeyinxiang/"
+                },
+                {
+                    "img":"gonghui.jpg",
+                    "text":"公会联赛",
+                    "href":"http://hd.tianyu.163.com/gh/2015pvp/detail?type=duijue"
+                },
+                {
+                    "img":"year.jpg",
+                    "text":"2016新年活动",
+                    "href":"http://tianyu.163.com/2016/newyear/"
+                },
+                {
+                    "img":"xinfu.jpg",
+                    "text":"新服专题",
+                    "href":"http://tianyu.163.com/new/"
+                },
+                {
+                    "img":"shizhuang.jpg",
+                    "text":"时装汇总",
+                    "href":"http://tianyu.163.com/2015/clothing/"
+                },
+                {
+                    "img":"xuanjing.jpg",
+                    "text":"玄鲸坐骑",
+                    "href":"http://tianyu.163.com/2016/xuanjingzhi/"
+                },
+                {
+                    "img":"nov.jpg",
+                    "text":"11月版本",
+                    "href":"http://tianyu.163.com/2015/nov/"
+                },
+                {
+                    "img":"oct.jpg",
+                    "text":"10月版本",
+                    "href":"http://tianyu.163.com/2015/oct/"
+                },
+                {
+                    "img":"jingjichang.jpg",
+                    "text":"竞技场联赛排行榜",
+                    "href":"http://hd.tianyu.163.com/rank/pvp"
+                },
+                {
+                    "img":"qiandao.jpg",
+                    "text":"新服签到页面",
+                    "href":"http://hd.tianyu.163.com/qian?serverId=qxcf"
+                },
+                {
+                    "img":"kaixuehuodong.jpg",
+                    "text":"开学抽奖活动",
+                    "href":"http://hd.tianyu.163.com/mengxin/"
+                },
+                {
+                    "img":"huigui.jpg",
+                    "text":"谕霸回归大礼",
+                    "href":"http://hd.tianyu.163.com/reunion/"
+                },
+                {
+                    "img":"jiangnan.jpg",
+                    "text":"江南专服预约",
+                    "href":"http://hd.tianyu.163.com/jiangnan"
+                },
+                {
+                    "img":"qixi.jpg",
+                    "text":"七夕时装展示",
+                    "href":"http://tianyu.163.com/2015/queqiao/"
+                },
+                {
+                    "img":"zhongqiu.jpg",
+                    "text":"中秋时装展示",
+                    "href":"http://tianyu.163.com/2015/zhongqiu"
+                },
+                {
+                    "img":"kaixue.jpg",
+                    "text":"开学季时装展示",
+                    "href":"http://tianyu.163.com/2015/kaixueji/"
+                },
+                {
+                    "img":"jinghai.jpg",
+                    "text":"靖海时装展示",
+                    "href":"http://tianyu.163.com/2015/jinghai/"
+                },
+                {
+                    "img":"xueyuanji.jpg",
+                    "text":"学园祭时装展示",
+                    "href":"http://tianyu.163.com/2015/xueyuanji/"
+                }
+            ],
+            "phone":[
+                {
+                    "img":"white.jpg",
+                    "text":"白色情人节H5(微信打开)",
+                    "barcode":"white-barcode.jpg"
+                },
+                {
+                    "img":"christmas.jpg",
+                    "text":"圣诞活动H5",
+                    "barcode":"christmas-barcode.jpg"
+                },
+                {
+                    "img":"pvp.jpg",
+                    "text":"竞技场联赛排行榜",
+                    "barcode":"pvp-barcode.jpg"
+                },
+                {
+                    "img":"yupiao.jpg",
+                    "text":"谕票系统(只可在app中打开)",
+                    "barcode":""
+                },
+                {
+                    "img":"shizhuang.jpg",
+                    "text":"时装汇总",
+                    "barcode":"shizhuang-barcode.jpg"
+                },
+                {
+                    "img":"xuanjing.jpg",
+                    "text":"玄鲸坐骑",
+                    "barcode":"xuanjing-barcode.jpg"
+                },
+                {
+                    "img":"huigui-1.jpg",
+                    "text":"谕霸回归大礼",
+                    "barcode":"huigui-barcode.jpg"
+                },
+            ]
+        };
+        
+        var web_template = Handlebars.compile($("#web-item-template").html());
+
+        $('.g-list-web').html(web_template(data));
+
+        var phone_template = Handlebars.compile($("#phone-item-template").html());
+
+        $('.g-list-phone').html(phone_template(data));
+
+        $(function(){
+            $(document).ready(function(){
+               $(".tab-btn").click(function(e){
+                    $(".tab-btn").removeClass("active");
+                    $(this).addClass("active");
+                    var id = $(this).data("id");
+                    $(".g-list").addClass("f-dn");
+                    $("#" + id).removeClass("f-dn");
+                });
+            });
+        });
+        
+        
+    </script>
+</body>
+</html>
