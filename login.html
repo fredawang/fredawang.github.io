@@ -31,7 +31,7 @@
         alert(oOpts.btnId);    // 点击登录的按钮Id
      };
      //QC.Login({btnId:"qqLoginBtn"}, cbLoginFun);
-     var cbLogoutFun(){
+     var cbLogoutFun = function(){
          alert("注销成功!");
      };
      QC.Login({btnId:"qqLoginBtn"}, cbLoginFun, cbLogoutFun);
